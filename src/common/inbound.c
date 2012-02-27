@@ -661,13 +661,10 @@ void
 inbound_topic (server *serv, char *chan, char *topic_text)
 {
 	session *sess = find_channel (serv, chan);
-	char *stripped_topic;
 
 	if (sess)
 	{
-		stripped_topic = strip_color (topic_text, -1, STRIP_ALL);
-		set_topic (sess, topic_text, stripped_topic);
-		g_free (stripped_topic);
+		set_topic (sess, topic_text, topic_text);
 	} else
 		sess = serv->server_session;
 
