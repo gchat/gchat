@@ -1,9 +1,11 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([XChat],[2.8.8],[http://www.xchat.org/],[xchat])
+AC_INIT([GChat],[1.0],[http://gchat.notroll.net/],[gchat])
 
 AC_PREREQ([2.59])
-AC_COPYRIGHT([Copyright (C) 1998-2010 Peter Zelezny])
+AC_COPYRIGHT([Copyright (C) 1998-2010 Peter Zelezny
+Copyright (C) 2012 Mitchell Cooper
+])
 
 AC_USE_SYSTEM_EXTENSIONS
 
@@ -78,12 +80,12 @@ dnl ** configure switches ***********************************************
 dnl *********************************************************************
 
 AC_ARG_ENABLE(socks,
-[  --enable-socks          link with SOCKS5 library (default: no)],
-        socks=$enableval, socks=no)
+[  --disable-socks          do not link with SOCKS5 library],
+        socks=$enableval, socks=yes)
 
 AC_ARG_ENABLE(ipv6,
-[  --enable-ipv6           enable IPv6 (default: no)],
-        ipv6=$enableval, ipv6=no)
+[  --disable-ipv6           disable IPv6],
+        ipv6=$enableval, ipv6=yes)
 
 AC_ARG_ENABLE(xft,
 [  --enable-xft            enable use of Xft directly (default: no)],
