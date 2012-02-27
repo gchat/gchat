@@ -1549,12 +1549,12 @@ Optional Features:
   --disable-gtkfe         disable building gtk frontend
   --enable-textfe         build the text frontend (default: no)
   --disable-xlib          disable use of xlib (for non X11 systems)
-  --disable-python        don't build the python plugin
+  --enable-python        build the python plugin
   --disable-perl          don't build the perl plugin
   --disable-perl_old      no backwards compatibility for perl plugin
   --enable-tcl=PATH       directory with Tcl config file: tclConfig.sh
   --disable-plugin        disable plugin support
-  --disable-dbus          disable DBUS support
+  --enable-dbus          enable DBUS support
   --disable-mmx           disable MMX assembly routines
   --enable-shm            enable use of XShm for fast tinting (default: no)
   --enable-spell=type     enable spelling type: none static libsexy gtkspell
@@ -18003,6 +18003,7 @@ $as_echo "#define HAVE_DCGETTEXT 1" >>confdefs.h
 
 
 
+
 # Extract the first word of "sed", so it can be a program name with args.
 set dummy sed; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -18167,7 +18168,7 @@ fi
 if test "${enable_python+set}" = set; then :
   enableval=$enable_python; python=$enableval
 else
-  python=yes
+  python=no
 fi
 
 
@@ -18191,7 +18192,7 @@ fi
 if test "${enable_tcl+set}" = set; then :
   enableval=$enable_tcl; tcl=$enableval
 else
-  tcl=yes
+  tcl=no
 fi
 
 
@@ -18207,7 +18208,7 @@ fi
 if test "${enable_dbus+set}" = set; then :
   enableval=$enable_dbus; dbus=$enableval
 else
-  dbus=yes
+  dbus=no
 fi
 
 
