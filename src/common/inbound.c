@@ -870,8 +870,6 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 				free (dest);
 			}
 		}
-		if (!sess)
-			sess = find_session_from_nick (nick, serv);
 
 		if (!sess)
 		{
