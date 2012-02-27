@@ -32,9 +32,9 @@
 #include "xchatc.h"
 
 #ifdef WIN32
-#define XCHAT_DIR "X-Chat 2"
+#define XCHAT_DIR "GChat"
 #else
-#define XCHAT_DIR ".xchat2"
+#define XCHAT_DIR ".gchat"
 #endif
 #define DEF_FONT "Monospace 9"
 

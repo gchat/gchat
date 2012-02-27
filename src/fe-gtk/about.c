@@ -127,7 +127,8 @@ menu_about (GtkWidget * wid, gpointer sess)
 				"<b>Renderer</b>: %s\n"
 #endif
 				"<b>Compiled</b>: "__DATE__"\n\n"
-				"<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
+				"<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org&gt;</small>\n"
+				"<small>\302\251 2012 Mitchell Cooper &lt;mitchell@notroll.net&gt;</small>",
 					_("A multiplatform IRC Client"),
 					get_cpu_str(),
 					locale,

@@ -4,9 +4,9 @@
 /* If you're compiling this for Windows, your release is un-official
  * and not condoned. Please don't use the XChat name. Make up your
  * own name! */
-#define DISPLAY_NAME "XChat-Unofficial"
+#define DISPLAY_NAME "GChat-Unofficial"
 #else
-#define DISPLAY_NAME "XChat"
+#define DISPLAY_NAME "GChat"
 #endif
 
 #ifndef WIN32

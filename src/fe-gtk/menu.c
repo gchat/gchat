@@ -1462,7 +1462,7 @@ menu_ctcpguiopen (void)
 static void
 menu_docs (GtkWidget *wid, gpointer none)
 {
-	fe_open_url ("http://xchat.org/docs/");
+	fe_open_url ("http://gchat.notroll.net/docs/");
 }
 
 /*static void
@@ -1561,7 +1561,7 @@ menu_metres_both (GtkWidget *item, gpointer none)
 }
 
 static struct mymenu mymenu[] = {
-	{N_("_XChat"), 0, 0, M_NEWMENU, 0, 0, 1},
+	{N_("_GChat"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("Network Li_st..."), menu_open_server_list, (char *)&pix_book, M_MENUPIX, 0, 0, 1, GDK_s},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 
