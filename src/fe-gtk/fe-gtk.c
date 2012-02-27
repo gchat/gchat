@@ -42,7 +42,6 @@
 #include "gtkutil.h"
 #include "maingui.h"
 #include "pixmaps.h"
-#include "joind.h"
 #include "xtext.h"
 #include "palette.h"
 #include "menu.h"
@@ -1029,9 +1028,6 @@ fe_server_event (server *serv, int type, int arg)
 
 			case FE_SE_LOGGEDIN:	/* end of MOTD */
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_JOIN], 1);
-				/* if number of auto-join channels is zero, open joind */
-				if (arg == 0)
-					joind_open (serv);
 				break;
 
 			case FE_SE_DISCONNECT:
@@ -1039,8 +1035,6 @@ fe_server_event (server *serv, int type, int arg)
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_AWAY], 0);
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_DISCONNECT], 0);
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_JOIN], 0);
-				/* close the join-dialog, if one exists */
-				joind_close (serv);
 			}
 		}
 		list = list->next;

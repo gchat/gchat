@@ -56,7 +56,6 @@
 #include "fe-gtk.h"
 #include "banlist.h"
 #include "gtkutil.h"
-#include "joind.h"
 #include "palette.h"
 #include "maingui.h"
 #include "menu.h"
@@ -3521,7 +3520,6 @@ mg_set_title (GtkWidget *vbox, char *title) /* for non-irc tab/window only */
 void
 fe_server_callback (server *serv)
 {
-	joind_close (serv);
 
 	if (serv->gui->chanlist_window)
 		mg_close_gen (NULL, serv->gui->chanlist_window);
