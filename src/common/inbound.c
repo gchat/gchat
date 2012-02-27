@@ -853,46 +853,26 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 	if (!sess)
 	{
 		ptr = 0;
-		if (prefs.notices_tabs)
+
+		/* paranoia check */
+		if (msg[0] == '[' && (!serv->have_idmsg || id))
 		{
-			int stype = server_notice ? SESS_SNOTICES : SESS_NOTICES;
-			sess = find_session_from_type (stype, serv);
-			if (!sess)
+			/* guess where a services bot meant to put this */
+			if (!find_dialog (serv, nick))
 			{
-				if (stype == SESS_NOTICES)
-					sess = new_ircwindow (serv, "(notices)", SESS_NOTICES, 0);
-				else
-					sess = new_ircwindow (serv, "(snotices)", SESS_SNOTICES, 0);
-				fe_set_channel (sess);
-				fe_set_title (sess);
-				fe_set_nonchannel (sess, FALSE);
-				userlist_clear (sess);
-				log_open_or_close (sess);
-			}
-			/* Avoid redundancy with some Undernet notices */
-			if (!strncmp (msg, "*** Notice -- ", 14))
-				msg += 14;
-		} else
-		{
-											/* paranoia check */
-			if (msg[0] == '[' && (!serv->have_idmsg || id))
-			{
-				/* guess where a services bot meant to put this */
-				if (!find_dialog (serv, nick))
+				char *dest = strdup (msg + 1);
+				char *end = strchr (dest, ']');
+				if (end)
 				{
-					char *dest = strdup (msg + 1);
-					char *end = strchr (dest, ']');
-					if (end)
-					{
-						*end = 0;
-						sess = find_channel (serv, dest);
-					}
-					free (dest);
+					*end = 0;
+					sess = find_channel (serv, dest);
 				}
+				free (dest);
 			}
-			if (!sess)
-				sess = find_session_from_nick (nick, serv);
 		}
+		if (!sess)
+			sess = find_session_from_nick (nick, serv);
+
 		if (!sess)
 		{
 			if (server_notice)	

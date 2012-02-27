@@ -537,7 +537,6 @@ const struct prefs vars[] = {
 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
 	{"tab_layout", P_OFFINT (tab_layout), TYPE_INT},
 	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
-	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
 	{"tab_pos", P_OFFINT (tab_pos), TYPE_INT},
 	{"tab_position", P_OFFINT (_tabs_position), TYPE_INT}, /* obsolete */
 	{"tab_server", P_OFFINT (use_server_tab), TYPE_BOOL},
