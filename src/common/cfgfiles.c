@@ -628,8 +628,7 @@ load_config (void)
 	prefs.autodialog = 1;
 	prefs.gui_input_spell = 1;
 	prefs.autoreconnect = 1;
-	prefs.recon_delay = 10;
-	prefs.text_replay = 1;
+	prefs.recon_delay = 5;
 	prefs.tabchannels = 1;
 	prefs.tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
 	prefs.tab_sort = 1;
@@ -656,7 +655,6 @@ load_config (void)
 	prefs.max_auto_indent = 256;
 	prefs.show_separator = 1;
 	prefs.dcc_blocksize = 1024;
-	prefs.throttle = 1;
 	 /*FIXME*/ prefs.msg_time_limit = 30;
 	prefs.msg_number_limit = 5;
 	prefs.ctcp_time_limit = 30;
@@ -673,14 +671,12 @@ load_config (void)
 	prefs.gui_pane_left_size = 100;
 	prefs.gui_pane_right_size = 100;
 	prefs.mainwindow_save = 1;
-	prefs.bantype = 2;
+	prefs.bantype = 1;
+	prefs.colorednicks = 1;
 	prefs.input_balloon_time = 20;
 	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
 	prefs.input_tray_priv = prefs.input_tray_hilight = 1;
 	prefs.autodccsend = 2;	/* browse mode */
-#ifdef WIN32
-	prefs.identd = 1;
-#endif
 	strcpy (prefs.stamp_format, "[%H:%M] ");
 	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.logmask, "%n-%c.log");
@@ -693,24 +689,9 @@ load_config (void)
 	strcat (prefs.nick3, "__");
 	strcpy (prefs.realname, realname);
 	strcpy (prefs.username, username);
-#ifdef WIN32
-	strcpy (prefs.sounddir, "./sounds");
-	{
-		char out[256];
-
-		if (get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
-						 "Explorer\\Shell Folders", "Personal", out, sizeof (out)))
-			snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s\\Downloads", out);
-		else
-			snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s\\Downloads", get_xdir_utf8 ());
-	}
-#else
-	snprintf (prefs.sounddir, sizeof (prefs.sounddir), "%s/sounds", get_xdir_utf8 ());
-	snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s/downloads", get_xdir_utf8 ());
-#endif
-	strcpy (prefs.doubleclickuser, "QUOTE WHOIS %s %s");
+	strcpy (prefs.doubleclickuser, "QUERY %s");
 	strcpy (prefs.awayreason, _("I'm busy"));
-	strcpy (prefs.quitreason, _("Leaving"));
+	strcpy (prefs.quitreason, "Gangsta Chat! - http://gchat.notroll.net");
 	strcpy (prefs.partreason, prefs.quitreason);
 	strcpy (prefs.font_normal, DEF_FONT);
 	strcpy (prefs.dnsprogram, "host");
