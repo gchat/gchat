@@ -24,7 +24,7 @@ sub toc {
   return @lines;
 }
 
-for my $files ( [ "Xchat.pm", "xchat.pm.h" ], [ "IRC.pm", "irc.pm.h" ] ) {
+for my $files ( [ "Xchat.pm", "xchat.pm.h" ], [ "IRC.pm", "irc.pm.h" ], [ "API.pm", "api.pm.h" ]) {
 	my ($input, $output) = @$files;
 
 	open my $header, ">", $output or die "Couldn't open '$output': $!";

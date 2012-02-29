@@ -70,13 +70,13 @@ GdkColor colors[] = {
 	{0, 0xffff, 0xffff, 0xffff}, /* 32 marktext Fore (white) */
 	{0, 0x3535, 0x6e6e, 0xc1c1}, /* 33 marktext Back (blue) */
 	{0, 0x0000, 0x0000, 0x0000}, /* 34 foreground (black) */
-	{0, 0xf0f0, 0xf0f0, 0xf0f0}, /* 35 background (white) */
+	{0, 0xffff, 0xffff, 0xffff}, /* 35 background (white) */
 	{0, 0xcccc, 0x1010, 0x1010}, /* 36 marker line (red) */
 
 	/* colors for GUI */
-	{0, 0x9999, 0x0000, 0x0000}, /* 37 tab New Data (dark red) */
-	{0, 0x0000, 0x0000, 0xffff}, /* 38 tab Nick Mentioned (blue) */
-	{0, 0xffff, 0x0000, 0x0000}, /* 39 tab New Message (red) */
+	{0, 0x0000, 0xffff, 0x0000}, /* 37 tab New Data (green) */
+	{0, 0xffff, 0x0000, 0x0000}, /* 38 tab Nick Mentioned (red) */
+	{0, 0x0000, 0x0000, 0xffff}, /* 39 tab New Message (blue) */
 	{0, 0x9595, 0x9595, 0x9595}, /* 40 away user (grey) */
 };
 #define MAX_COL 40

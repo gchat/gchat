@@ -1276,6 +1276,7 @@ perl_init (void)
 		/* Redefine the $SIG{__WARN__} handler to have XChat
 		   printing warnings in the main window. (TheHobbit) */
 #include "xchat.pm.h"
+#include "api.pm.h"
 	};
 #ifdef OLD_PERL
 	static const char irc_definitions[] = {
