@@ -23,6 +23,12 @@ sub print {
 	Xchat::Internal::print($text);
 }
 
+# GChat->print()
+sub command {
+    shift;
+    Xchat::Interal::command(@_);
+}
+
 package Command;
 
 # on Command $cmd => $code, %options
@@ -33,7 +39,7 @@ sub on {
     my $hook   = Xchat::Internal::hook_command(
         $cmd,
         Xchat::PRI_NORM,
-        $code,
+        sub { $code->(); Xchat::EAT_ALL(); },
         $options{help},
         $options{data}
     ) or return;

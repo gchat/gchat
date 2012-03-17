@@ -304,7 +304,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 unamepath = @unamepath@
 xchatlibdir = @xchatlibdir@
-EXTRA_DIST = alt_completion.pl xchat2-perldocs.html xchat2-perl.html generate_header Xchat.pm IRC.pm Pod/
+EXTRA_DIST = alt_completion.pl xchat2-perldocs.html xchat2-perl.html generate_header Xchat.pm API.pm IRC.pm Pod/
 lib_LTLIBRARIES = perl.la
 perl_la_SOURCES = perl.c
 perl_la_LDFLAGS = -avoid-version -module 
@@ -630,7 +630,7 @@ uninstall-am: uninstall-libLTLIBRARIES
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags uninstall uninstall-am uninstall-libLTLIBRARIES
 
-xchat.pm.h irc.pm.h: Xchat.pm IRC.pm
+xchat.pm.h api.pm.h irc.pm.h: Xchat.pm API.pm IRC.pm
 	perl generate_header
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
