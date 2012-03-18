@@ -60,3 +60,6 @@ src/common/dbus/remote-object-glue.h
 src/pixmaps/inline_pngs.h
 
 src/fe-gtk/xchat
+src/fe-gtk/gchat
+src/fe-text/xchat-text
+src/fe-text/gchat-text
