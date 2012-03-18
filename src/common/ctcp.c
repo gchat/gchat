@@ -134,7 +134,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 
 	if (!strcasecmp (msg, "VERSION") && !prefs.hidever)
 	{
-		snprintf (outbuf, sizeof (outbuf), "VERSION xchat "PACKAGE_VERSION" %s",
+		snprintf (outbuf, sizeof (outbuf), "VERSION Gangsta Chat "PACKAGE_VERSION" %s",
 					 get_cpu_str ());
 		serv->p_nctcp (serv, nick, outbuf);
 	}

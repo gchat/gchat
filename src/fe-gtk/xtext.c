@@ -35,7 +35,7 @@
 #define USE_DB							/* double buffer */
 
 #define MARGIN 2						/* dont touch. */
-#define REFRESH_TIMEOUT 30
+#define REFRESH_TIMEOUT 20
 #define WORDWRAP_LIMIT 24
 
 #include <string.h>

@@ -351,7 +351,7 @@ check_prefs_dir (void)
 #else
 		if (mkdir (dir, S_IRUSR | S_IWUSR | S_IXUSR) != 0)
 #endif
-			fe_message (_("Cannot create ~/.xchat2"), FE_MSG_ERROR);
+			fe_message (_("Cannot create ~/.gchat"), FE_MSG_ERROR);
 	}
 }
 
@@ -363,7 +363,7 @@ default_file (void)
 	if (!dfile)
 	{
 		dfile = malloc (strlen (get_xdir_fs ()) + 12);
-		sprintf (dfile, "%s/xchat.conf", get_xdir_fs ());
+		sprintf (dfile, "%s/gchat.conf", get_xdir_fs ());
 	}
 	return dfile;
 }
@@ -628,7 +628,7 @@ load_config (void)
 	prefs.autodialog = 1;
 	prefs.gui_input_spell = 1;
 	prefs.autoreconnect = 1;
-	prefs.recon_delay = 5;
+	prefs.recon_delay = 0;
 	prefs.completion_sort = 1;
 	prefs.tabchannels = 1;
 	prefs.tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */

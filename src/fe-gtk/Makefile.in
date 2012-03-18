@@ -34,7 +34,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = xchat$(EXEEXT)
+bin_PROGRAMS = gchat$(EXEEXT)
 subdir = src/fe-gtk
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -48,7 +48,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__xchat_SOURCES_DIST = about.c ascii.c banlist.c chanlist.c \
+am__gchat_SOURCES_DIST = about.c ascii.c banlist.c chanlist.c \
 	chanview.c custom-list.c dccgui.c editlist.c fe-gtk.c fkeys.c \
 	gtkutil.c ignoregui.c menu.c maingui.c mmx_cmod.S notifygui.c \
 	palette.c pixmaps.c plugin-tray.c plugingui.c rawlog.c \
@@ -57,7 +57,7 @@ am__xchat_SOURCES_DIST = about.c ascii.c banlist.c chanlist.c \
 @USE_MMX_TRUE@am__objects_1 = mmx_cmod.$(OBJEXT)
 @DO_PLUGIN_TRUE@am__objects_2 = plugingui.$(OBJEXT)
 @USE_LIBSEXY_TRUE@am__objects_3 = sexy-spell-entry.$(OBJEXT)
-am_xchat_OBJECTS = about.$(OBJEXT) ascii.$(OBJEXT) banlist.$(OBJEXT) \
+am_gchat_OBJECTS = about.$(OBJEXT) ascii.$(OBJEXT) banlist.$(OBJEXT) \
 	chanlist.$(OBJEXT) chanview.$(OBJEXT) custom-list.$(OBJEXT) \
 	dccgui.$(OBJEXT) editlist.$(OBJEXT) fe-gtk.$(OBJEXT) \
 	fkeys.$(OBJEXT) gtkutil.$(OBJEXT) ignoregui.$(OBJEXT) \
@@ -67,9 +67,9 @@ am_xchat_OBJECTS = about.$(OBJEXT) ascii.$(OBJEXT) banlist.$(OBJEXT) \
 	search.$(OBJEXT) servlistgui.$(OBJEXT) setup.$(OBJEXT) \
 	$(am__objects_3) textgui.$(OBJEXT) urlgrab.$(OBJEXT) \
 	userlistgui.$(OBJEXT) xtext.$(OBJEXT)
-xchat_OBJECTS = $(am_xchat_OBJECTS)
+gchat_OBJECTS = $(am_gchat_OBJECTS)
 am__DEPENDENCIES_1 =
-xchat_DEPENDENCIES = ../common/libxchatcommon.a $(am__DEPENDENCIES_1)
+gchat_DEPENDENCIES = ../common/libxchatcommon.a $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -88,8 +88,8 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(xchat_SOURCES)
-DIST_SOURCES = $(am__xchat_SOURCES_DIST)
+SOURCES = $(gchat_SOURCES)
+DIST_SOURCES = $(am__gchat_SOURCES_DIST)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -299,7 +299,7 @@ top_srcdir = @top_srcdir@
 unamepath = @unamepath@
 xchatlibdir = @xchatlibdir@
 INCLUDES = $(GUI_CFLAGS) -DG_DISABLE_CAST_CHECKS -DLOCALEDIR=\"$(localedir)\"
-xchat_LDADD = ../common/libxchatcommon.a $(GUI_LIBS)
+gchat_LDADD = ../common/libxchatcommon.a $(GUI_LIBS)
 EXTRA_DIST = \
 	about.h ascii.h banlist.h chanlist.h chanview.h chanview-tabs.c \
 	chanview-tree.c custom-list.h editlist.h fe-gtk.h fkeys.h gtkutil.h \
@@ -310,7 +310,7 @@ EXTRA_DIST = \
 @USE_MMX_TRUE@mmx_cmod_S = mmx_cmod.S
 @DO_PLUGIN_TRUE@plugingui_c = plugingui.c
 @USE_LIBSEXY_TRUE@sexy_spell_entry_c = sexy-spell-entry.c
-xchat_SOURCES = about.c ascii.c banlist.c chanlist.c chanview.c custom-list.c \
+gchat_SOURCES = about.c ascii.c banlist.c chanlist.c chanview.c custom-list.c \
 	dccgui.c editlist.c fe-gtk.c fkeys.c gtkutil.c ignoregui.c menu.c \
 	maingui.c $(mmx_cmod_S) notifygui.c palette.c pixmaps.c plugin-tray.c $(plugingui_c) \
 	rawlog.c search.c servlistgui.c setup.c $(sexy_spell_entry_c) textgui.c \
@@ -393,9 +393,9 @@ clean-binPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-xchat$(EXEEXT): $(xchat_OBJECTS) $(xchat_DEPENDENCIES) $(EXTRA_xchat_DEPENDENCIES) 
-	@rm -f xchat$(EXEEXT)
-	$(LINK) $(xchat_OBJECTS) $(xchat_LDADD) $(LIBS)
+gchat$(EXEEXT): $(gchat_OBJECTS) $(gchat_DEPENDENCIES) $(EXTRA_gchat_DEPENDENCIES) 
+	@rm -f gchat$(EXEEXT)
+	$(LINK) $(gchat_OBJECTS) $(gchat_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

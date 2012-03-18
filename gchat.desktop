@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=GChat IRC
-Comment=Chat with other people using Internet Relay Chat
+Name=Gangsta Chat
+Comment=Chat with other gangstas using Internet Relay Chat
 Exec=gchat
 Icon=gchat
 Terminal=false
