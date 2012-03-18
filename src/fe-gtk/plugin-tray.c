@@ -298,10 +298,10 @@ tray_stop_flash (void)
 		nets = tray_count_networks ();
 		chans = tray_count_channels ();
 		if (nets)
-			tray_set_tipf (_("XChat: Connected to %u networks and %u channels"),
+			tray_set_tipf (_("GChat: Connected to %u networks and %u channels"),
 								nets, chans);
 		else
-			tray_set_tipf ("XChat: %s", _("Not connected."));
+			tray_set_tipf ("GChat: %s", _("Not connected."));
 	}
 
 	if (custom_icon1)
@@ -651,15 +651,15 @@ tray_hilight_cb (char *word[], void *userdata)
 		/* FIXME: hides any previous private messages */
 		tray_hilight_count++;
 		if (tray_hilight_count == 1)
-			tray_set_tipf (_("XChat: Highlighted message from: %s (%s)"),
+			tray_set_tipf (_("GChat: Highlighted message from: %s (%s)"),
 								word[1], xchat_get_info (ph, "channel"));
 		else
-			tray_set_tipf (_("XChat: %u highlighted messages, latest from: %s (%s)"),
+			tray_set_tipf (_("GChat: %u highlighted messages, latest from: %s (%s)"),
 								tray_hilight_count, word[1], xchat_get_info (ph, "channel"));
 	}
 
 	if (prefs.input_balloon_hilight)
-		tray_set_balloonf (word[2], _("XChat: Highlighted message from: %s (%s)"),
+		tray_set_balloonf (word[2], _("GChat: Highlighted message from: %s (%s)"),
 								 word[1], xchat_get_info (ph, "channel"));
 
 	return XCHAT_EAT_NONE;
@@ -677,14 +677,14 @@ tray_message_cb (char *word[], void *userdata)
 
 		tray_pub_count++;
 		if (tray_pub_count == 1)
-			tray_set_tipf (_("XChat: New public message from: %s (%s)"),
+			tray_set_tipf (_("GChat: New public message from: %s (%s)"),
 								word[1], xchat_get_info (ph, "channel"));
 		else
-			tray_set_tipf (_("XChat: %u new public messages."), tray_pub_count);
+			tray_set_tipf (_("GChat: %u new public messages."), tray_pub_count);
 	}
 
 	if (prefs.input_balloon_chans)
-		tray_set_balloonf (word[2], _("XChat: New public message from: %s (%s)"),
+		tray_set_balloonf (word[2], _("GChat: New public message from: %s (%s)"),
 								 word[1], xchat_get_info (ph, "channel"));
 
 	return XCHAT_EAT_NONE;
@@ -706,14 +706,14 @@ tray_priv (char *from, char *text)
 
 	tray_priv_count++;
 	if (tray_priv_count == 1)
-		tray_set_tipf (_("XChat: Private message from: %s (%s)"),
+		tray_set_tipf (_("GChat: Pvt from: %s (%s)"),
 							from, network);
 	else
-		tray_set_tipf (_("XChat: %u private messages, latest from: %s (%s)"),
+		tray_set_tipf (_("GChat: %u pvts, latest from: %s (%s)"),
 							tray_priv_count, from, network);
 
 	if (prefs.input_balloon_priv)
-		tray_set_balloonf (text, _("XChat: Private message from: %s (%s)"),
+		tray_set_balloonf (text, _("GChat: Pvt from: %s (%s)"),
 								 from, network);
 }
 
@@ -759,15 +759,15 @@ tray_dcc_cb (char *word[], void *userdata)
 
 		tray_file_count++;
 		if (tray_file_count == 1)
-			tray_set_tipf (_("XChat: File offer from: %s (%s)"),
+			tray_set_tipf (_("GChat: File offer from: %s (%s)"),
 								word[1], network);
 		else
-			tray_set_tipf (_("XChat: %u file offers, latest from: %s (%s)"),
+			tray_set_tipf (_("GChat: %u file offers, latest from: %s (%s)"),
 								tray_file_count, word[1], network);
 	}
 
 	if (prefs.input_balloon_priv)
-		tray_set_balloonf ("", _("XChat: File offer from: %s (%s)"),
+		tray_set_balloonf ("", _("GChat: File offer from: %s (%s)"),
 								word[1], network);
 
 	return XCHAT_EAT_NONE;
