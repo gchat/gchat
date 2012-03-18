@@ -30,12 +30,12 @@
 /* Italic is buggy because it assumes drawing an italic string will have
    identical extents to the normal font. This is only true some of the
    time, so we can't use this hack yet. */
-#undef ITALIC							/* support Italic? */
+#define ITALIC							/* support Italic? */
 #define GDK_MULTIHEAD_SAFE
 #define USE_DB							/* double buffer */
 
 #define MARGIN 2						/* dont touch. */
-#define REFRESH_TIMEOUT 20
+#define REFRESH_TIMEOUT 30
 #define WORDWRAP_LIMIT 24
 
 #include <string.h>
@@ -5344,8 +5344,6 @@ gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render)
 
 	if (xtext->buffer == buf)
 		return;
-
-/*printf("text_buffer_show: xtext=%p buffer=%p\n", xtext, buf);*/
 
 	if (xtext->add_io_tag)
 	{

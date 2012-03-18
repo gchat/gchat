@@ -499,24 +499,23 @@ fe_set_title (session *sess)
 	switch (type)
 	{
 	case SESS_DIALOG:
-		snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s %s @ %s",
-					 _("Dialog with"), sess->channel, server_get_network (sess->server, TRUE));
+		snprintf (tbuf, sizeof (tbuf), "Gangsta Chat: Pvt with %s on %s",
+					 sess->channel, server_get_network (sess->server, TRUE));
 		break;
 	case SESS_SERVER:
-		snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s @ %s",
-					 sess->server->nick, server_get_network (sess->server, TRUE));
+		snprintf (tbuf, sizeof (tbuf), "Gangsta Chat on %s (%s)",
+					 server_get_network (sess->server, TRUE), sess->server->nick);
 		break;
 	case SESS_CHANNEL:
 		/* don't display keys in the titlebar */
 		if ((!(prefs.gui_tweaks & 16)) && has_key (sess->current_modes))
 			snprintf (tbuf, sizeof (tbuf),
-						 DISPLAY_NAME": %s @ %s / %s",
-						 sess->server->nick, server_get_network (sess->server, TRUE),
-						 sess->channel);
+						 "Gangsta Chat: %s / %s",
+						 sess->channel, server_get_network (sess->server, TRUE));
 		else
 			snprintf (tbuf, sizeof (tbuf),
-						 DISPLAY_NAME": %s @ %s / %s (%s)",
-						 sess->server->nick, server_get_network (sess->server, TRUE),
+						 "Gangsta Chat: %s / %s (%s)",
+						 server_get_network (sess->server, TRUE),
 						 sess->channel, sess->current_modes ? sess->current_modes : "");
 		if (prefs.gui_tweaks & 1)
 			snprintf (tbuf + strlen (tbuf), 9, " (%d)", sess->total);
@@ -528,7 +527,7 @@ fe_set_title (session *sess)
 		break;
 	default:
 	def:
-		gtk_window_set_title (GTK_WINDOW (sess->gui->window), DISPLAY_NAME);
+		gtk_window_set_title (GTK_WINDOW (sess->gui->window), "GANGSTA CHAT");
 		return;
 	}
 
@@ -2131,15 +2130,15 @@ mg_apply_entry_style (GtkWidget *entry)
 static void
 mg_create_chanmodebuttons (session_gui *gui, GtkWidget *box)
 {
-	gui->flag_t = mg_create_flagbutton (_("Topic Protection"), box, "T");
-	gui->flag_n = mg_create_flagbutton (_("No outside messages"), box, "N");
-	gui->flag_s = mg_create_flagbutton (_("Secret"), box, "S");
-	gui->flag_i = mg_create_flagbutton (_("Invite Only"), box, "I");
-	gui->flag_p = mg_create_flagbutton (_("Private"), box, "P");
-	gui->flag_m = mg_create_flagbutton (_("Moderated"), box, "M");
-	gui->flag_b = mg_create_flagbutton (_("Ban List"), box, "B");
+	gui->flag_t = mg_create_flagbutton (_("Topic protection"), box, "t");
+	gui->flag_n = mg_create_flagbutton (_("No outside messages"), box, "n");
+	gui->flag_s = mg_create_flagbutton (_("Secret"), box, "s");
+	gui->flag_i = mg_create_flagbutton (_("Invite only"), box, "i");
+	gui->flag_p = mg_create_flagbutton (_("Private"), box, "p");
+	gui->flag_m = mg_create_flagbutton (_("Moderated"), box, "m");
+	gui->flag_b = mg_create_flagbutton (_("Ban List"), box, "b");
 
-	gui->flag_k = mg_create_flagbutton (_("Keyword"), box, "K");
+	gui->flag_k = mg_create_flagbutton (_("Keyword"), box, "k");
 	gui->key_entry = gtk_entry_new ();
 	gtk_widget_set_name (gui->key_entry, "xchat-inputbox");
 	gtk_entry_set_max_length (GTK_ENTRY (gui->key_entry), 16);
@@ -2151,7 +2150,7 @@ mg_create_chanmodebuttons (session_gui *gui, GtkWidget *box)
 	if (prefs.style_inputbox)
 		mg_apply_entry_style (gui->key_entry);
 
-	gui->flag_l = mg_create_flagbutton (_("User Limit"), box, "L");
+	gui->flag_l = mg_create_flagbutton (_("User limit"), box, "l");
 	gui->limit_entry = gtk_entry_new ();
 	gtk_widget_set_name (gui->limit_entry, "xchat-inputbox");
 	gtk_entry_set_max_length (GTK_ENTRY (gui->limit_entry), 10);
@@ -3015,10 +3014,10 @@ mg_create_topwindow (session *sess)
 	GtkWidget *table;
 
 	if (sess->type == SESS_DIALOG)
-		win = gtkutil_window_new ("XChat", NULL,
+		win = gtkutil_window_new ("GChat", NULL,
 										  prefs.dialog_width, prefs.dialog_height, 0);
 	else
-		win = gtkutil_window_new ("XChat", NULL,
+		win = gtkutil_window_new ("GChat", NULL,
 										  prefs.mainwindow_width,
 										  prefs.mainwindow_height, 0);
 	sess->gui->window = win;
@@ -3116,7 +3115,7 @@ mg_create_tabwindow (session *sess)
 	GtkWidget *win;
 	GtkWidget *table;
 
-	win = gtkutil_window_new ("XChat", NULL, prefs.mainwindow_width,
+	win = gtkutil_window_new ("GChat", NULL, prefs.mainwindow_width,
 									  prefs.mainwindow_height, 0);
 	sess->gui->window = win;
 	gtk_window_move (GTK_WINDOW (win), prefs.mainwindow_left,

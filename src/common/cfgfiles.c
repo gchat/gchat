@@ -646,6 +646,7 @@ load_config (void)
 	prefs.dialog_height = 256;
 	prefs.gui_join_dialog = 1;
 	prefs.gui_quit_dialog = 1;
+    prefs.chanmodebuttons = 1;
 	prefs.dcctimeout = 180;
 	prefs.dccstalltimeout = 60;
 	prefs.notify_timeout = 15;

@@ -1067,7 +1067,7 @@ menu_settings (GtkWidget * wid, gpointer none)
 static void
 menu_usermenu (void)
 {
-	editlist_gui_open (NULL, NULL, usermenu_list, _("XChat: User menu"),
+	editlist_gui_open (NULL, NULL, usermenu_list, _("GChat: User menu"),
 							 "usermenu", "usermenu.conf", 0);
 }
 
@@ -1076,7 +1076,7 @@ usermenu_create (GtkWidget *menu)
 {
 	menu_create (menu, usermenu_list, "", FALSE);
 	menu_quick_item (0, 0, menu, XCMENU_SHADED, 0, 0);	/* sep */
-	menu_quick_item_with_callback (menu_usermenu, _("Edit This Menu..."), menu, 0);
+	menu_quick_item_with_callback (menu_usermenu, _("Edit this menu..."), menu, 0);
 }
 
 static void
@@ -1351,7 +1351,7 @@ menu_pluginlist (void)
 									"%m  =  machine info\n"\
                            "%n  =  your nick\n"\
 									"%t  =  time/date\n"\
-                           "%v  =  xchat version\n"\
+                           "%v  =  gchat version\n"\
                            "%2  =  word 2\n"\
                            "%3  =  word 3\n"\
                            "&2  =  word 2 to the end of line\n"\
@@ -1396,33 +1396,33 @@ menu_pluginlist (void)
                            "%s  =  the URL string\n\n"\
                            "Putting a ! infront of the command\n"\
                            "indicates it should be sent to a\n"\
-                           "shell instead of XChat")
+                           "shell instead of GChat")
 
 static void
 menu_usercommands (void)
 {
-	editlist_gui_open (NULL, NULL, command_list, _("XChat: User Defined Commands"),
+	editlist_gui_open (NULL, NULL, command_list, _("GChat: User defined commands"),
 							 "commands", "commands.conf", usercommands_help);
 }
 
 static void
 menu_ulpopup (void)
 {
-	editlist_gui_open (NULL, NULL, popup_list, _("XChat: Userlist Popup menu"), "popup",
+	editlist_gui_open (NULL, NULL, popup_list, _("GChat: Userlist popup menu"), "popup",
 							 "popup.conf", ulbutton_help);
 }
 
 static void
 menu_rpopup (void)
 {
-	editlist_gui_open (_("Text"), _("Replace with"), replace_list, _("XChat: Replace"), "replace",
+	editlist_gui_open (_("Text"), _("Replace with"), replace_list, _("GChat: Auto replace"), "replace",
 							 "replace.conf", 0);
 }
 
 static void
 menu_urlhandlers (void)
 {
-	editlist_gui_open (NULL, NULL, urlhandler_list, _("XChat: URL Handlers"), "urlhandlers",
+	editlist_gui_open (NULL, NULL, urlhandler_list, _("GChat: URL Handlers"), "urlhandlers",
 							 "urlhandlers.conf", url_help);
 }
 
@@ -1441,21 +1441,21 @@ menu_keypopup (void)
 static void
 menu_ulbuttons (void)
 {
-	editlist_gui_open (NULL, NULL, button_list, _("XChat: Userlist buttons"), "buttons",
+	editlist_gui_open (NULL, NULL, button_list, _("GChat: Userlist buttons"), "buttons",
 							 "buttons.conf", ulbutton_help);
 }
 
 static void
 menu_dlgbuttons (void)
 {
-	editlist_gui_open (NULL, NULL, dlgbutton_list, _("XChat: Dialog buttons"), "dlgbuttons",
+	editlist_gui_open (NULL, NULL, dlgbutton_list, _("GChat: Dialog buttons"), "dlgbuttons",
 							 "dlgbuttons.conf", dlgbutton_help);
 }
 
 static void
 menu_ctcpguiopen (void)
 {
-	editlist_gui_open (NULL, NULL, ctcp_list, _("XChat: CTCP Replies"), "ctcpreply",
+	editlist_gui_open (NULL, NULL, ctcp_list, _("GChat: CTCP Replies"), "ctcpreply",
 							 "ctcpreply.conf", ctcp_help);
 }
 
