@@ -676,7 +676,7 @@ load_config (void)
     prefs.autodccsend = 2;      /* browse mode */
     prefs.logging = 1;
     strcpy (prefs.stamp_format, "[%H:%M] ");
-    strcpy (prefs.timestamp_log_format, "%b %d %Y at %I:%M:%S%p ");
+    strcpy (prefs.timestamp_log_format, "[%b %d %Y @ %I:%M:%S%p] ");
     strcpy (prefs.logmask, "%n-%c.log");
     strcpy (prefs.nick_suffix, ",");
     strcpy (prefs.cmdchar, "/");

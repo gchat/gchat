@@ -32,19 +32,10 @@ po/remove-potcdate.sed
 po/gchat.pot
 po/stamp-po
 
-plugins/perl/irc.pm.h
-plugins/perl/xchat.pm.h
 plugins/perl/Makefile
 plugins/perl/.libs/perl.lai
 plugins/perl/.libs/perl.la
 plugins/perl/.deps/perl.Plo
-
-plugins/perl2/irc.pm.h
-plugins/perl2/xchat.pm.h
-plugins/perl2/Makefile
-plugins/perl2/.libs/perl2.lai
-plugins/perl2/.libs/perl2.la
-plugins/perl2/.deps/perl2.Plo
 
 plugins/python/.deps/python.Plo
 
