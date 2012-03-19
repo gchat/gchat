@@ -1,0 +1,51 @@
+#!/usr/bin/perl
+use 5.010;
+local $| = 1;
+sub prompt(@);
+
+say ':: Running autogen.sh...';
+die "autogen.sh failed.\n" if system './autogen.sh';
+
+say ':: Now to do some configuration.';
+say ':: I will try to make this as easy as possible';
+
+$PREFIX = prompt 'Where would you like to install?',                    '/usr/local';
+$IPV6   = prompt 'Enable IPv6 servers?',                                'yes'       ;
+$SSL    = prompt 'Enable OpenSSL support?',                             'yes'       ;
+$NLS    = prompt 'Enable NLS? (Native Language Support)',               'yes'       ;
+$SUDO   = prompt 'Would you like me to use `sudo` to install GChat?',   'yes'       ;
+if ($NLS) { say 'Sorry - GChat is designed for English-speakers only.' }
+$OTHER  = ' '.(prompt 'Other configuration options you would like to use?',  '');
+
+$ENABLE{ipv6}    = $IPV6;
+$ENABLE{openssl} = $SSL;
+$enable  = '';
+for (keys %ENABLE) { $enable .= " --enable-$_" if $ENABLE{$_} }
+
+    $use_prefix    = $PREFIX ne '/usr/local' ? "--prefix=$PREFIX " : '';
+say $config_string = "./configure $use_prefix$enable$OTHER";
+
+say ':: Running configure...';
+die "./configure failed.\n" if system $config_string;
+
+say ':: Running make...';
+die "make failed.\n" if system 'make';
+
+say ':: Running make install...';
+die "make install failed.
+If it's a permission error, run 'make install' again as root\n" if system(($SUDO ? 'sudo ': '').'make install');
+
+say 'GChat has been installed successfully!';
+
+sub prompt (@) {
+    my ($string, $default) = @_;
+    print '> '.$string.($default ? " [$default]" : '').': ';
+    my $res = <STDIN>;
+    $res =~ s/[\n\r]//g;
+    yesify($res || $default);
+}
+
+sub yesify {
+    return if lc $_[0] eq 'no';
+    return $_[0]
+}
