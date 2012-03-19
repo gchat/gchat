@@ -5,9 +5,9 @@
 
 struct history
 {
-	char *lines[HISTORY_SIZE];
-	int pos;
-	int realpos;
+    char *lines[HISTORY_SIZE];
+    int pos;
+    int realpos;
 };
 
 void history_add (struct history *his, char *text);

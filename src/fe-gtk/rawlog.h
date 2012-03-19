@@ -1,1 +1,1 @@
-void open_rawlog (server *serv);
+void open_rawlog (server * serv);

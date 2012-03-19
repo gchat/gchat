@@ -17,26 +17,26 @@
 
 enum
 {
-	CUSTOM_LIST_COL_NAME,
-	CUSTOM_LIST_COL_USERS,
-	CUSTOM_LIST_COL_TOPIC,
-	CUSTOM_LIST_N_COLUMNS
+    CUSTOM_LIST_COL_NAME,
+    CUSTOM_LIST_COL_USERS,
+    CUSTOM_LIST_COL_TOPIC,
+    CUSTOM_LIST_N_COLUMNS
 };
 
 enum
 {
-	SORT_ID_CHANNEL,
-	SORT_ID_USERS,
-	SORT_ID_TOPIC
+    SORT_ID_CHANNEL,
+    SORT_ID_USERS,
+    SORT_ID_TOPIC
 };
 
 typedef struct
 {
-	char *topic;
-	char *collation_key;
-	guint32 pos;						  /* pos within the array */
-	guint32 users;
-	/* channel string lives beyond "users" */
+    char *topic;
+    char *collation_key;
+    guint32 pos;                /* pos within the array */
+    guint32 users;
+    /* channel string lives beyond "users" */
 #define GET_CHAN(row) (((char *)row)+sizeof(chanlistrow))
 }
 chanlistrow;
@@ -54,18 +54,18 @@ typedef struct _CustomListClass CustomListClass;
  *             structure.                                          */
 struct _CustomList
 {
-	GObject parent;
+    GObject parent;
 
-	guint num_rows;				  /* number of rows that we have used */
-	guint num_alloc;					/* number of rows allocated */
-	chanlistrow **rows;			  /* a dynamically allocated array of pointers to the
-										   *  CustomRecord structure for each row */
+    guint num_rows;             /* number of rows that we have used */
+    guint num_alloc;            /* number of rows allocated */
+    chanlistrow **rows;         /* a dynamically allocated array of pointers to the
+                                 *  CustomRecord structure for each row */
 
-	gint n_columns;
-	GType column_types[CUSTOM_LIST_N_COLUMNS];
+    gint n_columns;
+    GType column_types[CUSTOM_LIST_N_COLUMNS];
 
-	gint sort_id;
-	GtkSortType sort_order;
+    gint sort_id;
+    GtkSortType sort_order;
 };
 
 
@@ -73,7 +73,7 @@ struct _CustomList
 
 struct _CustomListClass
 {
-	GObjectClass parent_class;
+    GObjectClass parent_class;
 };
 
 

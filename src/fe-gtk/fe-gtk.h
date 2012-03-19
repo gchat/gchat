@@ -15,18 +15,18 @@
 #endif
 
 #if defined(ENABLE_NLS) && !defined(_)
-#  include <libintl.h>
-#  define _(x) gettext(x)
-#  ifdef gettext_noop
-#    define N_(String) gettext_noop (String)
-#  else
-#    define N_(String) (String)
-#  endif
+#include <libintl.h>
+#define _(x) gettext(x)
+#ifdef gettext_noop
+#define N_(String) gettext_noop (String)
+#else
+#define N_(String) (String)
+#endif
 #endif
 #if !defined(ENABLE_NLS) && defined(_)
-#  undef _
-#  define N_(String) (String)
-#  define _(x) (x)
+#undef _
+#define N_(String) (String)
+#define _(x) (x)
 #endif
 
 #include <gtk/gtkwidget.h>
@@ -49,123 +49,102 @@
 
 struct server_gui
 {
-	GtkWidget *rawlog_window;
-	GtkWidget *rawlog_textlist;
+    GtkWidget *rawlog_window;
+    GtkWidget *rawlog_textlist;
 
-	/* chanlist variables */
-	GtkWidget *chanlist_wild;		/* GtkEntry */
-	GtkWidget *chanlist_window;
-	GtkWidget *chanlist_list;
-	GtkWidget *chanlist_label;
-	GtkWidget *chanlist_min_spin;	/* minusers GtkSpinButton */
-	GtkWidget *chanlist_refresh;	/* buttons */
-	GtkWidget *chanlist_join;
-	GtkWidget *chanlist_savelist;
-	GtkWidget *chanlist_search;
+    /* chanlist variables */
+    GtkWidget *chanlist_wild;   /* GtkEntry */
+    GtkWidget *chanlist_window;
+    GtkWidget *chanlist_list;
+    GtkWidget *chanlist_label;
+    GtkWidget *chanlist_min_spin;       /* minusers GtkSpinButton */
+    GtkWidget *chanlist_refresh;        /* buttons */
+    GtkWidget *chanlist_join;
+    GtkWidget *chanlist_savelist;
+    GtkWidget *chanlist_search;
 
-	GSList *chanlist_data_stored_rows;	/* stored list so it can be resorted  */
-	GSList *chanlist_pending_rows;
-	gint chanlist_tag;
-	gint chanlist_flash_tag;
+    GSList *chanlist_data_stored_rows;  /* stored list so it can be resorted  */
+    GSList *chanlist_pending_rows;
+    gint chanlist_tag;
+    gint chanlist_flash_tag;
 
-	gboolean chanlist_match_wants_channel;	/* match in channel name */
-	gboolean chanlist_match_wants_topic;	/* match in topic */
+    gboolean chanlist_match_wants_channel;      /* match in channel name */
+    gboolean chanlist_match_wants_topic;        /* match in topic */
 
 #ifndef WIN32
-	regex_t chanlist_match_regex;	/* compiled regular expression here */
-	unsigned int have_regex;
+    regex_t chanlist_match_regex;       /* compiled regular expression here */
+    unsigned int have_regex;
 #endif
 
-	guint chanlist_users_found_count;	/* users total for all channels */
-	guint chanlist_users_shown_count;	/* users total for displayed channels */
-	guint chanlist_channels_found_count;	/* channel total for /LIST operation */
-	guint chanlist_channels_shown_count;	/* total number of displayed 
-														   channels */
+    guint chanlist_users_found_count;   /* users total for all channels */
+    guint chanlist_users_shown_count;   /* users total for displayed channels */
+    guint chanlist_channels_found_count;        /* channel total for /LIST operation */
+    guint chanlist_channels_shown_count;        /* total number of displayed 
+                                                   channels */
 
-	int chanlist_maxusers;
-	int chanlist_minusers;
-	int chanlist_minusers_downloaded;	/* used by LIST IRC command */
-	int chanlist_search_type;		/* 0=simple 1=pattern/wildcard 2=regexp */
-	gboolean chanlist_caption_is_stale;
+    int chanlist_maxusers;
+    int chanlist_minusers;
+    int chanlist_minusers_downloaded;   /* used by LIST IRC command */
+    int chanlist_search_type;   /* 0=simple 1=pattern/wildcard 2=regexp */
+    gboolean chanlist_caption_is_stale;
 };
 
 /* this struct is persistant even when delinking/relinking */
 
 typedef struct restore_gui
 {
-	/* banlist stuff */
-	GtkWidget *banlist_window;
-	GtkWidget *banlist_treeview;
-	GtkWidget *banlist_butRefresh;
+    /* banlist stuff */
+    GtkWidget *banlist_window;
+    GtkWidget *banlist_treeview;
+    GtkWidget *banlist_butRefresh;
 
-	void *tab;			/* (chan *) */
+    void *tab;                  /* (chan *) */
 
-	/* information stored when this tab isn't front-most */
-	void *user_model;	/* for filling the GtkTreeView */
-	void *buffer;		/* xtext_Buffer */
-	char *input_text;	/* input text buffer (while not-front tab) */
-	char *topic_text;	/* topic GtkEntry buffer */
-	char *key_text;
-	char *limit_text;
-	gfloat old_ul_value;	/* old userlist value (for adj) */
-	gfloat lag_value;	/* lag-o-meter */
-	char *lag_text;	/* lag-o-meter text */
-	char *lag_tip;		/* lag-o-meter tooltip */
-	gfloat queue_value; /* outbound queue meter */
-	char *queue_text;		/* outbound queue text */
-	char *queue_tip;		/* outbound queue tooltip */
-	short flag_wid_state[NUM_FLAG_WIDS];
-	unsigned int c_graph:1;	/* connecting graph, is there one? */
+    /* information stored when this tab isn't front-most */
+    void *user_model;           /* for filling the GtkTreeView */
+    void *buffer;               /* xtext_Buffer */
+    char *input_text;           /* input text buffer (while not-front tab) */
+    char *topic_text;           /* topic GtkEntry buffer */
+    char *key_text;
+    char *limit_text;
+    gfloat old_ul_value;        /* old userlist value (for adj) */
+    gfloat lag_value;           /* lag-o-meter */
+    char *lag_text;             /* lag-o-meter text */
+    char *lag_tip;              /* lag-o-meter tooltip */
+    gfloat queue_value;         /* outbound queue meter */
+    char *queue_text;           /* outbound queue text */
+    char *queue_tip;            /* outbound queue tooltip */
+    short flag_wid_state[NUM_FLAG_WIDS];
+    unsigned int c_graph:1;     /* connecting graph, is there one? */
 } restore_gui;
 
 typedef struct session_gui
 {
-	GtkWidget
-		*xtext,
-		*vscrollbar,
-		*window,	/* toplevel */
-		*topic_entry,
-		*note_book,
-		*main_table,
-		*user_tree,	/* GtkTreeView */
-		*user_box,	/* userlist box */
-		*button_box_parent,
-		*button_box,	/* userlist buttons' box */
-		*dialogbutton_box,
-		*topicbutton_box,
-		*meter_box,	/* all the meters inside this */
-		*lagometer,
-		*laginfo,
-		*throttlemeter,
-		*throttleinfo,
-		*topic_bar,
-		*hpane_left,
-		*hpane_right,
-		*vpane_left,
-		*vpane_right,
-		*menu,
-		*bar,				/* connecting progress bar */
-		*nick_box,		/* contains label to the left of input_box */
-		*nick_label,
-		*op_xpm,			/* icon to the left of nickname */
-		*namelistinfo,	/* label above userlist */
-		*input_box,
-		*flag_wid[NUM_FLAG_WIDS],		/* channelmode buttons */
-		*limit_entry,		  /* +l */
-		*key_entry;		  /* +k */
+    GtkWidget * xtext, *vscrollbar, *window,    /* toplevel */
+    *topic_entry, *note_book, *main_table, *user_tree,  /* GtkTreeView */
+    *user_box,                  /* userlist box */
+    *button_box_parent, *button_box,    /* userlist buttons' box */
+    *dialogbutton_box, *topicbutton_box, *meter_box,    /* all the meters inside this */
+    *lagometer, *laginfo, *throttlemeter, *throttleinfo, *topic_bar, *hpane_left, *hpane_right, *vpane_left, *vpane_right, *menu, *bar, /* connecting progress bar */
+    *nick_box,                  /* contains label to the left of input_box */
+    *nick_label, *op_xpm,       /* icon to the left of nickname */
+    *namelistinfo,              /* label above userlist */
+    *input_box, *flag_wid[NUM_FLAG_WIDS],       /* channelmode buttons */
+    *limit_entry,               /* +l */
+    *key_entry;                 /* +k */
 
 #define MENU_ID_NUM 12
-	GtkWidget *menu_item[MENU_ID_NUM+1]; /* some items we may change state of */
+    GtkWidget *menu_item[MENU_ID_NUM + 1];      /* some items we may change state of */
 
-	void *chanview;	/* chanview.h */
+    void *chanview;             /* chanview.h */
 
-	int bartag;		/*connecting progressbar timeout */
+    int bartag;                 /*connecting progressbar timeout */
 
-	int pane_left_size;	/*last position of the pane*/
-	int pane_right_size;
+    int pane_left_size;         /*last position of the pane */
+    int pane_right_size;
 
-	guint16 is_tab;	/* is tab or toplevel? */
-	guint16 ul_hidden;	/* userlist hidden? */
+    guint16 is_tab;             /* is tab or toplevel? */
+    guint16 ul_hidden;          /* userlist hidden? */
 
 } session_gui;
 
@@ -174,12 +153,13 @@ extern GdkPixmap *dialogwin_pix;
 
 
 #ifdef USE_GTKSPELL
-char *SPELL_ENTRY_GET_TEXT (GtkWidget *entry);
+char *SPELL_ENTRY_GET_TEXT (GtkWidget * entry);
 #define SPELL_ENTRY_SET_TEXT(e,txt) gtk_text_buffer_set_text (gtk_text_view_get_buffer(GTK_TEXT_VIEW(e)),txt,-1);
 #define SPELL_ENTRY_SET_EDITABLE(e,v) gtk_text_view_set_editable(GTK_TEXT_VIEW(e), v)
-int SPELL_ENTRY_GET_POS (GtkWidget *entry);
-void SPELL_ENTRY_SET_POS (GtkWidget *entry, int pos);
-void SPELL_ENTRY_INSERT (GtkWidget *entry, const char *text, int len, int *pos);
+int SPELL_ENTRY_GET_POS (GtkWidget * entry);
+void SPELL_ENTRY_SET_POS (GtkWidget * entry, int pos);
+void SPELL_ENTRY_INSERT (GtkWidget * entry, const char *text, int len,
+                         int *pos);
 #else
 #define SPELL_ENTRY_GET_TEXT(e) (GTK_ENTRY(e)->text)
 #define SPELL_ENTRY_SET_TEXT(e,txt) gtk_entry_set_text(GTK_ENTRY(e),txt)

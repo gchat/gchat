@@ -29,14 +29,14 @@
 #define DBUS_REMOTE_INTERFACE "org.xchat.plugin"
 
 static void
-write_error (char *message,
-	     GError **error)
+write_error (char *message, GError ** error)
 {
-	if (error == NULL || *error == NULL) {
-		return;
-	}
-	g_printerr ("%s: %s\n", message, (*error)->message);
-	g_clear_error (error);
+    if (error == NULL || *error == NULL)
+      {
+          return;
+      }
+    g_printerr ("%s: %s\n", message, (*error)->message);
+    g_clear_error (error);
 }
 
 void
@@ -46,73 +46,81 @@ xchat_remote (void)
  * https://launchpad.net/distros/ubuntu/+source/dbus/+bug/54375
  */
 {
-	DBusGConnection *connection;
-	DBusGProxy *dbus = NULL;
-	DBusGProxy *remote_object = NULL;
-	gboolean xchat_running;
-	GError *error = NULL;
-	char *command = NULL;
+    DBusGConnection *connection;
+    DBusGProxy *dbus = NULL;
+    DBusGProxy *remote_object = NULL;
+    gboolean xchat_running;
+    GError *error = NULL;
+    char *command = NULL;
 
-	/* GnomeVFS >=2.15 uses D-Bus and threads, so threads should be
-	 * initialised before opening for the first time a D-Bus connection */
-	if (!g_thread_supported ()) {
-		g_thread_init (NULL);
-	}
-	dbus_g_thread_init ();
+    /* GnomeVFS >=2.15 uses D-Bus and threads, so threads should be
+     * initialised before opening for the first time a D-Bus connection */
+    if (!g_thread_supported ())
+      {
+          g_thread_init (NULL);
+      }
+    dbus_g_thread_init ();
 
-	/* if there is nothing to do, return now. */
-	if (!arg_existing || !(arg_url || arg_command)) {
-		return;
-	}
+    /* if there is nothing to do, return now. */
+    if (!arg_existing || !(arg_url || arg_command))
+      {
+          return;
+      }
 
-	arg_dont_autoconnect = TRUE;
+    arg_dont_autoconnect = TRUE;
 
-	connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
-	if (!connection) {
-		write_error (_("Couldn't connect to session bus"), &error);
-		return;
-	}
+    connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+    if (!connection)
+      {
+          write_error (_("Couldn't connect to session bus"), &error);
+          return;
+      }
 
-	/* Checks if xchat is already running */
-	dbus = dbus_g_proxy_new_for_name (connection,
-					  DBUS_SERVICE_DBUS,
-					  DBUS_PATH_DBUS,
-					  DBUS_INTERFACE_DBUS);
-	if (!dbus_g_proxy_call (dbus, "NameHasOwner", &error,
-				G_TYPE_STRING, DBUS_SERVICE,
-				G_TYPE_INVALID,
-				G_TYPE_BOOLEAN, &xchat_running,
-				G_TYPE_INVALID)) {
-		write_error (_("Failed to complete NameHasOwner"), &error);
-		xchat_running = FALSE;
-	}
-	g_object_unref (dbus);
+    /* Checks if xchat is already running */
+    dbus = dbus_g_proxy_new_for_name (connection,
+                                      DBUS_SERVICE_DBUS,
+                                      DBUS_PATH_DBUS, DBUS_INTERFACE_DBUS);
+    if (!dbus_g_proxy_call (dbus, "NameHasOwner", &error,
+                            G_TYPE_STRING, DBUS_SERVICE,
+                            G_TYPE_INVALID,
+                            G_TYPE_BOOLEAN, &xchat_running, G_TYPE_INVALID))
+      {
+          write_error (_("Failed to complete NameHasOwner"), &error);
+          xchat_running = FALSE;
+      }
+    g_object_unref (dbus);
 
-	if (!xchat_running) {
-		//dbus_g_connection_unref (connection);
-		return;
-	}
+    if (!xchat_running)
+      {
+          //dbus_g_connection_unref (connection);
+          return;
+      }
 
-	remote_object = dbus_g_proxy_new_for_name (connection,
-						   DBUS_SERVICE,
-						   DBUS_REMOTE,
-						   DBUS_REMOTE_INTERFACE);
+    remote_object = dbus_g_proxy_new_for_name (connection,
+                                               DBUS_SERVICE,
+                                               DBUS_REMOTE,
+                                               DBUS_REMOTE_INTERFACE);
 
-	if (arg_url) {
-		command = g_strdup_printf ("url %s", arg_url);
-	} else if (arg_command) {
-		command = g_strdup (arg_command);
-	}
+    if (arg_url)
+      {
+          command = g_strdup_printf ("url %s", arg_url);
+      }
+    else if (arg_command)
+      {
+          command = g_strdup (arg_command);
+      }
 
-	if (command) {
-		if (!dbus_g_proxy_call (remote_object, "Command",
-					&error,
-					G_TYPE_STRING, command,
-					G_TYPE_INVALID,G_TYPE_INVALID)) {
-			write_error (_("Failed to complete Command"), &error);
-		}
-		g_free (command);
-	}
+    if (command)
+      {
+          if (!dbus_g_proxy_call (remote_object, "Command",
+                                  &error,
+                                  G_TYPE_STRING, command,
+                                  G_TYPE_INVALID, G_TYPE_INVALID))
+            {
+                write_error (_("Failed to complete Command"), &error);
+            }
+          g_free (command);
+      }
 
-	exit (0);
+    exit (0);
 }

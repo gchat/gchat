@@ -22,10 +22,8 @@
 #ifndef XCHAT_DBUS_PLUGIN_H
 #define XCHAT_DBUS_PLUGIN_H
 
-int	dbus_plugin_init	(xchat_plugin *plugin_handle,
-				 char **plugin_name,
-				 char **plugin_desc,
-				 char **plugin_version,
-				 char *arg);
+int dbus_plugin_init (xchat_plugin * plugin_handle,
+                      char **plugin_name,
+                      char **plugin_desc, char **plugin_version, char *arg);
 
 #endif
