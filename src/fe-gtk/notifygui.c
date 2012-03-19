@@ -420,7 +420,7 @@ notify_opengui (void)
       }
 
     notify_window =
-        mg_create_generic_tab ("Notify", _("XChat: Friends List"), FALSE,
+        mg_create_generic_tab ("Notify", _("GChat: Friends List"), FALSE,
                                TRUE, notify_closegui, NULL, 400, 250, &vbox,
                                0);
 

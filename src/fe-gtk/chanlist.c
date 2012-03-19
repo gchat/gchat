@@ -740,7 +740,7 @@ chanlist_opengui (server * serv, int do_refresh)
           return;
       }
 
-    snprintf (tbuf, sizeof tbuf, _("XChat: Channel List (%s)"),
+    snprintf (tbuf, sizeof tbuf, _("GChat: Channel List (%s)"),
               server_get_network (serv, TRUE));
 
     serv->gui->chanlist_pending_rows = NULL;

@@ -361,7 +361,7 @@ ignore_gui_open ()
       }
 
     ignorewin =
-        mg_create_generic_tab ("IgnoreList", _("XChat: Ignore list"),
+        mg_create_generic_tab ("IgnoreList", _("GChat: Ignore list"),
                                FALSE, TRUE, close_ignore_gui_callback,
                                NULL, 600, 256, &vbox, 0);
 
