@@ -26,45 +26,45 @@
 
 /* Use the POSIX threads library.  */
 
-#include <pthread.h>
-#include <stdlib.h>
+# include <pthread.h>
+# include <stdlib.h>
 
-#if PTHREAD_IN_USE_DETECTION_HARD
+# if PTHREAD_IN_USE_DETECTION_HARD
 
 /* The function to be executed by a dummy thread.  */
 static void *
 dummy_thread_func (void *arg)
 {
-    return arg;
+  return arg;
 }
 
 int
 glthread_in_use (void)
 {
-    static int tested;
-    static int result;          /* 1: linked with -lpthread, 0: only with libc */
+  static int tested;
+  static int result; /* 1: linked with -lpthread, 0: only with libc */
 
-    if (!tested)
-      {
-          pthread_t thread;
+  if (!tested)
+    {
+      pthread_t thread;
 
-          if (pthread_create (&thread, NULL, dummy_thread_func, NULL) != 0)
-              /* Thread creation failed.  */
-              result = 0;
-          else
-            {
-                /* Thread creation works.  */
-                void *retval;
-                if (pthread_join (thread, &retval) != 0)
-                    abort ();
-                result = 1;
-            }
-          tested = 1;
-      }
-    return result;
+      if (pthread_create (&thread, NULL, dummy_thread_func, NULL) != 0)
+        /* Thread creation failed.  */
+        result = 0;
+      else
+        {
+          /* Thread creation works.  */
+          void *retval;
+          if (pthread_join (thread, &retval) != 0)
+            abort ();
+          result = 1;
+        }
+      tested = 1;
+    }
+  return result;
 }
 
-#endif
+# endif
 
 #endif
 

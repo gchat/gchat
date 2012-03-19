@@ -1,1 +1,1 @@
-void banlist_opengui (session * sess);
+void banlist_opengui (session *sess);

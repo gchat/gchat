@@ -4,7 +4,7 @@
 extern struct xchatprefs prefs;
 
 extern int xchat_is_quitting;
-extern gint arg_skip_plugins;   /* command-line args */
+extern gint arg_skip_plugins;	/* command-line args */
 extern gint arg_dont_autoconnect;
 extern char *arg_url;
 extern char *arg_command;
@@ -26,14 +26,14 @@ extern GSList *usermenu_list;
 extern GSList *urlhandler_list;
 extern GSList *tabmenu_list;
 
-session *find_channel (server * serv, char *chan);
-session *find_dialog (server * serv, char *nick);
-session *new_ircwindow (server * serv, char *name, int type, int focus);
+session * find_channel (server *serv, char *chan);
+session * find_dialog (server *serv, char *nick);
+session * new_ircwindow (server *serv, char *name, int type, int focus);
 int is_session (session * sess);
-void session_free (session * killsess);
+void session_free (session *killsess);
 void lag_check (void);
 void xchat_exit (void);
 void xchat_exec (const char *cmd);
-void xchat_execv (char *const argv[]);
+void xchat_execv (char * const argv[]);
 
 #endif
