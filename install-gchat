@@ -13,8 +13,8 @@ $PREFIX = prompt 'Where would you like to install?',                    '/usr/lo
 $IPV6   = prompt 'Enable IPv6 servers?',                                'yes'       ;
 $SSL    = prompt 'Enable OpenSSL support?',                             'yes'       ;
 $NLS    = prompt 'Enable NLS? (Native Language Support)',               'yes'       ;
-$SUDO   = prompt 'Would you like me to use `sudo` to install GChat?',   'yes'       ;
 if ($NLS) { say 'Sorry - GChat is designed for English-speakers only.' }
+$SUDO   = prompt 'Would you like me to use `sudo` to install GChat?',   'yes'       ;
 $OTHER  = ' '.(prompt 'Other configuration options you would like to use?',  '');
 
 $ENABLE{ipv6}    = $IPV6;
