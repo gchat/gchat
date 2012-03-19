@@ -18,7 +18,7 @@
 
 extern const unsigned char rfc_tolowertab[];
 
-int my_poptParseArgvString(const char * s, int * argcPtr, char *** argvPtr);
+int my_poptParseArgvString (const char *s, int *argcPtr, char ***argvPtr);
 char *expand_homedir (char *file);
 void path_part (char *file, char *path, int pathlen);
 int match (const char *mask, const char *string);
@@ -29,10 +29,11 @@ int rfc_ncasecmp (char *, char *, int);
 int buf_get_line (char *, char **, int *, int len);
 char *nocasestrstr (const char *text, const char *tofind);
 char *country (char *);
-void country_search (char *pattern, void *ud, void (*print)(void *, char *, ...));
+void country_search (char *pattern, void *ud,
+                     void (*print) (void *, char *, ...));
 char *get_cpu_str (void);
 int util_exec (const char *cmd);
-int util_execv (char * const argv[]);
+int util_execv (char *const argv[]);
 #define STRIP_COLOR 1
 #define STRIP_ATTRIB 2
 #define STRIP_HIDDEN 4
@@ -44,9 +45,11 @@ int strip_hidden_attribute (char *src, char *dst);
 char *errorstring (int err);
 int waitline (int sok, char *buf, int bufsize, int);
 unsigned long make_ping_time (void);
-void move_file_utf8 (char *src_dir, char *dst_dir, char *fname, int dccpermissions);
+void move_file_utf8 (char *src_dir, char *dst_dir, char *fname,
+                     int dccpermissions);
 int mkdir_utf8 (char *dir);
-int token_foreach (char *str, char sep, int (*callback) (char *str, void *ud), void *ud);
+int token_foreach (char *str, char sep, int (*callback) (char *str, void *ud),
+                   void *ud);
 guint32 str_hash (const char *key);
 guint32 str_ihash (const unsigned char *key);
 void safe_strcpy (char *dest, const char *src, int bytes_left);

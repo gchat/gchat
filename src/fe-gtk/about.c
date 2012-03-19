@@ -45,28 +45,29 @@
 #include "about.h"
 
 
-#if 0 /*def USE_GNOME*/
+#if 0                           /*def USE_GNOME */
 
 void
 menu_about (GtkWidget * wid, gpointer sess)
 {
-	char buf[512];
-	const gchar *author[] = { "Peter Zelezny <zed@xchat.org>", 0 };
+    char buf[512];
+    const gchar *author[] = { "Peter Zelezny <zed@xchat.org>", 0 };
 
-	(snprintf) (buf, sizeof (buf),
-				 "An IRC Client for UNIX.\n\n"
-				 "This binary was compiled on "__DATE__"\n"
-				 "Using GTK %d.%d.%d X %d\n"
-				 "Running on %s",
-				 gtk_major_version, gtk_minor_version, gtk_micro_version,
+    (snprintf) (buf, sizeof (buf),
+                "An IRC Client for UNIX.\n\n"
+                "This binary was compiled on " __DATE__ "\n"
+                "Using GTK %d.%d.%d X %d\n"
+                "Running on %s",
+                gtk_major_version, gtk_minor_version, gtk_micro_version,
 #ifdef USE_XLIB
-				VendorRelease (GDK_DISPLAY ()), get_cpu_str());
+                VendorRelease (GDK_DISPLAY ()), get_cpu_str ());
 #else
-				666, get_cpu_str());
+                666, get_cpu_str ());
 #endif
 
-	gtk_widget_show (gnome_about_new ("X-Chat", PACKAGE_VERSION,
-							"(C) 1998-2005 Peter Zelezny", author, buf, 0));
+    gtk_widget_show (gnome_about_new ("X-Chat", PACKAGE_VERSION,
+                                      "(C) 1998-2005 Peter Zelezny", author,
+                                      buf, 0));
 }
 
 #else
@@ -76,81 +77,79 @@ static GtkWidget *about = 0;
 static int
 about_close (void)
 {
-	about = 0;
-	return 0;
+    about = 0;
+    return 0;
 }
 
 void
 menu_about (GtkWidget * wid, gpointer sess)
 {
-	GtkWidget *vbox, *label, *hbox;
-	char buf[512];
-	const char *locale = NULL;
-	extern GtkWindow *parent_window;      /* maingui.c */
+    GtkWidget *vbox, *label, *hbox;
+    char buf[512];
+    const char *locale = NULL;
+    extern GtkWindow *parent_window;    /* maingui.c */
 
-	if (about)
-	{
-		gtk_window_present (GTK_WINDOW (about));
-		return;
-	}
+    if (about)
+      {
+          gtk_window_present (GTK_WINDOW (about));
+          return;
+      }
 
-	about = gtk_dialog_new ();
-	gtk_window_set_position (GTK_WINDOW (about), GTK_WIN_POS_CENTER);
-	gtk_window_set_resizable (GTK_WINDOW (about), FALSE);
-	gtk_window_set_title (GTK_WINDOW (about), _("About "DISPLAY_NAME));
-	if (parent_window)
-		gtk_window_set_transient_for (GTK_WINDOW (about), parent_window);
-	g_signal_connect (G_OBJECT (about), "destroy",
-							G_CALLBACK (about_close), 0);
+    about = gtk_dialog_new ();
+    gtk_window_set_position (GTK_WINDOW (about), GTK_WIN_POS_CENTER);
+    gtk_window_set_resizable (GTK_WINDOW (about), FALSE);
+    gtk_window_set_title (GTK_WINDOW (about), _("About " DISPLAY_NAME));
+    if (parent_window)
+        gtk_window_set_transient_for (GTK_WINDOW (about), parent_window);
+    g_signal_connect (G_OBJECT (about), "destroy",
+                      G_CALLBACK (about_close), 0);
 
-	vbox = GTK_DIALOG (about)->vbox;
+    vbox = GTK_DIALOG (about)->vbox;
 
-	wid = gtk_image_new_from_pixbuf (pix_xchat);
-	gtk_container_add (GTK_CONTAINER (vbox), wid);
+    wid = gtk_image_new_from_pixbuf (pix_xchat);
+    gtk_container_add (GTK_CONTAINER (vbox), wid);
 
-	label = gtk_label_new (NULL);
-	gtk_label_set_selectable (GTK_LABEL (label), TRUE);
-	gtk_container_add (GTK_CONTAINER (vbox), label);
-	g_get_charset (&locale);
-	(snprintf) (buf, sizeof (buf),
-				"<span size=\"x-large\"><b>Gangsta Chat "PACKAGE_VERSION"</b></span>\n\n"
-				"%s\n\n"
+    label = gtk_label_new (NULL);
+    gtk_label_set_selectable (GTK_LABEL (label), TRUE);
+    gtk_container_add (GTK_CONTAINER (vbox), label);
+    g_get_charset (&locale);
+    (snprintf) (buf, sizeof (buf),
+                "<span size=\"x-large\"><b>Gangsta Chat " PACKAGE_VERSION
+                "</b></span>\n\n" "%s\n\n"
 #ifdef WIN32
-				/* leave this message to avoid time wasting bug reports! */
-				"This version is unofficial and comes with no support.\n\n"
+                /* leave this message to avoid time wasting bug reports! */
+                "This version is unofficial and comes with no support.\n\n"
 #endif
-				"<b>Charset</b>: %s "
-				"<b>GTK+</b>: %i.%i.%i "
-				"<b>Renderer</b>: %s\n"
-				"<b>Compiled</b>: "__DATE__"\n"
-				"%s\n\n"
-				"<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org&gt;</small>\n"
-				"<small>\302\251 2012 Mitchell Cooper &lt;mitchell@notroll.net&gt;</small>",
-					"A very Gangsta IRC Client",
-					locale,
-					gtk_major_version,
-					gtk_minor_version,
-					gtk_micro_version,
+                "<b>Charset</b>: %s "
+                "<b>GTK+</b>: %i.%i.%i "
+                "<b>Renderer</b>: %s\n"
+                "<b>Compiled</b>: " __DATE__ "\n"
+                "%s\n\n"
+                "<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org&gt;</small>\n"
+                "<small>\302\251 2012 Mitchell Cooper &lt;mitchell@notroll.net&gt;</small>",
+                "A very Gangsta IRC Client",
+                locale,
+                gtk_major_version, gtk_minor_version, gtk_micro_version,
 #ifdef USE_XFT
-					"Xft",
+                "Xft",
 #else
-					"Pango",
+                "Pango",
 #endif
-					get_cpu_str()
-					);
-	gtk_label_set_markup (GTK_LABEL (label), buf);
-	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
+                get_cpu_str ());
+    gtk_label_set_markup (GTK_LABEL (label), buf);
+    gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
 
-	hbox = gtk_hbox_new (0, 2);
-	gtk_container_add (GTK_CONTAINER (vbox), hbox);
+    hbox = gtk_hbox_new (0, 2);
+    gtk_container_add (GTK_CONTAINER (vbox), hbox);
 
-	wid = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
-	GTK_WIDGET_SET_FLAGS (GTK_WIDGET (wid), GTK_CAN_DEFAULT);
-	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (about)->action_area), wid, 0, 0, 0);
-	gtk_widget_grab_default (wid);
-	g_signal_connect (G_OBJECT (wid), "clicked",
-							G_CALLBACK (gtkutil_destroy), about);
+    wid = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
+    GTK_WIDGET_SET_FLAGS (GTK_WIDGET (wid), GTK_CAN_DEFAULT);
+    gtk_box_pack_end (GTK_BOX (GTK_DIALOG (about)->action_area), wid, 0, 0,
+                      0);
+    gtk_widget_grab_default (wid);
+    g_signal_connect (G_OBJECT (wid), "clicked",
+                      G_CALLBACK (gtkutil_destroy), about);
 
-	gtk_widget_show_all (about);
+    gtk_widget_show_all (about);
 }
 #endif
