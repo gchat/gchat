@@ -198,6 +198,13 @@ static const char *const ulmenutext[] = {
     NULL
 };
 
+static const char *const datapos[] = {
+    N_("Change tab color"),
+    N_("Blink tab once"),
+    N_("Do nothing"),
+    NULL
+};
+
 static const char *const cspos[] = {
     N_("Left (Upper)"),
     N_("Left (Lower)"),
@@ -282,13 +289,12 @@ static const setting tabs_settings[] = {
     {ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL (tab_sort),
      0, 0, 0},
     {ST_TOGGLE, N_("Smaller text"), P_OFFINTNL (tab_small), 0, 0, 0},
-    {ST_TOGGLE, N_("Enable channel data color"), P_OFFINTNL (data_color), 0, 0, 0},
 #if 0
     {ST_MENU, N_("Focus new tabs:"), P_OFFINTNL (newtabstofront), 0,
      focusnewtabsmenu, 0},
 #endif
-    {ST_MENU, N_("Show channel switcher at:"), P_OFFINTNL (tab_pos), 0, cspos,
-     1},
+    {ST_MENU, N_("When channel data is received:"), P_OFFINTNL (data_color), 0, datapos, 1},
+    {ST_MENU, N_("Show channel switcher at:"), P_OFFINTNL (tab_pos), 0, cspos, 1},
     {ST_NUMBER, N_("Shorten tab labels to:"), P_OFFINTNL (truncchans), 0,
      (const char **) N_("letters."), 99},
 
@@ -1461,7 +1467,7 @@ setup_create_color_page (void)
 
     setup_create_header (tab, 8, N_("Interface Colors"));
 
-    setup_create_other_color (_("New data:"), COL_NEW_DATA, 9, tab);
+    setup_create_other_color (_("New data (if enabled):"), COL_NEW_DATA, 9, tab);
     setup_create_other_colorR (_("Marker line:"), COL_MARKER, 9, tab);
     setup_create_other_color (_("New message:"), COL_NEW_MSG, 10, tab);
     setup_create_other_colorR (_("Away user:"), COL_AWAY, 10, tab);
