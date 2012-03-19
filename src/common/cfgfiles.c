@@ -538,6 +538,7 @@ const struct prefs vars[] = {
     {"tab_position", P_OFFINT (_tabs_position), TYPE_INT},      /* obsolete */
     {"tab_server", P_OFFINT (use_server_tab), TYPE_BOOL},
     {"tab_small", P_OFFINT (tab_small), TYPE_INT},
+    {"tab_data_color", P_OFFINT (data_color), TYPE_BOOL},
     {"tab_sort", P_OFFINT (tab_sort), TYPE_BOOL},
     {"tab_trunc", P_OFFINT (truncchans), TYPE_INT},
     {"tab_utils", P_OFFINT (windows_as_tabs), TYPE_BOOL},

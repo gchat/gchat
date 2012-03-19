@@ -544,12 +544,18 @@ gtkutil_window_new (char *title, char *role, int width, int height, int flags)
     GtkWidget *win;
 
     win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+
+    /* transparency patch */
     GdkScreen *screen;
     GdkColormap *colormap;
     screen = gtk_widget_get_screen(GTK_WIDGET(win));
     colormap = gdk_screen_get_rgba_colormap(screen);
-    if (colormap != NULL && gdk_screen_is_composited (screen))
+    if(colormap != NULL && gdk_screen_is_composited (screen))
+    {
         gtk_widget_set_colormap(GTK_WIDGET(win), colormap);
+    }
+    /* end transparency patch */
+
     gtkutil_set_icon (win);
 #ifdef WIN32
     gtk_window_set_wmclass (GTK_WINDOW (win), "XChat", "xchat");

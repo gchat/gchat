@@ -318,7 +318,9 @@ fe_set_tab_color (struct session *sess, int col)
                 sess->nick_said = FALSE;
                 chan_set_color (sess->res->tab, plain_list);
                 break;
-            case 1:            /* new data has been displayed (dark red) */
+            case 1:            /* new data has been displayed (green) */
+                if (!prefs.data_color)
+                    break;
                 sess->new_data = TRUE;
                 sess->msg_said = FALSE;
                 sess->nick_said = FALSE;

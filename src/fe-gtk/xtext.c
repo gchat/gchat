@@ -1015,15 +1015,18 @@ gtk_xtext_realize (GtkWidget * widget)
     gdk_window_set_user_data (widget->window, widget);
 
     xtext->depth = gdk_drawable_get_visual (widget->window)->depth;
-    if (xtext->depth == 32)
+
+    /* transparency patch */
+    if(xtext->depth == 32)
     {
-        if (xtext->transparent)
+        if(xtext->transparent)
         {
             guint8* pixel = &xtext->palette[XTEXT_BG];
             pixel[3] = 0xdd;
         }
         xtext->transparent = FALSE;
     }
+    /* end transparency patch */
 
     val.subwindow_mode = GDK_INCLUDE_INFERIORS;
     val.graphics_exposures = 0;
@@ -4532,15 +4535,14 @@ gtk_xtext_set_background (GtkXText * xtext, GdkPixmap * pixmap,
     GdkGCValues val;
     gboolean shaded = FALSE;
 
-    if (trans
-        && (xtext->tint_red != 255 || xtext->tint_green != 255
-            || xtext->tint_blue != 255))
+    if (trans && (xtext->tint_red != 255 || xtext->tint_green != 255 || xtext->tint_blue != 255))
         shaded = TRUE;
 
+    /* transparency patch */
     /* rgba mode */
-    if (xtext->depth == 32)
+    if(xtext->depth == 32)
     {
-        if (trans)
+        if(trans)
         {
             guint8* pixel = &xtext->palette[XTEXT_BG];
             pixel[3] = 0xdd;
@@ -4554,11 +4556,12 @@ gtk_xtext_set_background (GtkXText * xtext, GdkPixmap * pixmap,
         xtext_set_bg (xtext, xtext->fgc, XTEXT_BG);
         xtext_set_fg (xtext, xtext->bgc, XTEXT_BG);
         /* rgba mode breaks the old transparency mechanism
-        * X11 Bad Match. */
+         * X11 Bad Match. */
         trans = FALSE;
         shaded = FALSE;
         pixmap = 0;
     }
+    /* end transparency patch */
 
 #if !defined(USE_XLIB) && !defined(WIN32)
     shaded = FALSE;

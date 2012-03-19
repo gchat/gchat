@@ -282,6 +282,7 @@ static const setting tabs_settings[] = {
     {ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL (tab_sort),
      0, 0, 0},
     {ST_TOGGLE, N_("Smaller text"), P_OFFINTNL (tab_small), 0, 0, 0},
+    {ST_TOGGLE, N_("Enable channel data color"), P_OFFINTNL (data_color), 0, 0, 0},
 #if 0
     {ST_MENU, N_("Focus new tabs:"), P_OFFINTNL (newtabstofront), 0,
      focusnewtabsmenu, 0},
