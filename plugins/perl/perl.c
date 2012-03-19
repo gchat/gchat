@@ -23,9 +23,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <dirent.h>
-#ifdef ENABLE_NLS
-#include <locale.h>
-#endif
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -1457,20 +1454,6 @@ perl_init (void)
     static const char irc_definitions[] = {
 #include "irc.pm.h"
     };
-#endif
-#ifdef ENABLE_NLS
-
-    /* Problem is, dynamicaly loaded modules check out the $]
-       var. It appears that in the embedded interpreter we get
-       5,00503 as soon as the LC_NUMERIC locale calls for a comma
-       instead of a point in separating integer and decimal
-       parts. I realy can't understant why... The following
-       appears to be an awful workaround... But it'll do until I
-       (or someone else :)) found the "right way" to solve this
-       nasty problem. (TheHobbit <thehobbit@altern.org>) */
-
-    setlocale (LC_NUMERIC, "C");
-
 #endif
 
     warn = 0;

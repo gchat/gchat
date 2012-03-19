@@ -106,7 +106,6 @@ extern "C"
                               void *src, char *buf, int *len);
           time_t (*xchat_list_time) (xchat_plugin * ph,
                                      xchat_list * xlist, const char *name);
-        char *(*xchat_gettext) (xchat_plugin * ph, const char *msgid);
         void (*xchat_send_modes) (xchat_plugin * ph,
                                   const char **targets,
                                   int ntargets,
@@ -207,8 +206,6 @@ extern "C"
 
     int xchat_emit_print (xchat_plugin * ph, const char *event_name, ...);
 
-    char *xchat_gettext (xchat_plugin * ph, const char *msgid);
-
     void xchat_send_modes (xchat_plugin * ph,
                            const char **targets,
                            int ntargets,
@@ -249,7 +246,6 @@ extern "C"
 #define xchat_plugingui_add ((XCHAT_PLUGIN_HANDLE)->xchat_plugingui_add)
 #define xchat_plugingui_remove ((XCHAT_PLUGIN_HANDLE)->xchat_plugingui_remove)
 #define xchat_emit_print ((XCHAT_PLUGIN_HANDLE)->xchat_emit_print)
-#define xchat_gettext ((XCHAT_PLUGIN_HANDLE)->xchat_gettext)
 #define xchat_send_modes ((XCHAT_PLUGIN_HANDLE)->xchat_send_modes)
 #define xchat_strip ((XCHAT_PLUGIN_HANDLE)->xchat_strip)
 #define xchat_free ((XCHAT_PLUGIN_HANDLE)->xchat_free)

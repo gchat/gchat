@@ -14,20 +14,12 @@
 #include <regex.h>
 #endif
 
-#if defined(ENABLE_NLS) && !defined(_)
-#include <libintl.h>
-#define _(x) gettext(x)
-#ifdef gettext_noop
-#define N_(String) gettext_noop (String)
-#else
-#define N_(String) (String)
-#endif
-#endif
-#if !defined(ENABLE_NLS) && defined(_)
+/* GChat: remove NLS */
+#if defined(_)
 #undef _
+#endif
 #define N_(String) (String)
 #define _(x) (x)
-#endif
 
 #include <gtk/gtkwidget.h>
 #include <gtk/gtkcontainer.h>

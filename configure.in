@@ -22,17 +22,6 @@ AM_PROG_AS
 AM_DISABLE_STATIC
 AC_PROG_LIBTOOL
 
-dnl -----------------------------------------------------------
-dnl Language Support
-dnl -----------------------------------------------------------
-GETTEXT_PACKAGE=xchat
-AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Gettext package name])
-
-ALL_LINGUAS="be ca cs de el es fi fr gl hu it ja kn ko lt mk nl pa pl pt ru sq sr sv th uk vi zh_CN zh_TW"
-AM_GNU_GETTEXT
-AM_GNU_GETTEXT_VERSION([0.18])
-
 dnl displaced from acconfig.h
 AH_VERBATIM([OLD_PERL],[#undef OLD_PERL])
 AH_VERBATIM([PREFIX],[#undef PREFIX])
@@ -745,7 +734,7 @@ AC_EGREP_CPP(lookupd, dnl
 #endif], AC_DEFINE([LOOKUPD],1,[Define to 1 if the system uses lookupd]))
 
 dnl freebsd needs this
-LIBS="$LIBS $INTLLIBS"
+LIBS="$LIBS"
 CFLAGS="$CFLAGS $CPPFLAGS"
 
 GUI_LIBS="$GUI_LIBS $COMMON_LIBS"
@@ -796,8 +785,6 @@ plugins/Makefile
 plugins/python/Makefile
 plugins/perl/Makefile
 plugins/tcl/Makefile
-intl/Makefile
-po/Makefile.in
 ])
 
 echo
@@ -811,9 +798,9 @@ echo
 echo mmx tinting ......... : $mmx\	spelling .............. : $spell
 echo XShm tinting ........ : $shm\	plugin interface ...... : $plugin
 if test "$xft" = no; then
-  echo text backend ........ : pango\	nls/gettext ........... : $USE_NLS
+  echo text backend ........ : pango\	nls/gettext ........... : no
 else
-  echo text backend ........ : xft\	nls/gettext ........... : $USE_NLS
+  echo text backend ........ : xft\	nls/gettext ........... : no
 fi
 echo openssl support ..... : $openssl\	ipv6 support .......... : $ipv6
 echo dbus support ........ : $dbus\	msproxy ntlm \(ISA\) .... : $have_ntlm

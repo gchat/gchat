@@ -81,15 +81,7 @@ void *xchat_realloc (char *old, int len, char *file, int line);
 #define USERNAMELEN 10
 #define HIDDEN_CHAR	8       /* invisible character for xtext */
 
-#if defined(ENABLE_NLS) && !defined(_)
-#include <libintl.h>
-#define _(x) gettext(x)
-#ifdef gettext_noop
-#define N_(String) gettext_noop (String)
-#else
-#define N_(String) (String)
-#endif
-#endif
+/* GChat: no NLS */
 #if !defined(_)
 #define N_(String) (String)
 #define _(x) (x)

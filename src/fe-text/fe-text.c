@@ -112,9 +112,6 @@ fe_new_window (struct session *sess, int focus)
 #ifdef USE_PLUGIN
                    "Plugin "
 #endif
-#ifdef ENABLE_NLS
-                   "NLS "
-#endif
 #ifdef USE_OPENSSL
                    "OpenSSL "
 #endif
@@ -436,12 +433,6 @@ fe_main (void)
 
     if (!sess_list)
         new_ircwindow (NULL, NULL, SESS_SERVER, 0);
-
-#ifdef ENABLE_NLS
-    bindtextdomain (GETTEXT_PACKAGE, PREFIX "/share/locale");
-    bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-    textdomain (GETTEXT_PACKAGE);
-#endif
 
     while (!done)
       {
