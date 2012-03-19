@@ -679,8 +679,9 @@ load_config (void)
 	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
 	prefs.input_tray_priv = prefs.input_tray_hilight = 1;
 	prefs.autodccsend = 2;	/* browse mode */
+	prefs.logging = 1;
 	strcpy (prefs.stamp_format, "[%H:%M] ");
-	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
+	strcpy (prefs.timestamp_log_format, "%b %d %Y at %I:%M:%S%p ");
 	strcpy (prefs.logmask, "%n-%c.log");
 	strcpy (prefs.nick_suffix, ",");
 	strcpy (prefs.cmdchar, "/");
