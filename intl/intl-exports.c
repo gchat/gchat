@@ -33,4 +33,4 @@
  extern int x;                                                          \
  void * IMP(x) = &x;
 
-VARIABLE (libintl_version)
+VARIABLE(libintl_version)

@@ -1,20 +1,20 @@
 /* X-Chat
- * Copyright (C) 1998 Peter Zelezny.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
- */
+* Copyright (C) 1998 Peter Zelezny.
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+*/
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -79,25 +79,25 @@ list_load_from_data (GSList ** list, char *ibuf, int size)
     name[0] = 0;
 
     while (buf_get_line (ibuf, &buf, &pnt, size))
-      {
-          if (*buf != '#')
+    {
+        if (*buf != '#')
+        {
+            if (!strncasecmp (buf, "NAME ", 5))
             {
-                if (!strncasecmp (buf, "NAME ", 5))
-                  {
-                      safe_strcpy (name, buf + 5, sizeof (name));
-                  }
-                else if (!strncasecmp (buf, "CMD ", 4))
-                  {
-                      safe_strcpy (cmd, buf + 4, sizeof (cmd));
-                      if (*name)
-                        {
-                            list_addentry (list, cmd, name);
-                            cmd[0] = 0;
-                            name[0] = 0;
-                        }
-                  }
+                safe_strcpy (name, buf + 5, sizeof (name));
             }
-      }
+            else if (!strncasecmp (buf, "CMD ", 4))
+            {
+                safe_strcpy (cmd, buf + 4, sizeof (cmd));
+                if (*name)
+                {
+                    list_addentry (list, cmd, name);
+                    cmd[0] = 0;
+                    name[0] = 0;
+                }
+            }
+        }
+    }
 }
 
 void
@@ -111,16 +111,16 @@ list_loadconf (char *file, GSList ** list, char *defaultconf)
     snprintf (filebuf, sizeof (filebuf), "%s/%s", get_xdir_fs (), file);
     fh = open (filebuf, O_RDONLY | OFLAGS);
     if (fh == -1)
-      {
-          if (defaultconf)
-              list_load_from_data (list, defaultconf, strlen (defaultconf));
-          return;
-      }
+    {
+        if (defaultconf)
+        list_load_from_data (list, defaultconf, strlen (defaultconf));
+        return;
+    }
     if (fstat (fh, &st) != 0)
-      {
-          perror ("fstat");
-          abort ();
-      }
+    {
+        perror ("fstat");
+        abort ();
+    }
 
     ibuf = malloc (st.st_size);
     read (fh, ibuf, st.st_size);
@@ -136,11 +136,11 @@ list_free (GSList ** list)
 {
     void *data;
     while (*list)
-      {
-          data = (void *) (*list)->data;
-          free (data);
-          *list = g_slist_remove (*list, data);
-      }
+    {
+        data = (void *) (*list)->data;
+        free (data);
+        *list = g_slist_remove (*list, data);
+    }
 }
 
 int
@@ -150,16 +150,16 @@ list_delentry (GSList ** list, char *name)
     GSList *alist = *list;
 
     while (alist)
-      {
-          pop = (struct popup *) alist->data;
-          if (!strcasecmp (name, pop->name))
-            {
-                *list = g_slist_remove (*list, pop);
-                free (pop);
-                return 1;
-            }
-          alist = alist->next;
-      }
+    {
+        pop = (struct popup *) alist->data;
+        if (!strcasecmp (name, pop->name))
+        {
+            *list = g_slist_remove (*list, pop);
+            free (pop);
+            return 1;
+        }
+        alist = alist->next;
+    }
     return 0;
 }
 
@@ -167,36 +167,34 @@ char *
 cfg_get_str (char *cfg, char *var, char *dest, int dest_len)
 {
     while (1)
-      {
-          if (!strncasecmp (var, cfg, strlen (var)))
-            {
-                char *value, t;
-                cfg += strlen (var);
-                while (*cfg == ' ')
-                    cfg++;
-                if (*cfg == '=')
-                    cfg++;
-                while (*cfg == ' ')
-                    cfg++;
-                /*while (*cfg == ' ' || *cfg == '=')
-                   cfg++; */
-                value = cfg;
-                while (*cfg != 0 && *cfg != '\n')
-                    cfg++;
-                t = *cfg;
-                *cfg = 0;
-                safe_strcpy (dest, value, dest_len);
-                *cfg = t;
-                return cfg;
-            }
-          while (*cfg != 0 && *cfg != '\n')
-              cfg++;
-          if (*cfg == 0)
-              return 0;
-          cfg++;
-          if (*cfg == 0)
-              return 0;
-      }
+    {
+        if (!strncasecmp (var, cfg, strlen (var)))
+        {
+            char *value, t;
+            cfg += strlen (var);
+            while (*cfg == ' ')
+                cfg++;
+            if (*cfg == '=')
+                cfg++;
+            while (*cfg == ' ')
+                cfg++;
+            value = cfg;
+            while (*cfg != 0 && *cfg != '\n')
+                cfg++;
+            t = *cfg;
+            *cfg = 0;
+            safe_strcpy (dest, value, dest_len);
+            *cfg = t;
+            return cfg;
+        }
+        while (*cfg != 0 && *cfg != '\n')
+            cfg++;
+        if (*cfg == 0)
+            return 0;
+        cfg++;
+        if (*cfg == 0)
+            return 0;
+    }
 }
 
 static int
@@ -253,10 +251,10 @@ cfg_get_int_with_result (char *cfg, char *var, int *result)
     char str[128];
 
     if (!cfg_get_str (cfg, var, str, sizeof (str)))
-      {
-          *result = 0;
-          return 0;
-      }
+    {
+        *result = 0;
+        return 0;
+    }
 
     *result = 1;
     return atoi (str);
@@ -286,19 +284,17 @@ get_reg_str (const char *sub, const char *name, char *out, DWORD len)
     HKEY hKey;
     DWORD t;
 
-    if (RegOpenKeyEx (HKEY_CURRENT_USER, sub, 0, KEY_READ, &hKey) ==
-        ERROR_SUCCESS)
-      {
-          if (RegQueryValueEx (hKey, name, NULL, &t, out, &len) !=
-              ERROR_SUCCESS || t != REG_SZ)
-            {
-                RegCloseKey (hKey);
-                return FALSE;
-            }
-          out[len - 1] = 0;
-          RegCloseKey (hKey);
-          return TRUE;
-      }
+    if (RegOpenKeyEx (HKEY_CURRENT_USER, sub, 0, KEY_READ, &hKey) == ERROR_SUCCESS)
+    {
+        if (RegQueryValueEx (hKey, name, NULL, &t, out, &len) != ERROR_SUCCESS || t != REG_SZ)
+        {
+            RegCloseKey (hKey);
+            return FALSE;
+        }
+        out[len - 1] = 0;
+        RegCloseKey (hKey);
+        return TRUE;
+    }
 
     return FALSE;
 }
@@ -307,15 +303,15 @@ char *
 get_xdir_fs (void)
 {
     if (!xdir_fs)
-      {
-          char out[256];
+    {
+        char out[256];
 
-          if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
-                            "Explorer\\Shell Folders", "AppData", out,
-                            sizeof (out)))
-              return "./config";
-          xdir_fs = g_strdup_printf ("%s\\" XCHAT_DIR, out);
-      }
+        if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
+        "Explorer\\Shell Folders", "AppData", out,
+        sizeof (out)))
+            return "./config";
+        xdir_fs = g_strdup_printf ("%s\\" XCHAT_DIR, out);
+    }
     return xdir_fs;
 }
 
@@ -346,14 +342,14 @@ check_prefs_dir (void)
 {
     char *dir = get_xdir_fs ();
     if (access (dir, F_OK) != 0)
-      {
+    {
 #ifdef WIN32
-          if (mkdir (dir) != 0)
+        if (mkdir (dir) != 0)
 #else
-          if (mkdir (dir, S_IRUSR | S_IWUSR | S_IXUSR) != 0)
+        if (mkdir (dir, S_IRUSR | S_IWUSR | S_IXUSR) != 0)
 #endif
-              fe_message (_("Cannot create ~/.gchat"), FE_MSG_ERROR);
-      }
+            fe_message (_("Cannot create ~/.gchat"), FE_MSG_ERROR);
+    }
 }
 
 static char *
@@ -362,10 +358,10 @@ default_file (void)
     static char *dfile = 0;
 
     if (!dfile)
-      {
-          dfile = malloc (strlen (get_xdir_fs ()) + 12);
-          sprintf (dfile, "%s/gchat.conf", get_xdir_fs ());
-      }
+    {
+        dfile = malloc (strlen (get_xdir_fs ()) + 12);
+        sprintf (dfile, "%s/gchat.conf", get_xdir_fs ());
+    }
     return dfile;
 }
 
@@ -573,14 +569,14 @@ convert_with_fallback (const char *str, const char *fallback)
 
     utf = g_locale_to_utf8 (str, -1, 0, 0, 0);
     if (!utf)
-      {
-          /* this can happen if CHARSET envvar is set wrong */
-          /* maybe it's already utf8 (breakage!) */
-          if (!g_utf8_validate (str, -1, NULL))
-              utf = g_strdup (fallback);
-          else
-              utf = g_strdup (str);
-      }
+    {
+        /* this can happen if CHARSET envvar is set wrong */
+        /* maybe it's already utf8 (breakage!) */
+        if (!g_utf8_validate (str, -1, NULL))
+            utf = g_strdup (fallback);
+        else
+            utf = g_strdup (str);
+    }
 
     return utf;
 }
@@ -656,7 +652,7 @@ load_config (void)
     prefs.max_auto_indent = 256;
     prefs.show_separator = 1;
     prefs.dcc_blocksize = 1024;
-     /*FIXME*/ prefs.msg_time_limit = 30;
+    /*FIXME*/ prefs.msg_time_limit = 30;
     prefs.msg_number_limit = 5;
     prefs.ctcp_time_limit = 30;
     prefs.ctcp_number_limit = 5;
@@ -704,53 +700,53 @@ load_config (void)
 
     fh = open (default_file (), OFLAGS | O_RDONLY);
     if (fh != -1)
-      {
-          fstat (fh, &st);
-          cfg = malloc (st.st_size + 1);
-          cfg[0] = '\0';
-          i = read (fh, cfg, st.st_size);
-          if (i >= 0)
-              cfg[i] = '\0';    /* make sure cfg is NULL terminated */
-          close (fh);
-          i = 0;
-          do
+    {
+        fstat (fh, &st);
+        cfg = malloc (st.st_size + 1);
+        cfg[0] = '\0';
+        i = read (fh, cfg, st.st_size);
+        if (i >= 0)
+            cfg[i] = '\0';    /* make sure cfg is NULL terminated */
+        close (fh);
+        i = 0;
+        do
+        {
+            switch (vars[i].type)
             {
-                switch (vars[i].type)
-                  {
-                  case TYPE_STR:
-                      cfg_get_str (cfg, vars[i].name,
-                                   (char *) &prefs + vars[i].offset,
-                                   vars[i].len);
-                      break;
-                  case TYPE_BOOL:
-                  case TYPE_INT:
-                      val = cfg_get_int_with_result (cfg, vars[i].name, &res);
-                      if (res)
-                          *((int *) &prefs + vars[i].offset) = val;
-                      break;
-                  }
-                i++;
+                case TYPE_STR:
+                    cfg_get_str (cfg, vars[i].name,
+                    (char *) &prefs + vars[i].offset,
+                    vars[i].len);
+                    break;
+                case TYPE_BOOL:
+                case TYPE_INT:
+                    val = cfg_get_int_with_result (cfg, vars[i].name, &res);
+                    if (res)
+                        *((int *) &prefs + vars[i].offset) = val;
+                    break;
             }
-          while (vars[i].name);
+            i++;
+        }
+        while (vars[i].name);
 
-          free (cfg);
+        free (cfg);
 
-      }
+    }
     else
-      {
+    {
 #ifndef WIN32
 #ifndef __EMX__
-          /* OS/2 uses UID 0 all the time */
-          if (getuid () == 0)
-              fe_message (_("* Running IRC as root is stupid! You should\n"
-                            "  create a User Account and use that to login.\n"),
-                          FE_MSG_WARN | FE_MSG_WAIT);
+/* OS/2 uses UID 0 all the time */
+        if (getuid () == 0)
+            fe_message (_("* Running IRC as root is stupid! You should\n"
+                          "  create a User Account and use that to login.\n"),
+                        FE_MSG_WARN | FE_MSG_WAIT);
 #endif
 #endif /* !WIN32 */
 
-          mkdir_utf8 (prefs.dccdir);
-          mkdir_utf8 (prefs.dcc_completed_dir);
-      }
+        mkdir_utf8 (prefs.dccdir);
+        mkdir_utf8 (prefs.dcc_completed_dir);
+    }
     if (prefs.mainwindow_height < 138)
         prefs.mainwindow_height = 138;
     if (prefs.mainwindow_width < 106)
@@ -762,13 +758,13 @@ load_config (void)
 
     /* try to make sense of old ulist/tree position settings */
     if (prefs.gui_ulist_pos == 0)
-      {
-          prefs.gui_ulist_pos = 3;      /* top right */
-          if (prefs._gui_ulist_left)
-              prefs.gui_ulist_pos = 2;  /* bottom left */
+    {
+        prefs.gui_ulist_pos = 3;      /* top right */
+        if (prefs._gui_ulist_left)
+            prefs.gui_ulist_pos = 2;  /* bottom left */
 
-          switch (prefs._tabs_position)
-            {
+        switch (prefs._tabs_position)
+        {
             case 0:
                 prefs.tab_pos = 6;      /* bottom */
                 break;
@@ -786,18 +782,18 @@ load_config (void)
                 break;
             case 5:
                 if (prefs._gui_ulist_left)
-                  {
-                      prefs.tab_pos = 1;        /* above ulist left */
-                      prefs.gui_ulist_pos = 2;
-                  }
+                {
+                    prefs.tab_pos = 1;        /* above ulist left */
+                    prefs.gui_ulist_pos = 2;
+                }
                 else
-                  {
-                      prefs.tab_pos = 3;        /* above ulist right */
-                      prefs.gui_ulist_pos = 4;
-                  }
-                break;
-            }
-      }
+                {
+                    prefs.tab_pos = 3;        /* above ulist right */
+                    prefs.gui_ulist_pos = 4;
+                }
+            break;
+        }
+    }
 }
 
 int
@@ -815,57 +811,55 @@ save_config (void)
 
     fh = open (new_config, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, 0600);
     if (fh == -1)
-      {
-          free (new_config);
-          return 0;
-      }
+    {
+        free (new_config);
+        return 0;
+    }
 
     if (!cfg_put_str (fh, "version", PACKAGE_VERSION))
-      {
-          free (new_config);
-          return 0;
-      }
+    {
+        free (new_config);
+        return 0;
+    }
 
     i = 0;
     do
-      {
-          switch (vars[i].type)
-            {
+    {
+        switch (vars[i].type)
+        {
             case TYPE_STR:
-                if (!cfg_put_str
-                    (fh, vars[i].name, (char *) &prefs + vars[i].offset))
-                  {
-                      free (new_config);
-                      return 0;
-                  }
+                if (!cfg_put_str (fh, vars[i].name, (char *) &prefs + vars[i].offset))
+                {
+                    free (new_config);
+                    return 0;
+                }
                 break;
             case TYPE_INT:
             case TYPE_BOOL:
-                if (!cfg_put_int
-                    (fh, *((int *) &prefs + vars[i].offset), vars[i].name))
-                  {
-                      free (new_config);
-                      return 0;
-                  }
-            }
-          i++;
-      }
+                if (!cfg_put_int (fh, *((int *) &prefs + vars[i].offset), vars[i].name))
+                {
+                    free (new_config);
+                    return 0;
+                }
+        }
+        i++;
+    }
     while (vars[i].name);
 
     if (close (fh) == -1)
-      {
-          free (new_config);
-          return 0;
-      }
+    {
+        free (new_config);
+        return 0;
+    }
 
 #ifdef WIN32
     unlink (config);            /* win32 can't rename to an existing file */
 #endif
     if (rename (new_config, config) == -1)
-      {
-          free (new_config);
-          return 0;
-      }
+    {
+        free (new_config);
+        return 0;
+    }
     free (new_config);
 
     return 1;
@@ -887,22 +881,22 @@ set_showval (session * sess, const struct prefs *var, char *tbuf)
         tbuf[j + len] = '.';
     len += j;
     switch (var->type)
-      {
-      case TYPE_STR:
-          sprintf (tbuf + len, "\0033:\017 %s\n",
-                   (char *) &prefs + var->offset);
-          break;
-      case TYPE_INT:
-          sprintf (tbuf + len, "\0033:\017 %d\n",
-                   *((int *) &prefs + var->offset));
-          break;
-      case TYPE_BOOL:
-          if (*((int *) &prefs + var->offset))
-              sprintf (tbuf + len, "\0033:\017 %s\n", "ON");
-          else
-              sprintf (tbuf + len, "\0033:\017 %s\n", "OFF");
-          break;
-      }
+    {
+        case TYPE_STR:
+            sprintf (tbuf + len, "\0033:\017 %s\n",
+            (char *) &prefs + var->offset);
+            break;
+        case TYPE_INT:
+            sprintf (tbuf + len, "\0033:\017 %d\n",
+            *((int *) &prefs + var->offset));
+            break;
+        case TYPE_BOOL:
+            if (*((int *) &prefs + var->offset))
+                sprintf (tbuf + len, "\0033:\017 %s\n", "ON");
+            else
+                sprintf (tbuf + len, "\0033:\017 %s\n", "OFF");
+            break;
+    }
     PrintText (sess, tbuf);
 }
 
@@ -913,10 +907,10 @@ set_list (session * sess, char *tbuf)
 
     i = 0;
     do
-      {
-          set_showval (sess, &vars[i], tbuf);
-          i++;
-      }
+    {
+        set_showval (sess, &vars[i], tbuf);
+        i++;
+    }
     while (vars[i].name);
 }
 
@@ -926,13 +920,11 @@ cfg_get_bool (char *var)
     int i = 0;
 
     do
-      {
-          if (!strcasecmp (var, vars[i].name))
-            {
-                return *((int *) &prefs + vars[i].offset);
-            }
-          i++;
-      }
+    {
+        if (!strcasecmp (var, vars[i].name))
+            return *((int *) &prefs + vars[i].offset);
+        i++;
+    }
     while (vars[i].name);
 
     return -1;
@@ -951,40 +943,39 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
     char *var, *val;
 
     if (strcasecmp (word[2], "-e") == 0)
-      {
-          idx++;
-          erase = TRUE;
-      }
+    {
+        idx++;
+        erase = TRUE;
+    }
 
     /* turn a bit OFF */
     if (strcasecmp (word[idx], "-off") == 0)
-      {
-          idx++;
-          off = TRUE;
-      }
+    {
+        idx++;
+        off = TRUE;
+    }
 
     /* turn a bit ON */
-    if (strcasecmp (word[idx], "-or") == 0
-        || strcasecmp (word[idx], "-on") == 0)
-      {
-          idx++;
-          or = TRUE;
-      }
+    if (strcasecmp (word[idx], "-or") == 0 || strcasecmp (word[idx], "-on") == 0)
+    {
+        idx++;
+        or = TRUE;
+    }
 
     if (strcasecmp (word[idx], "-quiet") == 0)
-      {
-          idx++;
-          quiet = TRUE;
-      }
+    {
+        idx++;
+        quiet = TRUE;
+    }
 
     var = word[idx];
     val = word_eol[idx + 1];
 
     if (!*var)
-      {
-          set_list (sess, tbuf);
-          return TRUE;
-      }
+    {
+        set_list (sess, tbuf);
+        return TRUE;
+    }
 
     if ((strchr (var, '*') || strchr (var, '?')) && !*val)
         wild = TRUE;
@@ -993,76 +984,70 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
         val++;
 
     do
-      {
-          if (wild)
-              found = !match (var, vars[i].name);
-          else
-              found = strcasecmp (var, vars[i].name);
+    {
+        if (wild)
+            found = !match (var, vars[i].name);
+        else
+            found = strcasecmp (var, vars[i].name);
 
-          if (found == 0)
+        if (found == 0)
+        {
+            finds++;
+            switch (vars[i].type)
             {
-                finds++;
-                switch (vars[i].type)
-                  {
-                  case TYPE_STR:
-                      if (erase || *val)
+                case TYPE_STR:
+                    if (erase || *val)
+                    {
+                        strncpy ((char *) &prefs + vars[i].offset, val,
+                        vars[i].len);
+                        ((char *) &prefs)[vars[i].offset + vars[i].len -
+                        1] = 0;
+                        if (!quiet)
+                            PrintTextf (sess, "%s set to: %s\n", var,
+                        (char *) &prefs + vars[i].offset);
+                    }
+                    else
+                    {
+                        set_showval (sess, &vars[i], tbuf);
+                    }
+                    break;
+                case TYPE_INT:
+                case TYPE_BOOL:
+                    if (*val)
+                    {
+                        if (vars[i].type == TYPE_BOOL)
                         {
-                            strncpy ((char *) &prefs + vars[i].offset, val,
-                                     vars[i].len);
-                            ((char *) &prefs)[vars[i].offset + vars[i].len -
-                                              1] = 0;
-                            if (!quiet)
-                                PrintTextf (sess, "%s set to: %s\n", var,
-                                            (char *) &prefs + vars[i].offset);
-                        }
-                      else
-                        {
-                            set_showval (sess, &vars[i], tbuf);
-                        }
-                      break;
-                  case TYPE_INT:
-                  case TYPE_BOOL:
-                      if (*val)
-                        {
-                            if (vars[i].type == TYPE_BOOL)
-                              {
-                                  if (atoi (val))
-                                      *((int *) &prefs + vars[i].offset) = 1;
-                                  else
-                                      *((int *) &prefs + vars[i].offset) = 0;
-                                  if (!strcasecmp (val, "YES")
-                                      || !strcasecmp (val, "ON"))
-                                      *((int *) &prefs + vars[i].offset) = 1;
-                                  if (!strcasecmp (val, "NO")
-                                      || !strcasecmp (val, "OFF"))
-                                      *((int *) &prefs + vars[i].offset) = 0;
-                              }
+                            if (atoi (val))
+                                *((int *) &prefs + vars[i].offset) = 1;
                             else
-                              {
-                                  if (or)
-                                      *((int *) &prefs + vars[i].offset) |=
-                                          atoi (val);
-                                  else if (off)
-                                      *((int *) &prefs + vars[i].offset) &=
-                                          ~(atoi (val));
-                                  else
-                                      *((int *) &prefs + vars[i].offset) =
-                                          atoi (val);
-                              }
-                            if (!quiet)
-                                PrintTextf (sess, "%s set to: %d\n", var,
-                                            *((int *) &prefs +
-                                              vars[i].offset));
+                                *((int *) &prefs + vars[i].offset) = 0;
+                            if (!strcasecmp (val, "YES") || !strcasecmp (val, "ON"))
+                                *((int *) &prefs + vars[i].offset) = 1;
+                            if (!strcasecmp (val, "NO") || !strcasecmp (val, "OFF"))
+                                *((int *) &prefs + vars[i].offset) = 0;
                         }
-                      else
+                        else
                         {
-                            set_showval (sess, &vars[i], tbuf);
+                            if (or)
+                                *((int *) &prefs + vars[i].offset) |= atoi (val);
+                            else if (off)
+                                *((int *) &prefs + vars[i].offset) &= ~(atoi (val));
+                            else
+                                *((int *) &prefs + vars[i].offset) = atoi (val);
                         }
-                      break;
-                  }
+                        if (!quiet)
+                            PrintTextf (sess, "%s set to: %d\n", var,
+                        *((int *) &prefs + vars[i].offset));
+                    }
+                    else
+                    {
+                        set_showval (sess, &vars[i], tbuf);
+                    }
+                    break;
             }
-          i++;
-      }
+        }
+        i++;
+    }
     while (vars[i].name);
 
     if (!finds && !quiet)
@@ -1077,12 +1062,12 @@ xchat_open_file (char *file, int flags, int mode, int xof_flags)
     char buf[1024];
 
     if (xof_flags & XOF_FULLPATH)
-      {
-          if (xof_flags & XOF_DOMODE)
-              return open (file, flags | OFLAGS, mode);
-          else
-              return open (file, flags | OFLAGS);
-      }
+    {
+        if (xof_flags & XOF_DOMODE)
+            return open (file, flags | OFLAGS, mode);
+        else
+            return open (file, flags | OFLAGS);
+    }
 
     snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), file);
     if (xof_flags & XOF_DOMODE)
@@ -1100,5 +1085,5 @@ xchat_fopen_file (const char *file, const char *mode, int xof_flags)
         return fopen (file, mode);
 
     snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), file);
-    return fopen (buf, mode);
+        return fopen (buf, mode);
 }
