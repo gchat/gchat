@@ -131,6 +131,7 @@ static const setting textbox_settings[] = {
         "Insert a red line after the last read text.",
         0, 0
     },
+
     { ST_HEADER, "Transparency Settings", 0, 0, 0                      },
     { ST_HSCALE, "Red:", P_OFFINTNL (tint_red), 0, 0, 0                },
     { ST_HSCALE, "Green:", P_OFFINTNL (tint_green), 0, 0, 0            },
@@ -153,153 +154,151 @@ static const char *const tabcompmenu[] = {
 };
 
 static const setting inputbox_settings[] = {
-    {ST_HEADER, N_("Input box"), 0, 0, 0},
-    {   ST_TOGGLE, N_("Use the Text box font and colors"),
-        P_OFFINTNL (style_inputbox), 0, 0, 0
-    },
+    { ST_HEADER, "Input box"), 0, 0, 0 },
+    { ST_TOGGLE, "Use text box font formatting", P_OFFINTNL (style_inputbox), 0, 0, 0 },
+
 #if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
-    {ST_TOGGLE, N_("Spell checking"), P_OFFINTNL (gui_input_spell), 0, 0, 0},
+    { ST_TOGGLE, "Spell checking", P_OFFINTNL (gui_input_spell), 0, 0, 0 },
 #endif
 
-    {ST_HEADER, N_("Nick Completion"), 0, 0, 0},
-    {   ST_TOGGLE, N_("Automatic nick completion (without TAB key)"),
+    { ST_HEADER, "Nick Completion", 0, 0, 0 },
+    { ST_TOGGLE,
+        "Automatic nick completion (without TAB key)",
         P_OFFINTNL (nickcompletion),
         0, 0, 0
     },
-    {   ST_ENTRY, N_("Nick completion suffix:"), P_OFFSETNL (nick_suffix), 0, 0,
-        sizeof prefs.nick_suffix
+    { ST_ENTRY,
+        "Nick completion suffix:",
+        P_OFFSETNL (nick_suffix),
+        0, 0, sizeof prefs.nick_suffix
     },
-
-    {   ST_MENU, N_("Nick completion sorted:"), P_OFFINTNL (completion_sort), 0,
-        tabcompmenu, 0
+    { ST_MENU,
+        "Nick completion sorted:",
+        P_OFFINTNL (completion_sort),
+        0, tabcompmenu, 0
     },
-
-    {ST_END, 0, 0, 0, 0, 0}
+    { ST_END, 0, 0, 0, 0, 0 }
 };
 
 static const char *const ulmenutext[] = {
-    N_("A-Z, Ops first"),
-    N_("A-Z"),
-    N_("Z-A, Ops last"),
-    N_("Z-A"),
-    N_("Unsorted"),
+    "A-Z, Ops first",
+    "A-Z",
+    "Z-A, Ops last",
+    "Z-A",
+    "Unsorted",
     NULL
 };
 
 static const char *const datapos[] = {
-    N_("Change tab color"),
-    N_("Blink tab once"),
-    N_("Do nothing"),
+    "Change tab color",
+    "Blink tab once",
+    "Do nothing",
     NULL
 };
 
 static const char *const cspos[] = {
-    N_("Left (Upper)"),
-    N_("Left (Lower)"),
-    N_("Right (Upper)"),
-    N_("Right (Lower)"),
-    N_("Top"),
-    N_("Bottom"),
-    N_("Hidden"),
+    "Upper left",
+    "Lower left",
+    "Upper right",
+    "Lower right",
+    "Top",
+    "Bottom",
+    "Hidden",
     NULL
 };
 
 static const char *const ulpos[] = {
-    N_("Left (Upper)"),
-    N_("Left (Lower)"),
-    N_("Right (Upper)"),
-    N_("Right (Lower)"),
+    "Upper left",
+    "Lower left",
+    "Upper right",
+    "Lower right",
     NULL
 };
 
 static const setting userlist_settings[] = {
-    {ST_HEADER, N_("User List"), 0, 0, 0},
-    {   ST_TOGGLE, N_("Show hostnames in user list"),
-        P_OFFINTNL (showhostname_in_userlist), 0, 0, 0
+    {ST_HEADER, "User List", 0, 0, 0 },
+    { ST_TOGGLE, "Show hostnames in user list",
+        P_OFFINTNL (showhostname_in_userlist),
+        0, 0, 0
     },
-    {   ST_TOGGLE, N_("Use the Text box font and colors"),
-        P_OFFINTNL (style_namelistgad), 0, 0, 0
+    { ST_TOGGLE,
+        "Use the Text box font and colors",
+        P_OFFINTNL (style_namelistgad),
+        0, 0, 0
     },
-    /*	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(paned_userlist),0,0,0},*/
-    {   ST_MENU, N_("User list sorted by:"), P_OFFINTNL (userlist_sort), 0,
-        ulmenutext, 0
+    { ST_MENU,
+        "User list sorted by:",
+        P_OFFINTNL (userlist_sort),
+        0, ulmenutext, 0
     },
-    {   ST_MENU, N_("Show user list at:"), P_OFFINTNL (gui_ulist_pos), 0, ulpos,
-        1
+    { ST_MENU,
+        "Show user list at:",
+        P_OFFINTNL (gui_ulist_pos),
+        0, ulpos, 1
     },
 
-    {ST_HEADER, N_("Away tracking"), 0, 0, 0},
-    {   ST_TOGGLE,
-        N_("Track the Away status of users and mark them in a different color"),
-        P_OFFINTNL (away_track), 0, 0, 2
+    { ST_HEADER, "Away tracking", 0, 0, 0 },
+    { ST_TOGGLE,
+        "Track the Away status of users and mark them in a different color",
+        P_OFFINTNL (away_track),
+        0, 0, 2
     },
-    {   ST_NUMBER, N_("On channels smaller than:"), P_OFFINTNL (away_size_max),
+    {
+        ST_NUMBER,
+        "On channels smaller than:",
+        P_OFFINTNL (away_size_max),
         0, 0, 10000
     },
 
-    {ST_HEADER, N_("Action Upon Double Click"), 0, 0, 0},
-    {   ST_ENTRY, N_("Execute command:"), P_OFFSETNL (doubleclickuser), 0, 0,
-        sizeof prefs.doubleclickuser
+    { ST_HEADER, "Action Upon Double Click", 0, 0, 0 },
+    { ST_ENTRY, "Execute command:",
+        P_OFFSETNL (doubleclickuser),
+        0, 0, sizeof prefs.doubleclickuser
     },
 
-
-    /*	{ST_HEADER,	N_("Extra Gadgets"),0,0,0},
-    	{ST_MENU,	N_("Lag meter:"), P_OFFINTNL(lagometer), 0, lagmenutext, 0},
-    	{ST_MENU,	N_("Throttle meter:"), P_OFFINTNL(throttlemeter), 0, lagmenutext, 0},*/
-
-    {ST_END, 0, 0, 0, 0, 0}
+    { ST_END, 0, 0, 0, 0, 0 }
 };
 
 static const char *const tabwin[] = {
-    N_("Windows"),
-    N_("Tabs"),
+    "Windows",
+    "Tabs",
     NULL
 };
-
-#if 0
-static const char *const focusnewtabsmenu[] = {
-    N_("Never"),
-    N_("Always"),
-    N_("Only requested tabs"),
-    NULL
-};
-#endif
 
 static const char *const swtype[] = {
-    N_("Tabs"),                 /* 0 tabs */
-    "",                         /* 1 reserved */
-    N_("Tree"),                 /* 2 tree */
+    "Tabs",
+    "",
+    "Tree",
     NULL
 };
 
 static const setting tabs_settings[] = {
-    /*{ST_HEADER,   N_("Channel Switcher"),0,0,0}, */
-    {ST_RADIO, N_("Switcher type:"), P_OFFINTNL (tab_layout), 0, swtype, 0},
-    {   ST_TOGGLE, N_("Open an extra tab for server messages"),
-        P_OFFINTNL (use_server_tab), 0, 0, 0
-    },
-    {   ST_TOGGLE, N_("Open an extra tab for server notices"),
-        P_OFFINTNL (notices_tabs), 0, 0, 0
-    },
-    {   ST_TOGGLE, N_("Open a new tab when you receive a private message"),
-        P_OFFINTNL (autodialog), 0, 0, 0
-    },
-    {   ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL (tab_sort),
+    { ST_RADIO, "Switcher type:", P_OFFINTNL (tab_layout), 0, swtype, 0 },
+    { ST_TOGGLE, "Open an extra tab for server messages",
+        P_OFFINTNL (use_server_tab),
         0, 0, 0
     },
-    {ST_TOGGLE, N_("Smaller text"), P_OFFINTNL (tab_small), 0, 0, 0},
-#if 0
-    {   ST_MENU, N_("Focus new tabs:"), P_OFFINTNL (newtabstofront), 0,
-        focusnewtabsmenu, 0
+    { ST_TOGGLE, 
+        "Open an extra tab for server notices",
+        P_OFFINTNL (notices_tabs), 0, 0, 0
     },
-#endif
-    {ST_MENU, N_("When channel data is received:"), P_OFFINTNL (data_color), 0, datapos, 1},
-    {ST_MENU, N_("Show channel switcher at:"), P_OFFINTNL (tab_pos), 0, cspos, 1},
-    {   ST_NUMBER, N_("Shorten tab labels to:"), P_OFFINTNL (truncchans), 0,
-        (const char **) N_("letters."), 99
+    { ST_TOGGLE,
+        "Open a new tab when you receive a private message",
+        P_OFFINTNL (autodialog), 0, 0, 0
+    },
+    { ST_TOGGLE, "Sort tabs in alphabetical order", P_OFFINTNL (tab_sort),
+        0, 0, 0
+    },
+    { ST_TOGGLE, "Smaller text", P_OFFINTNL (tab_small), 0, 0, 0 },
+    { ST_MENU, "When channel data is received:", P_OFFINTNL (data_color), 0, datapos, 1 },
+    { ST_MENU, "Show channel switcher at:", P_OFFINTNL (tab_pos), 0, cspos, 1 },
+    { ST_NUMBER,
+        "Shorten tab labels to:",
+        P_OFFINTNL (truncchans),
+        0, (const char **) "letters.", 99
     },
 
-    {ST_HEADER, N_("Tabs or Windows"), 0, 0, 0},
+    { ST_HEADER, "Tabs or Windows", 0, 0, 0 },
     {   ST_MENU, N_("Open channels in:"), P_OFFINTNL (tabchannels), 0, tabwin,
         0
     },
