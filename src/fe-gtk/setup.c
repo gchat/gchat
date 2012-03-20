@@ -154,7 +154,7 @@ static const char *const tabcompmenu[] = {
 };
 
 static const setting inputbox_settings[] = {
-    { ST_HEADER, "Input box"), 0, 0, 0 },
+    { ST_HEADER, "Input box", 0, 0, 0 },
     { ST_TOGGLE, "Use text box font formatting", P_OFFINTNL (style_inputbox), 0, 0, 0 },
 
 #if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
