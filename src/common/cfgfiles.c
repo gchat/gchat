@@ -436,7 +436,14 @@ const struct prefs vars[] = {
     {"gui_topicbar", P_OFFINT (topicbar), TYPE_BOOL},
     {"gui_tray", P_OFFINT (gui_tray), TYPE_BOOL},
     {"gui_tray_flags", P_OFFINT (gui_tray_flags), TYPE_INT},
-    {"gui_tweaks", P_OFFINT (gui_tweaks), TYPE_INT},
+    {"gui_tweak_usercount", P_OFFINT (tweak_usercount), TYPE_BOOL},
+    {"gui_tweak_hidebutton", P_OFFINT (tweak_button), TYPE_BOOL},
+    {"gui_tweak_swappanes", P_OFFINT (tweak_swap), TYPE_BOOL},
+    {"gui_tweak_nolines", P_OFFINT (tweak_lines), TYPE_BOOL},
+    {"gui_tweak_showkey", P_OFFINT (tweak_showkey), TYPE_BOOL},
+    {"gui_tweak_smallrows", P_OFFINT (tweak_smallrow), TYPE_BOOL},
+    {"gui_tweak_useprefixes", P_OFFINT (tweak_orbs), TYPE_BOOL},
+    {"gui_tweak_noattribute", P_OFFINT (tweak_attribute), TYPE_BOOL},
     {"gui_ulist_buttons", P_OFFINT (userlistbuttons), TYPE_BOOL},
     {"gui_ulist_doubleclick", P_OFFSET (doubleclickuser), TYPE_STR},
     {"gui_ulist_hide", P_OFFINT (hideuserlist), TYPE_BOOL},
@@ -538,6 +545,7 @@ const struct prefs vars[] = {
     {"tab_position", P_OFFINT (_tabs_position), TYPE_INT},      /* obsolete */
     {"tab_server", P_OFFINT (use_server_tab), TYPE_BOOL},
     {"tab_small", P_OFFINT (tab_small), TYPE_INT},
+    {"tab_data_timeout", P_OFFINT (data_timeout), TYPE_INT},
     {"tab_data_color", P_OFFINT (data_color), TYPE_INT},
     {"tab_sort", P_OFFINT (tab_sort), TYPE_BOOL},
     {"tab_trunc", P_OFFINT (truncchans), TYPE_INT},
@@ -631,6 +639,7 @@ load_config (void)
     prefs.tabchannels = 1;
     prefs.tab_layout = 2;       /* 0=Tabs 1=Reserved 2=Tree */
     prefs.tab_sort = 1;
+    prefs.data_timeout = 2000;
     prefs.data_color = 2; /* 2 = blink once */
     prefs.paned_userlist = 1;
     prefs.newtabstofront = 2;
@@ -660,6 +669,7 @@ load_config (void)
     prefs.ctcp_number_limit = 5;
     prefs.topicbar = 1;
     prefs.lagometer = 1;
+    prefs.raw_modes = 1;
     prefs.throttlemeter = 1;
     prefs.autoopendccrecvwindow = 1;
     prefs.autoopendccsendwindow = 1;

@@ -187,8 +187,17 @@ struct xchatprefs
     char dcc_ip_str[DOMAINLEN + 1];
 
     unsigned int tab_small;
-    unsigned int data_color;
     unsigned int tab_sort;
+    unsigned int data_color;
+    unsigned int data_timeout;
+    unsigned int tweak_usercount;
+    unsigned int tweak_button;
+    unsigned int tweak_swap;
+    unsigned int tweak_lines;
+    unsigned int tweak_showkey;
+    unsigned int tweak_smallrow;
+    unsigned int tweak_orbs;
+    unsigned int tweak_attribute;
     unsigned int mainwindow_save;
     unsigned int perc_color;
     unsigned int perc_ascii;
@@ -274,7 +283,6 @@ struct xchatprefs
     unsigned int gui_input_spell;
     unsigned int gui_tray;
     unsigned int gui_tray_flags;
-    unsigned int gui_tweaks;
     unsigned int _gui_ulist_left;
     unsigned int throttle;
     unsigned int topicbar;

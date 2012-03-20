@@ -134,7 +134,7 @@ fe_userlist_numbers (session * sess)
                                     NULL);
             }
 
-          if (sess->type == SESS_CHANNEL && prefs.gui_tweaks & 1)
+          if (sess->type == SESS_CHANNEL && prefs.tweak_usercount)
               fe_set_title (sess);
       }
 }
@@ -373,7 +373,7 @@ fe_userlist_insert (session * sess, struct User *newuser, int row, int sel)
         do_away = FALSE;
 
     nick = newuser->nick;
-    if (prefs.gui_tweaks & 64)
+    if (prefs.tweak_orbs)
       {
           nick = malloc (strlen (newuser->nick) + 2);
           nick[0] = newuser->prefix[0];
@@ -394,7 +394,7 @@ fe_userlist_insert (session * sess, struct User *newuser, int row, int sel)
                                           away ? &colors[COL_AWAY] : NULL)
                                        : (NULL), -1);
 
-    if (prefs.gui_tweaks & 64)
+    if (prefs.tweak_orbs)
         free (nick);
 
     /* is it me? */
@@ -500,7 +500,7 @@ userlist_add_columns (GtkTreeView * treeview)
 
     /* icon column */
     renderer = gtk_cell_renderer_pixbuf_new ();
-    if (prefs.gui_tweaks & 32)
+    if (prefs.tweak_smallrow)
         g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
     gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
                                                  -1, NULL, renderer,
@@ -508,7 +508,7 @@ userlist_add_columns (GtkTreeView * treeview)
 
     /* nick column */
     renderer = gtk_cell_renderer_text_new ();
-    if (prefs.gui_tweaks & 32)
+    if (prefs.tweak_smallrow)
         g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
     gtk_cell_renderer_text_set_fixed_height_from_font (GTK_CELL_RENDERER_TEXT
                                                        (renderer), 1);
@@ -520,7 +520,7 @@ userlist_add_columns (GtkTreeView * treeview)
       {
           /* hostname column */
           renderer = gtk_cell_renderer_text_new ();
-          if (prefs.gui_tweaks & 32)
+          if (prefs.tweak_smallrow)
               g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
           gtk_cell_renderer_text_set_fixed_height_from_font
               (GTK_CELL_RENDERER_TEXT (renderer), 1);

@@ -352,7 +352,7 @@ fe_set_tab_color (struct session *sess, int col)
                     break; 
                 new_data_set_color (sess);
                 if (prefs.data_color == 2)  /* blink once */
-                    fe_timeout_add (1000, new_data_restore_color, sess);
+                    fe_timeout_add (prefs.data_timeout, new_data_restore_color, sess);
 
                 break;
             case 2:            /* new message arrived in channel (light red) */
@@ -542,7 +542,7 @@ fe_set_title (session * sess)
           break;
       case SESS_CHANNEL:
           /* don't display keys in the titlebar */
-          if ((!(prefs.gui_tweaks & 16)) && has_key (sess->current_modes))
+          if ((!(prefs.tweak_showkey)) && has_key (sess->current_modes))
               snprintf (tbuf, sizeof (tbuf),
                         "Gangsta Chat: %s / %s",
                         sess->channel, server_get_network (sess->server,
@@ -553,7 +553,7 @@ fe_set_title (session * sess)
                         server_get_network (sess->server, TRUE),
                         sess->channel,
                         sess->current_modes ? sess->current_modes : "");
-          if (prefs.gui_tweaks & 1)
+          if (prefs.tweak_usercount)
               snprintf (tbuf + strlen (tbuf), 9, " (%d)", sess->total);
           break;
       case SESS_NOTICES:
@@ -2663,7 +2663,7 @@ mg_create_userlist (session_gui * gui, GtkWidget * box)
     gtk_container_add (GTK_CONTAINER (box), vbox);
 
     frame = gtk_frame_new (NULL);
-    if (!(prefs.gui_tweaks & 1))
+    if (!(prefs.tweak_usercount))
         gtk_box_pack_start (GTK_BOX (vbox), frame, 0, 0, GUI_SPACING);
 
     gui->namelistinfo = gtk_label_new (NULL);
@@ -2736,7 +2736,7 @@ mg_create_center (session * sess, session_gui * gui, GtkWidget * box)
     /* sep between xtext and right side */
     gui->hpane_right = gtk_hpaned_new ();
 
-    if (prefs.gui_tweaks & 4)
+    if (prefs.tweak_swap)
       {
           gtk_paned_pack2 (GTK_PANED (gui->hpane_left), gui->vpane_left,
                            FALSE, TRUE);
@@ -3218,7 +3218,7 @@ mg_create_topwindow (session * sess)
     if (!prefs.userlistbuttons)
         gtk_widget_hide (sess->gui->button_box);
 
-    if (prefs.gui_tweaks & 2)
+    if (prefs.tweak_button)
         gtk_widget_hide (sess->gui->nick_box);
 
     mg_decide_userlist (sess, FALSE);
@@ -3322,7 +3322,7 @@ mg_create_tabwindow (session * sess)
     if (!prefs.userlistbuttons)
         gtk_widget_hide (sess->gui->button_box);
 
-    if (prefs.gui_tweaks & 2)
+    if (prefs.tweak_button)
         gtk_widget_hide (sess->gui->nick_box);
 
     mg_place_userlist_and_chanview (sess->gui);
