@@ -298,96 +298,99 @@ static const setting tabs_settings[] = {
         0, (const char **) "letters.", 99
     },
 
-    { ST_HEADER, "Tabs or Windows", 0, 0, 0 },
-    {   ST_MENU, N_("Open channels in:"), P_OFFINTNL (tabchannels), 0, tabwin,
-        0
-    },
-    {ST_MENU, N_("Open dialogs in:"), P_OFFINTNL (privmsgtab), 0, tabwin, 0},
-    {   ST_MENU, N_("Open utilities in:"), P_OFFINTNL (windows_as_tabs),
-        N_("Open DCC, Ignore, Notify etc, in tabs or windows?"), tabwin, 0
+    { ST_HEADER, "Tabs or Windows", 0, 0, 0                                },
+    { ST_MENU, "Open channels in:", P_OFFINTNL (tabchannels), 0, tabwin, 0 },
+    { ST_MENU, "Open dialogs in:", P_OFFINTNL (privmsgtab), 0, tabwin, 0   },
+    { ST_MENU,
+        "Open utilities in:",
+        P_OFFINTNL (windows_as_tabs),
+        "Open DCC, Ignore, Notify etc, in tabs or windows?",
+        tabwin, 0
     },
 
-    {ST_END, 0, 0, 0, 0, 0}
+    { ST_END, 0, 0, 0, 0, 0 }
 };
 
 static const setting tweak_settings[] = {
-    {ST_TOGGLE, "Show user count in menu title bar", P_OFFINTNL (tweak_usercount), 0, 0, 0},
-    {ST_TOGGLE, "Hide button next to your nickname", P_OFFINTNL (tweak_button), 0, 0, 0},
-    {ST_TOGGLE, "Swap the middle and left panes", P_OFFINTNL (tweak_swap), 0, 0, 0},
-    {ST_TOGGLE, "Disable dotted lines in channel switcher", P_OFFINTNL (tweak_lines), 0, 0, 0},
-    {ST_TOGGLE, "Show channel modes in title bar when key set", P_OFFINTNL (tweak_showkey), 0, 0, 0},
-    {ST_TOGGLE, "Smaller channel switcher/userlist row spacing", P_OFFINTNL (tweak_smallrow), 0, 0, 0},
-    {ST_TOGGLE, "Use real prefixes instead of orbs in userlist", P_OFFINTNL (tweak_orbs), 0, 0, 0},
-    {ST_TOGGLE, "Disable text attribute button", P_OFFINTNL (tweak_attribute), 0, 0, 0},
-    {ST_END, 0, 0, 0, 0, 0}
+    { ST_TOGGLE, "Show user count in menu title bar", P_OFFINTNL (tweak_usercount), 0, 0, 0            },
+    { ST_TOGGLE, "Hide button next to your nickname", P_OFFINTNL (tweak_button), 0, 0, 0               },
+    { ST_TOGGLE, "Swap the middle and left panes", P_OFFINTNL (tweak_swap), 0, 0, 0                    },
+    { ST_TOGGLE, "Disable dotted lines in channel switcher", P_OFFINTNL (tweak_lines), 0, 0, 0         },
+    { ST_TOGGLE, "Show channel modes in title bar when key set", P_OFFINTNL (tweak_showkey), 0, 0, 0   },
+    { ST_TOGGLE, "Smaller channel switcher/userlist row spacing", P_OFFINTNL (tweak_smallrow), 0, 0, 0 },
+    { ST_TOGGLE, "Use real prefixes instead of orbs in userlist", P_OFFINTNL (tweak_orbs), 0, 0, 0     },
+    { ST_TOGGLE, "Disable text attribute button", P_OFFINTNL (tweak_attribute), 0, 0, 0                },
+    { ST_END, 0, 0, 0, 0, 0                                                                            }
 };
 
 static const char *const dccaccept[] = {
-    N_("No"),
-    N_("Yes"),
-    N_("Browse for save folder every time"),
+    "No",
+    "Yes",
+    "Browse for save folder every time",
     NULL
 };
 
 static const setting filexfer_settings[] = {
-    {ST_HEADER, N_("Files and Directories"), 0, 0, 0},
-    {   ST_MENU, N_("Auto accept file offers:"), P_OFFINTNL (autodccsend), 0,
-        dccaccept, 0
+    { ST_HEADER, "Files and Directories", 0, 0, 0 },
+    { ST_MENU, "Auto accept file offers:", P_OFFINTNL (autodccsend), 0, dccaccept, 0 },
+    { ST_EFOLDER, "Download files to:", P_OFFSETNL (dccdir), 0, 0, sizeof prefs.dccdir },
+    { ST_EFOLDER,
+        "Move completed files to:",
+        P_OFFSETNL (dcc_completed_dir),
+        0, 0, sizeof prefs.dcc_completed_dir
     },
-    {   ST_EFOLDER, N_("Download files to:"), P_OFFSETNL (dccdir), 0, 0,
-        sizeof prefs.dccdir
+    { ST_TOGGLE, "Save nick name in filenames", P_OFFINTNL (dccwithnick), 0, 0, 0 },
+
+    { ST_HEADER, "Network Settings", 0, 0, 0 },
+    { ST_TOGGLE, "Get my address from the IRC server",
+      P_OFFINTNL (ip_from_server),
+      "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!",
+      0, 0
     },
-
-    {   ST_EFOLDER, N_("Move completed files to:"),
-        P_OFFSETNL (dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir
+    { ST_ENTRY,
+        "DCC IP address:",
+        P_OFFSETNL (dcc_ip_str),
+        "Claim you are at this address when offering files.",
+        0, sizeof prefs.dcc_ip_str
     },
-
-    {   ST_TOGGLE, N_("Save nick name in filenames"), P_OFFINTNL (dccwithnick),
-        0, 0, 0
-    },
-
-
-    {ST_HEADER, N_("Network Settings"), 0, 0, 0},
-
-    {   ST_TOGGLE, N_("Get my address from the IRC server"),
-        P_OFFINTNL (ip_from_server),
-        N_
-        ("Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"),
-        0, 0
-    },
-
-    {   ST_ENTRY, N_("DCC IP address:"), P_OFFSETNL (dcc_ip_str),
-        N_("Claim you are at this address when offering files."), 0,
-        sizeof prefs.dcc_ip_str
-    },
-
-    {   ST_NUMBER, N_("First DCC send port:"), P_OFFINTNL (first_dcc_send_port),
+    { ST_NUMBER,
+        "First DCC send port:",
+        P_OFFINTNL (first_dcc_send_port),
         0, 0, 65535
     },
-
-    {   ST_NUMBER, N_("Last DCC send port:"), P_OFFINTNL (last_dcc_send_port), 0,
-        (const char **) N_("!Leave ports at zero for full range."), 65535
+    { ST_NUMBER,
+        "Last DCC send port:",
+        P_OFFINTNL (last_dcc_send_port),
+        0, (const char **) "!Leave ports at zero for full range.", 65535
     },
 
-    {   ST_HEADER, N_("Maximum File Transfer Speeds (bytes per second)"), 0, 0,
-        0
+    { ST_HEADER, "Maximum File Transfer Speeds (bytes per second)", 0, 0, 0 },
+    { ST_NUMBER,
+        "One upload:",
+        P_OFFINTNL (dcc_max_send_cps),
+        "Maximum speed for one transfer",
+        0, 1000000
     },
-    {   ST_NUMBER, N_("One upload:"), P_OFFINTNL (dcc_max_send_cps),
-        N_("Maximum speed for one transfer"), 0, 1000000
+    { ST_NUMBER,
+        "One download:",
+        P_OFFINTNL (dcc_max_get_cps),
+        "Maximum speed for one transfer",
+        0, 1000000
     },
-    {   ST_NUMBER, N_("One download:"), P_OFFINTNL (dcc_max_get_cps),
-        N_("Maximum speed for one transfer"), 0, 1000000
-    },
-    {   ST_NUMBER, N_("All uploads combined:"),
+    { ST_NUMBER,
+        "All uploads combined:",
         P_OFFINTNL (dcc_global_max_send_cps),
-        N_("Maximum speed for all files"), 0, 1000000
+        "Maximum speed for all files",
+        0, 1000000
     },
-    {   ST_NUMBER, N_("All downloads combined:"),
+    { ST_NUMBER,
+        "All downloads combined:",
         P_OFFINTNL (dcc_global_max_get_cps),
-        N_("Maximum speed for all files"), 0, 1000000
+        "Maximum speed for all files",
+        0, 1000000
     },
 
-    {ST_END, 0, 0, 0, 0, 0}
+    { ST_END, 0, 0, 0, 0, 0 }
 };
 
 static const int balloonlist[3] = {
