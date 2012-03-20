@@ -100,127 +100,211 @@ typedef struct
 
 
 static const setting textbox_settings[] = {
-    {ST_HEADER, "Text Box Appearance", 0, 0, 0},
-    {ST_EFONT, "Font:", P_OFFSETNL (font_normal), 0, 0, sizeof prefs.font_normal},
-    {ST_EFILE, "Background image:", P_OFFSETNL (background), 0, 0, sizeof prefs.background},
-    {ST_NUMBER, "Scrollback lines:", P_OFFINTNL (max_lines), 0, 0, 100000},
-    {ST_TOGGLE, "Colored nick names", P_OFFINTNL (colorednicks),
-    "Give each person on IRC a different color", 0, 0},
-    {ST_TOGGLR, "Indent nick names", P_OFFINTNL (indent_nicks),
-    "Make nick names right-justified", 0, 0},
-    {ST_TOGGLE, "Transparent background", P_OFFINTNL (transparent), 0, 0, 0},
-    {ST_TOGGLR, "Show marker line", P_OFFINTNL (show_marker),
-    "Insert a red line after the last read text.", 0, 0},
-    {ST_HEADER, "Transparency Settings", 0, 0, 0},
-    {ST_HSCALE, "Red:", P_OFFINTNL (tint_red), 0, 0, 0},
-    {ST_HSCALE, "Green:", P_OFFINTNL (tint_green), 0, 0, 0},
-    {ST_HSCALE, "Blue:", P_OFFINTNL (tint_blue), 0, 0, 0},
-    {ST_HEADER, "Time Stamps", 0, 0, 0},
-    {ST_TOGGLE, "Enable time stamps", P_OFFINTNL (timestamp), 0, 0, 2},
-    {ST_ENTRY, "Time stamp format:", P_OFFSETNL (stamp_format),
-    "See strftime manpage for details.", 0, sizeof prefs.stamp_format},
+    {ST_HEADER, N_("Text Box Appearance"), 0, 0, 0},
+    {ST_EFONT, N_("Font:"), P_OFFSETNL (font_normal), 0, 0,
+     sizeof prefs.font_normal}
+    ,
+    {ST_EFILE, N_("Background image:"), P_OFFSETNL (background), 0, 0,
+     sizeof prefs.background}
+    ,
+    {ST_NUMBER, N_("Scrollback lines:"), P_OFFINTNL (max_lines), 0, 0, 100000}
+    ,
+    {ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL (colorednicks),
+     N_("Give each person on IRC a different color"), 0, 0}
+    ,
+    {ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL (indent_nicks),
+     N_("Make nick names right-justified"), 0, 0}
+    ,
+    {ST_TOGGLE, N_("Transparent background"), P_OFFINTNL (transparent), 0, 0,
+     0}
+    ,
+    {ST_TOGGLR, N_("Show marker line"), P_OFFINTNL (show_marker),
+     N_("Insert a red line after the last read text."), 0, 0}
+    ,
+    {ST_HEADER, N_("Transparency Settings"), 0, 0, 0}
+    ,
+    {ST_HSCALE, N_("Red:"), P_OFFINTNL (tint_red), 0, 0, 0}
+    ,
+    {ST_HSCALE, N_("Green:"), P_OFFINTNL (tint_green), 0, 0, 0}
+    ,
+    {ST_HSCALE, N_("Blue:"), P_OFFINTNL (tint_blue), 0, 0, 0}
+    ,
+
+    {ST_HEADER, N_("Time Stamps"), 0, 0, 0}
+    ,
+    {ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL (timestamp), 0, 0, 2}
+    ,
+    {ST_ENTRY, N_("Time stamp format:"), P_OFFSETNL (stamp_format),
+     N_("See strftime manpage for details."), 0, sizeof prefs.stamp_format}
+    ,
+
     {ST_END, 0, 0, 0, 0, 0}
 };
 
 static const char *const tabcompmenu[] = {
-    "A-Z",
-    "Last-spoke order",
+    N_("A-Z"),
+    N_("Last-spoke order"),
     NULL
 };
 
 static const setting inputbox_settings[] = {
-    {ST_HEADER, "Input box", 0, 0, 0},
-    {ST_TOGGLE, "Use the Text box font and colors", P_OFFINTNL (style_inputbox), 0, 0, 0},
-
+    {ST_HEADER, N_("Input box"), 0, 0, 0},
+    {ST_TOGGLE, N_("Use the Text box font and colors"),
+     P_OFFINTNL (style_inputbox), 0, 0, 0},
 #if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
-    {ST_TOGGLE, "Spell checking", P_OFFINTNL (gui_input_spell), 0, 0, 0},
+    {ST_TOGGLE, N_("Spell checking"), P_OFFINTNL (gui_input_spell), 0, 0, 0},
 #endif
 
-    {ST_HEADER, "Nick Completion", 0, 0, 0},
-    {ST_TOGGLE, "Automatic nick completion (without TAB key)",
-     P_OFFINTNL (nickcompletion), 0, 0, 0},
-    {ST_ENTRY, "Nick completion suffix:", P_OFFSETNL (nick_suffix), 0, 0, sizeof prefs.nick_suffix},
-    {ST_MENU, "Nick completion sorted:", P_OFFINTNL (completion_sort), 0, tabcompmenu, 0},
+    {ST_HEADER, N_("Nick Completion"), 0, 0, 0},
+    {ST_TOGGLE, N_("Automatic nick completion (without TAB key)"),
+     P_OFFINTNL (nickcompletion),
+     0, 0, 0},
+    {ST_ENTRY, N_("Nick completion suffix:"), P_OFFSETNL (nick_suffix), 0, 0,
+     sizeof prefs.nick_suffix}
+    ,
+    {ST_MENU, N_("Nick completion sorted:"), P_OFFINTNL (completion_sort), 0,
+     tabcompmenu, 0}
+    ,
+
+#if 0                           /* obsolete */
+    {ST_HEADER, N_("Input Box Codes"), 0, 0, 0}
+    ,
+    {ST_TOGGLE, N_("Interpret %nnn as an ASCII value"),
+     P_OFFINTNL (perc_ascii), 0, 0, 0}
+    ,
+    {ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"),
+     P_OFFINTNL (perc_color), 0, 0, 0}
+    ,
+#endif
+
     {ST_END, 0, 0, 0, 0, 0}
 };
 
+/*static const char *const lagmenutext[] = 
+{
+	N_("Off"),
+	N_("Graph"),
+	N_("Info text"),
+	N_("Both"),
+	NULL
+};*/
+
 static const char *const ulmenutext[] = {
-    "A-Z, Ops first",
-    "A-Z",
-    "Z-A, Ops last",
-    "Z-A",
-    "Unsorted",
+    N_("A-Z, Ops first"),
+    N_("A-Z"),
+    N_("Z-A, Ops last"),
+    N_("Z-A"),
+    N_("Unsorted"),
     NULL
 };
 
 static const char *const datapos[] = {
-    "Change tab color",
-    "Blink tab once",
-    "Do nothing",
+    N_("Change tab color"),
+    N_("Blink tab once"),
+    N_("Do nothing"),
     NULL
 };
 
 static const char *const cspos[] = {
-    "Left (Upper)",
-    "Left (Lower)",
-    "Right (Upper)",
-    "Right (Lower)",
-    "Top",
-    "Bottom",
-    "Hidden",
+    N_("Left (Upper)"),
+    N_("Left (Lower)"),
+    N_("Right (Upper)"),
+    N_("Right (Lower)"),
+    N_("Top"),
+    N_("Bottom"),
+    N_("Hidden"),
     NULL
 };
 
 static const char *const ulpos[] = {
-    "Left (Upper)",
-    "Left (Lower)",
-    "Right (Upper)",
-    "Right (Lower)",
+    N_("Left (Upper)"),
+    N_("Left (Lower)"),
+    N_("Right (Upper)"),
+    N_("Right (Lower)"),
     NULL
 };
 
 static const setting userlist_settings[] = {
-    {ST_HEADER, "User List", 0, 0, 0},
-    {ST_TOGGLE, "Show hostnames in user list", P_OFFINTNL (showhostname_in_userlist), 0, 0, 0},
-    {ST_TOGGLE, "Use the Text box font and colors", P_OFFINTNL (style_namelistgad), 0, 0, 0},
-    {ST_MENU, "User list sorted by:", P_OFFINTNL (userlist_sort), 0, ulmenutext, 0},
-    {ST_MENU, "Show user list at:", P_OFFINTNL (gui_ulist_pos), 0, ulpos, 1},
-    {ST_HEADER, "Away tracking", 0, 0, 0},
-    {ST_TOGGLE, "Track the Away status of users and mark them in a different color", P_OFFINTNL (away_track), 0, 0, 2},
-    {ST_NUMBER, "On channels smaller than:", P_OFFINTNL (away_size_max), 0, 0, 10000},
-    {ST_HEADER, "Action Upon Double Click", 0, 0, 0},
-    {ST_ENTRY, "Execute command:", P_OFFSETNL (doubleclickuser), 0, 0, sizeof prefs.doubleclickuser},
+    {ST_HEADER, N_("User List"), 0, 0, 0},
+    {ST_TOGGLE, N_("Show hostnames in user list"),
+     P_OFFINTNL (showhostname_in_userlist), 0, 0, 0},
+    {ST_TOGGLE, N_("Use the Text box font and colors"),
+     P_OFFINTNL (style_namelistgad), 0, 0, 0},
+/*	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(paned_userlist),0,0,0},*/
+    {ST_MENU, N_("User list sorted by:"), P_OFFINTNL (userlist_sort), 0,
+     ulmenutext, 0},
+    {ST_MENU, N_("Show user list at:"), P_OFFINTNL (gui_ulist_pos), 0, ulpos,
+     1},
+
+    {ST_HEADER, N_("Away tracking"), 0, 0, 0},
+    {ST_TOGGLE,
+     N_("Track the Away status of users and mark them in a different color"),
+     P_OFFINTNL (away_track), 0, 0, 2},
+    {ST_NUMBER, N_("On channels smaller than:"), P_OFFINTNL (away_size_max),
+     0, 0, 10000},
+
+    {ST_HEADER, N_("Action Upon Double Click"), 0, 0, 0},
+    {ST_ENTRY, N_("Execute command:"), P_OFFSETNL (doubleclickuser), 0, 0,
+     sizeof prefs.doubleclickuser}
+    ,
+
+/*	{ST_HEADER,	N_("Extra Gadgets"),0,0,0},
+	{ST_MENU,	N_("Lag meter:"), P_OFFINTNL(lagometer), 0, lagmenutext, 0},
+	{ST_MENU,	N_("Throttle meter:"), P_OFFINTNL(throttlemeter), 0, lagmenutext, 0},*/
+
     {ST_END, 0, 0, 0, 0, 0}
 };
 
 static const char *const tabwin[] = {
-    "Windows",
-    "Tabs",
+    N_("Windows"),
+    N_("Tabs"),
     NULL
 };
 
+#if 0
+static const char *const focusnewtabsmenu[] = {
+    N_("Never"),
+    N_("Always"),
+    N_("Only requested tabs"),
+    NULL
+};
+#endif
+
 static const char *const swtype[] = {
-    "Tabs",     /* 0 tabs */
-    "",         /* 1 reserved */
-    "Tree",     /* 2 tree */
+    N_("Tabs"),                 /* 0 tabs */
+    "",                         /* 1 reserved */
+    N_("Tree"),                 /* 2 tree */
     NULL
 };
 
 static const setting tabs_settings[] = {
-    {ST_RADIO, "Switcher type:", P_OFFINTNL (tab_layout), 0, swtype, 0},
-    {ST_TOGGLE, "Open an extra tab for server messages", P_OFFINTNL (use_server_tab), 0, 0, 0},
-    {ST_TOGGLE, "Open an extra tab for server notices", P_OFFINTNL (notices_tabs), 0, 0, 0},
-    {ST_TOGGLE, "Open a new tab when you receive a private message", P_OFFINTNL (autodialog), 0, 0, 0},
-    {ST_TOGGLE, "Sort tabs in alphabetical order", P_OFFINTNL (tab_sort), 0, 0, 0},
-    {ST_TOGGLE, "Smaller text", P_OFFINTNL (tab_small), 0, 0, 0},
-    {ST_MENU, "When channel data is received:", P_OFFINTNL (data_color), 0, datapos, 1},
-    {ST_MENU, "Show channel switcher at:", P_OFFINTNL (tab_pos), 0, cspos, 1},
-    {ST_NUMBER, "Shorten tab labels to:", P_OFFINTNL (truncchans), 0, (const char **) "letters.", 99},
-    {ST_HEADER, "Tabs or Windows", 0, 0, 0},
-    {ST_MENU, "Open channels in:", P_OFFINTNL (tabchannels), 0, tabwin, 0},
-    {ST_MENU, "Open dialogs in:", P_OFFINTNL (privmsgtab), 0, tabwin, 0},
-    {ST_MENU, "Open utilities in:", P_OFFINTNL (windows_as_tabs),
-    "Open DCC, Ignore, Notify etc, in tabs or windows?", tabwin, 0},
+    /*{ST_HEADER,   N_("Channel Switcher"),0,0,0}, */
+    {ST_RADIO, N_("Switcher type:"), P_OFFINTNL (tab_layout), 0, swtype, 0},
+    {ST_TOGGLE, N_("Open an extra tab for server messages"),
+     P_OFFINTNL (use_server_tab), 0, 0, 0},
+    {ST_TOGGLE, N_("Open an extra tab for server notices"),
+     P_OFFINTNL (notices_tabs), 0, 0, 0},
+    {ST_TOGGLE, N_("Open a new tab when you receive a private message"),
+     P_OFFINTNL (autodialog), 0, 0, 0},
+    {ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL (tab_sort),
+     0, 0, 0},
+    {ST_TOGGLE, N_("Smaller text"), P_OFFINTNL (tab_small), 0, 0, 0},
+#if 0
+    {ST_MENU, N_("Focus new tabs:"), P_OFFINTNL (newtabstofront), 0,
+     focusnewtabsmenu, 0},
+#endif
+    {ST_MENU, N_("When channel data is received:"), P_OFFINTNL (data_color), 0, datapos, 1},
+    {ST_MENU, N_("Show channel switcher at:"), P_OFFINTNL (tab_pos), 0, cspos, 1},
+    {ST_NUMBER, N_("Shorten tab labels to:"), P_OFFINTNL (truncchans), 0,
+     (const char **) N_("letters."), 99},
+
+    {ST_HEADER, N_("Tabs or Windows"), 0, 0, 0},
+    {ST_MENU, N_("Open channels in:"), P_OFFINTNL (tabchannels), 0, tabwin,
+     0},
+    {ST_MENU, N_("Open dialogs in:"), P_OFFINTNL (privmsgtab), 0, tabwin, 0},
+    {ST_MENU, N_("Open utilities in:"), P_OFFINTNL (windows_as_tabs),
+     N_("Open DCC, Ignore, Notify etc, in tabs or windows?"), tabwin, 0},
+
     {ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -237,33 +321,57 @@ static const setting tweak_settings[] = {
 };
 
 static const char *const dccaccept[] = {
-    "No",
-    "Yes",
-    "Browse for save folder every time",
+    N_("No"),
+    N_("Yes"),
+    N_("Browse for save folder every time"),
     NULL
 };
 
 static const setting filexfer_settings[] = {
-    {ST_HEADER, "Files and Directories", 0, 0, 0},
-    {ST_MENU, "Auto accept file offers:", P_OFFINTNL (autodccsend), 0, dccaccept, 0},
-    {ST_EFOLDER, "Download files to:", P_OFFSETNL (dccdir), 0, 0, sizeof prefs.dccdir},
-    {ST_EFOLDER, "Move completed files to:", P_OFFSETNL (dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir},
-    {ST_TOGGLE, "Save nick name in filenames", P_OFFINTNL (dccwithnick), 0, 0, 0},
-    {ST_HEADER, "Network Settings", 0, 0, 0},
-    {ST_TOGGLE, "Get my address from the IRC server", P_OFFINTNL (ip_from_server),
-    "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!", 0, 0},
-    {ST_ENTRY, "DCC IP address:", P_OFFSETNL (dcc_ip_str),
-    "Claim you are at this address when offering files.", 0, sizeof prefs.dcc_ip_str},
-    {ST_NUMBER, "First DCC send port:", P_OFFINTNL (first_dcc_send_port), 0, 0, 65535},
-    {ST_NUMBER, "Last DCC send port:", P_OFFINTNL (last_dcc_send_port), 0,
-    (const char **) "!Leave ports at zero for full range.", 65535}, 0},
-    {ST_NUMBER, "One upload:", P_OFFINTNL (dcc_max_send_cps), "Maximum speed for one transfer", 0, 1000000},
-    {ST_NUMBER, "One download:", P_OFFINTNL (dcc_max_get_cps),
-    "Maximum speed for one transfer", 0, 1000000},
-    {ST_NUMBER, "All uploads combined:", P_OFFINTNL (dcc_global_max_send_cps),
-    "Maximum speed for all files", 0, 1000000},
-    {ST_NUMBER, "All downloads combined:", P_OFFINTNL (dcc_global_max_get_cps),
-    "Maximum speed for all files", 0, 1000000},
+    {ST_HEADER, N_("Files and Directories"), 0, 0, 0},
+    {ST_MENU, N_("Auto accept file offers:"), P_OFFINTNL (autodccsend), 0,
+     dccaccept, 0},
+    {ST_EFOLDER, N_("Download files to:"), P_OFFSETNL (dccdir), 0, 0,
+     sizeof prefs.dccdir}
+    ,
+    {ST_EFOLDER, N_("Move completed files to:"),
+     P_OFFSETNL (dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir}
+    ,
+    {ST_TOGGLE, N_("Save nick name in filenames"), P_OFFINTNL (dccwithnick),
+     0, 0, 0}
+    ,
+
+    {ST_HEADER, N_("Network Settings"), 0, 0, 0}
+    ,
+    {ST_TOGGLE, N_("Get my address from the IRC server"),
+     P_OFFINTNL (ip_from_server),
+     N_
+     ("Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"),
+     0, 0}
+    ,
+    {ST_ENTRY, N_("DCC IP address:"), P_OFFSETNL (dcc_ip_str),
+     N_("Claim you are at this address when offering files."), 0,
+     sizeof prefs.dcc_ip_str}
+    ,
+    {ST_NUMBER, N_("First DCC send port:"), P_OFFINTNL (first_dcc_send_port),
+     0, 0, 65535}
+    ,
+    {ST_NUMBER, N_("Last DCC send port:"), P_OFFINTNL (last_dcc_send_port), 0,
+     (const char **) N_("!Leave ports at zero for full range."), 65535},
+
+    {ST_HEADER, N_("Maximum File Transfer Speeds (bytes per second)"), 0, 0,
+     0},
+    {ST_NUMBER, N_("One upload:"), P_OFFINTNL (dcc_max_send_cps),
+     N_("Maximum speed for one transfer"), 0, 1000000},
+    {ST_NUMBER, N_("One download:"), P_OFFINTNL (dcc_max_get_cps),
+     N_("Maximum speed for one transfer"), 0, 1000000},
+    {ST_NUMBER, N_("All uploads combined:"),
+     P_OFFINTNL (dcc_global_max_send_cps),
+     N_("Maximum speed for all files"), 0, 1000000},
+    {ST_NUMBER, N_("All downloads combined:"),
+     P_OFFINTNL (dcc_global_max_get_cps),
+     N_("Maximum speed for all files"), 0, 1000000},
+
     {ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -288,96 +396,173 @@ static const int beeplist[3] = {
 };
 
 static const setting alert_settings[] = {
-    {ST_HEADER, "Alerts", 0, 0, 0},
+    {ST_HEADER, N_("Alerts"), 0, 0, 0},
+
     {ST_ALERTHEAD},
-
 #ifndef WIN32
-    {ST_3OGGLE, "Show tray balloons on:", 0, 0, (void *) balloonlist, 0},
+    {ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *) balloonlist, 0},
 #endif
+    {ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *) trayblinklist, 0},
+    {ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *) taskbarlist, 0},
+    {ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *) beeplist, 0},
 
-    {ST_3OGGLE, "Blink tray icon on:", 0, 0, (void *) trayblinklist, 0},
-    {ST_3OGGLE, "Blink task bar on:", 0, 0, (void *) taskbarlist, 0},
-    {ST_3OGGLE, "Make a beep sound on:", 0, 0, (void *) beeplist, 0},
-    {ST_TOGGLE, "Enable system tray icon", P_OFFINTNL (gui_tray), 0, 0, 0},
-    {ST_HEADER, "Highlighted Messages", 0, 0, 0},
+    {ST_TOGGLE, N_("Enable system tray icon"), P_OFFINTNL (gui_tray), 0, 0,
+     0},
+
+    {ST_HEADER, N_("Highlighted Messages"), 0, 0, 0},
     {ST_LABEL,
-    "Highlighted messages are ones where your nickname is mentioned, but also:", 0, 0, 0, 1},
-    {ST_ENTRY, "Extra words to highlight:", P_OFFSETNL (irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight},
-    {ST_ENTRY, "Nick names not to highlight:", P_OFFSETNL (irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight},
-    {ST_ENTRY, "Nick names to always highlight:", P_OFFSETNL (irc_nick_hilight), 0, 0, sizeof prefs.irc_nick_hilight},
-    {ST_LABEL, "Separate multiple words with commas.\nWildcards are accepted."},
+     N_
+     ("Highlighted messages are ones where your nickname is mentioned, but also:"),
+     0, 0, 0, 1},
+
+    {ST_ENTRY, N_("Extra words to highlight:"),
+     P_OFFSETNL (irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight}
+    ,
+    {ST_ENTRY, N_("Nick names not to highlight:"),
+     P_OFFSETNL (irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight}
+    ,
+    {ST_ENTRY, N_("Nick names to always highlight:"),
+     P_OFFSETNL (irc_nick_hilight), 0, 0, sizeof prefs.irc_nick_hilight}
+    ,
+    {ST_LABEL,
+     N_("Separate multiple words with commas.\nWildcards are accepted.")}
+    ,
     {ST_END, 0, 0, 0, 0, 0}
 };
 
 static const setting general_settings[] = {
-    {ST_HEADER, "Default Messages", 0, 0, 0},
-    {ST_ENTRY, "Quit:", P_OFFSETNL (quitreason), 0, 0, sizeof prefs.quitreason},
-    {ST_ENTRY, "Leave channel:", P_OFFSETNL (partreason), 0, 0, sizeof prefs.partreason},
-    {ST_ENTRY, "Away:", P_OFFSETNL (awayreason), 0, 0, sizeof prefs.awayreason},
-    {ST_HEADER, "Away", 0, 0, 0},
-    {ST_TOGGLE, "Announce away messages", P_OFFINTNL (show_away_message),
-    "Announce your away messages to all channels", 0, 0},
-    {ST_TOGGLE, "Show away once", P_OFFINTNL (show_away_once), "Show identical away messages only once", 0, 0},
-    {ST_TOGGLE, "Automatically unmark away", P_OFFINTNL (auto_unmark_away),
-     "Unmark yourself as away before sending messages", 0, 0},
+    {ST_HEADER, N_("Default Messages"), 0, 0, 0},
+    {ST_ENTRY, N_("Quit:"), P_OFFSETNL (quitreason), 0, 0,
+     sizeof prefs.quitreason}
+    ,
+    {ST_ENTRY, N_("Leave channel:"), P_OFFSETNL (partreason), 0, 0,
+     sizeof prefs.partreason}
+    ,
+    {ST_ENTRY, N_("Away:"), P_OFFSETNL (awayreason), 0, 0,
+     sizeof prefs.awayreason}
+    ,
+
+    {ST_HEADER, N_("Away"), 0, 0, 0}
+    ,
+    {ST_TOGGLE, N_("Announce away messages"), P_OFFINTNL (show_away_message),
+     N_("Announce your away messages to all channels"), 0, 0}
+    ,
+    {ST_TOGGLE, N_("Show away once"), P_OFFINTNL (show_away_once),
+     N_("Show identical away messages only once"), 0, 0}
+    ,
+    {ST_TOGGLE, N_("Automatically unmark away"),
+     P_OFFINTNL (auto_unmark_away),
+     N_("Unmark yourself as away before sending messages"), 0, 0}
+    ,
     {ST_END, 0, 0, 0, 0, 0}
 };
 
+#if 0
+static const setting advanced_settings[] = {
+    {ST_HEADER, N_("Advanced Settings"), 0, 0, 0},
+    {ST_NUMBER, N_("Auto reconnect delay:"), P_OFFINTNL (recon_delay), 0, 0,
+     9999},
+    {ST_TOGGLE, N_("Display MODEs in raw form"), P_OFFINTNL (raw_modes), 0, 0,
+     0},
+    {ST_TOGGLE, N_("Whois on notify"), P_OFFINTNL (whois_on_notifyonline),
+     N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
+    {ST_TOGGLE, N_("Hide join and part messages"), P_OFFINTNL (confmode),
+     N_("Hide channel join/part messages by default"), 0, 0},
+    {ST_HEADER, N_("Auto Open DCC Windows"), 0, 0, 0},
+    {ST_TOGGLE, N_("Send window"), P_OFFINTNL (autoopendccsendwindow), 0, 0,
+     0},
+    {ST_TOGGLE, N_("Receive window"), P_OFFINTNL (autoopendccrecvwindow), 0,
+     0, 0},
+    {ST_TOGGLE, N_("Chat window"), P_OFFINTNL (autoopendccchatwindow), 0, 0,
+     0},
+
+    {ST_END, 0, 0, 0, 0, 0}
+};
+#endif
+
 static const setting logging_settings[] = {
-    {ST_HEADER, "Logging", 0, 0, 0},
-    {ST_TOGGLE, "Display scrollback from previous session",
+    {ST_HEADER, N_("Logging"), 0, 0, 0},
+    {ST_TOGGLE, N_("Display scrollback from previous session"),
      P_OFFINTNL (text_replay), 0, 0, 0},
-    {ST_TOGGLE, "Enable logging of conversations to disk",
+    {ST_TOGGLE, N_("Enable logging of conversations to disk"),
      P_OFFINTNL (logging), 0, 0, 2},
-    {ST_ENTRY, "Log filename:", P_OFFSETNL (logmask), 0, 0, sizeof prefs.logmask},
-    {ST_LABEL, "%s=Server %c=Channel %n=Network."},
-    {ST_HEADER, "Time Stamps", 0, 0, 0},
-    {ST_TOGGLE, "Insert timestamps in logs", P_OFFINTNL (timestamp_logs), 0, 0, 2},
-    {ST_ENTRY, "Log timestamp format:", P_OFFSETNL (timestamp_log_format), 0, 0, sizeof prefs.timestamp_log_format},
-    {ST_LABEL, "See strftime manpage for details."},
+    {ST_ENTRY, N_("Log filename:"), P_OFFSETNL (logmask), 0, 0,
+     sizeof prefs.logmask}
+    ,
+    {ST_LABEL, N_("%s=Server %c=Channel %n=Network.")}
+    ,
+
+    {ST_HEADER, N_("Time Stamps"), 0, 0, 0}
+    ,
+    {ST_TOGGLE, N_("Insert timestamps in logs"), P_OFFINTNL (timestamp_logs),
+     0, 0, 2}
+    ,
+    {ST_ENTRY, N_("Log timestamp format:"), P_OFFSETNL (timestamp_log_format),
+     0, 0, sizeof prefs.timestamp_log_format}
+    ,
+    {ST_LABEL, N_("See strftime manpage for details.")}
+    ,
+
     {ST_END, 0, 0, 0, 0, 0}
 };
 
 static const char *const proxytypes[] = {
-    "(Disabled)",
-    "Wingate",
-    "Socks4",
-    "Socks5",
-    "HTTP",
-
+    N_("(Disabled)"),
+    N_("Wingate"),
+    N_("Socks4"),
+    N_("Socks5"),
+    N_("HTTP"),
 #ifdef USE_MSPROXY
-    "MS Proxy (ISA)",
+    N_("MS Proxy (ISA)"),
 #endif
-
     NULL
 };
 
 static const char *const proxyuse[] = {
-    "All Connections",
-    "IRC Server Only",
-    "DCC Get Only",
+    N_("All Connections"),
+    N_("IRC Server Only"),
+    N_("DCC Get Only"),
     NULL
 };
 
 static const setting network_settings[] = {
-    {ST_HEADER, "Your Address", 0, 0, 0, 0},
-    {ST_ENTRY, "Bind to:", P_OFFSETNL (hostname), 0, 0, sizeof prefs.hostname},
-    {ST_LABEL, "Only useful for computers with multiple addresses."},
-    {ST_HEADER, "Proxy Server", 0, 0, 0, 0},
-    {ST_ENTRY, "Hostname:", P_OFFSETNL (proxy_host), 0, 0, sizeof prefs.proxy_host},
-    {ST_NUMBER, "Port:", P_OFFINTNL (proxy_port), 0, 0, 65535},
-    {ST_MENU, "Type:", P_OFFINTNL (proxy_type), 0, proxytypes, 0},
-    {ST_MENU, "Use proxy for:", P_OFFINTNL (proxy_use), 0, proxyuse, 0},
-    {ST_HEADER, "Proxy Authentication", 0, 0, 0, 0},
+    {ST_HEADER, N_("Your Address"), 0, 0, 0, 0},
+    {ST_ENTRY, N_("Bind to:"), P_OFFSETNL (hostname), 0, 0,
+     sizeof prefs.hostname}
+    ,
+    {ST_LABEL, N_("Only useful for computers with multiple addresses.")}
+    ,
 
+    {ST_HEADER, N_("Proxy Server"), 0, 0, 0, 0}
+    ,
+    {ST_ENTRY, N_("Hostname:"), P_OFFSETNL (proxy_host), 0, 0,
+     sizeof prefs.proxy_host}
+    ,
+    {ST_NUMBER, N_("Port:"), P_OFFINTNL (proxy_port), 0, 0, 65535}
+    ,
+    {ST_MENU, N_("Type:"), P_OFFINTNL (proxy_type), 0, proxytypes, 0}
+    ,
+    {ST_MENU, N_("Use proxy for:"), P_OFFINTNL (proxy_use), 0, proxyuse, 0}
+    ,
+
+    {ST_HEADER, N_("Proxy Authentication"), 0, 0, 0, 0}
+    ,
 #ifdef USE_MSPROXY
-    {ST_TOGGLE, "Use Authentication (MS Proxy, HTTP or Socks5 only)", P_OFFINTNL (proxy_auth), 0, 0, 0},
+    {ST_TOGGLE, N_("Use Authentication (MS Proxy, HTTP or Socks5 only)"),
+     P_OFFINTNL (proxy_auth), 0, 0, 0}
+    ,
 #else
-    {ST_TOGGLE, "Use Authentication (HTTP or Socks5 only)", P_OFFINTNL (proxy_auth), 0, 0, 0},
+    {ST_TOGGLE, N_("Use Authentication (HTTP or Socks5 only)"),
+     P_OFFINTNL (proxy_auth), 0, 0, 0}
+    ,
 #endif
+    {ST_ENTRY, N_("Username:"), P_OFFSETNL (proxy_user), 0, 0,
+     sizeof prefs.proxy_user}
+    ,
+    {ST_ENTRY, N_("Password:"), P_OFFSETNL (proxy_pass), 0,
+     GINT_TO_POINTER (1), sizeof prefs.proxy_pass}
+    ,
 
-    {ST_ENTRY, "Username:", P_OFFSETNL (proxy_user), 0, 0, sizeof prefs.proxy_user},
-    {ST_ENTRY, "Password:", P_OFFSETNL (proxy_pass), 0, GINT_TO_POINTER (1), sizeof prefs.proxy_pass},
     {ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -418,9 +603,9 @@ setup_headlabel (GtkWidget * tab, int row, int col, char *text)
 static void
 setup_create_alert_header (GtkWidget * tab, int row, const setting * set)
 {
-    setup_headlabel (tab, row, 3, "Channel Message");
-    setup_headlabel (tab, row, 4, "Private Message");
-    setup_headlabel (tab, row, 5, "Highlighted Message");
+    setup_headlabel (tab, row, 3, _("Channel Message"));
+    setup_headlabel (tab, row, 4, _("Private Message"));
+    setup_headlabel (tab, row, 5, _("Highlighted Message"));
 }
 
 /* makes 3 toggles side-by-side */
@@ -431,7 +616,7 @@ setup_create_3oggle (GtkWidget * tab, int row, const setting * set)
     GtkWidget *label, *wid;
     int *offsets = (int *) set->list;
 
-    label = gtk_label_new (set->label));
+    label = gtk_label_new (_(set->label));
     gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
     gtk_table_attach (GTK_TABLE (tab), label, 2, 3, row, row + 1,
                       GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL,
@@ -470,11 +655,11 @@ setup_toggle_cb (GtkToggleButton * but, const setting * set)
     setup_set_int (&setup_prefs, set, but->active ? 1 : 0);
 
     /* does this toggle also enable/disable another widget? */
-    disable_wid = g_object_get_data (G_OBJECT (but), "nxt";
+    disable_wid = g_object_get_data (G_OBJECT (but), "nxt");
     if (disable_wid)
       {
           gtk_widget_set_sensitive (disable_wid, but->active);
-          label = g_object_get_data (G_OBJECT (disable_wid), "lbl";
+          label = g_object_get_data (G_OBJECT (disable_wid), "lbl");
           gtk_widget_set_sensitive (label, but->active);
       }
 }
@@ -484,13 +669,13 @@ setup_create_toggleR (GtkWidget * tab, int row, const setting * set)
 {
     GtkWidget *wid;
 
-    wid = gtk_check_button_new_with_label (set->label));
+    wid = gtk_check_button_new_with_label (_(set->label));
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
                                   setup_get_int (&setup_prefs, set));
     g_signal_connect (G_OBJECT (wid), "toggled",
                       G_CALLBACK (setup_toggle_cb), (gpointer) set);
     if (set->tooltip)
-        add_tip (wid, set->tooltip));
+        add_tip (wid, _(set->tooltip));
     gtk_table_attach (GTK_TABLE (tab), wid, 4, 5, row, row + 1,
                       GTK_EXPAND | GTK_SHRINK | GTK_FILL,
                       GTK_SHRINK | GTK_FILL, 0, 0);
@@ -501,13 +686,13 @@ setup_create_toggleL (GtkWidget * tab, int row, const setting * set)
 {
     GtkWidget *wid;
 
-    wid = gtk_check_button_new_with_label (set->label));
+    wid = gtk_check_button_new_with_label (_(set->label));
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
                                   setup_get_int (&setup_prefs, set));
     g_signal_connect (G_OBJECT (wid), "toggled",
                       G_CALLBACK (setup_toggle_cb), (gpointer) set);
     if (set->tooltip)
-        add_tip (wid, set->tooltip));
+        add_tip (wid, _(set->tooltip));
     gtk_table_attach (GTK_TABLE (tab), wid, 2, row == 6 ? 6 : 4, row, row + 1,
                       GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL,
                       LABEL_INDENT, 0);
@@ -521,13 +706,13 @@ setup_create_toggle (GtkWidget * box, int row, const setting * set)
 {
     GtkWidget *wid;
 
-    wid = gtk_check_button_new_with_label (set->label));
+    wid = gtk_check_button_new_with_label (_(set->label));
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
                                   setup_get_int (&setup_prefs, set));
     g_signal_connect (G_OBJECT (wid), "toggled",
                       G_CALLBACK (setup_toggle_cb), (gpointer) set);
     if (set->tooltip)
-        add_tip (wid, set->tooltip));
+        add_tip (wid, _(set->tooltip));
     gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
 }
 #endif
@@ -560,7 +745,7 @@ setup_create_spin (GtkWidget * table, int row, const setting * set)
     GtkWidget *label, *wid, *rbox, *align;
     char *text;
 
-    label = gtk_label_new (set->label));
+    label = gtk_label_new (_(set->label));
     gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
     gtk_table_attach (GTK_TABLE (table), label, 2, 3, row, row + 1,
                       GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL,
@@ -576,7 +761,7 @@ setup_create_spin (GtkWidget * table, int row, const setting * set)
     wid = gtk_spin_button_new_with_range (0, set->extra, 1);
     g_object_set_data (G_OBJECT (wid), "lbl", label);
     if (set->tooltip)
-        add_tip (wid, set->tooltip));
+        add_tip (wid, _(set->tooltip));
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (wid),
                                setup_get_int (&setup_prefs, set));
     g_signal_connect (G_OBJECT (wid), "value_changed",
@@ -585,7 +770,7 @@ setup_create_spin (GtkWidget * table, int row, const setting * set)
 
     if (set->list)
       {
-          text = (char *) set->list);
+          text = _((char *) set->list);
           if (text[0] == '!')
               label = setup_create_italic_label (text + 1);
           else
@@ -622,7 +807,7 @@ setup_create_hscale (GtkWidget * table, int row, const setting * set)
 {
     GtkWidget *wid;
 
-    wid = gtk_label_new (set->label));
+    wid = gtk_label_new (_(set->label));
     gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
     gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
                       GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL,
@@ -662,7 +847,7 @@ setup_radio_cb (GtkWidget * item, const setting * set)
 {
     if (GTK_TOGGLE_BUTTON (item)->active)
       {
-          int n = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n");
+          int n = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n"));
           /* set the prefs.<field> */
           setup_set_int (&setup_prefs, set, n);
       }
@@ -676,7 +861,7 @@ setup_create_radio (GtkWidget * table, int row, const setting * set)
     const char **text = (const char **) set->list;
     GSList *group;
 
-    wid = gtk_label_new (set->label));
+    wid = gtk_label_new (_(set->label));
     gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
     gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
                       GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL,
@@ -692,9 +877,9 @@ setup_create_radio (GtkWidget * table, int row, const setting * set)
       {
           if (text[i][0] != 0)
             {
-                wid = gtk_radio_button_new_with_mnemonic (group, text[i]));
+                wid = gtk_radio_button_new_with_mnemonic (group, _(text[i]));
                 /*if (set->tooltip)
-                   add_tip (wid, set->tooltip)); */
+                   add_tip (wid, _(set->tooltip)); */
                 group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (wid));
                 gtk_container_add (GTK_CONTAINER (hbox), wid);
                 if (i == setup_get_int (&setup_prefs, set))
@@ -712,6 +897,75 @@ setup_create_radio (GtkWidget * table, int row, const setting * set)
     return i;
 }
 
+/*
+static const char *id_strings[] =
+{
+	"",
+	"*",
+	"%C4*%C18%B%B",
+	"%U"
+};
+
+static void
+setup_id_menu_cb (GtkWidget *item, char *dest)
+{
+	int n = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n"));
+
+	strcpy (dest, id_strings[n]);
+}
+
+static void
+setup_create_id_menu (GtkWidget *table, char *label, int row, char *dest)
+{
+	GtkWidget *wid, *menu, *item;
+	int i, def = 0;
+	static const char *text[] =
+	{
+		("(disabled)"),
+		("A star (*)"),
+		("A red star (*)"),
+		("Underlined")
+	};
+
+	wid = gtk_label_new (label);
+	gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
+
+	wid = gtk_option_menu_new ();
+	menu = gtk_menu_new ();
+
+	for (i = 0; i < 4; i++)
+	{
+		if (strcmp (id_strings[i], dest) == 0)
+		{
+			def = i;
+			break;
+		}
+	}
+
+	i = 0;
+	while (text[i])
+	{
+		item = gtk_menu_item_new_with_label (_(text[i]));
+		g_object_set_data (G_OBJECT (item), "n", GINT_TO_POINTER (i));
+
+		gtk_widget_show (item);
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+		g_signal_connect (G_OBJECT (item), "activate",
+								G_CALLBACK (setup_id_menu_cb), dest);
+		i++;
+	}
+
+	gtk_option_menu_set_menu (GTK_OPTION_MENU (wid), menu);
+	gtk_option_menu_set_history (GTK_OPTION_MENU (wid), def);
+
+	gtk_table_attach (GTK_TABLE (table), wid, 3, 4, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+}
+
+*/
+
 static void
 setup_create_menu (GtkWidget * table, int row, const setting * set)
 {
@@ -719,7 +973,7 @@ setup_create_menu (GtkWidget * table, int row, const setting * set)
     const char **text = (const char **) set->list;
     int i;
 
-    wid = gtk_label_new (set->label));
+    wid = gtk_label_new (_(set->label));
     gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
     gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
                       GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL,
@@ -728,7 +982,7 @@ setup_create_menu (GtkWidget * table, int row, const setting * set)
     cbox = gtk_combo_box_new_text ();
 
     for (i = 0; text[i]; i++)
-        gtk_combo_box_append_text (GTK_COMBO_BOX (cbox), text[i]));
+        gtk_combo_box_append_text (GTK_COMBO_BOX (cbox), _(text[i]));
 
     gtk_combo_box_set_active (GTK_COMBO_BOX (cbox),
                               setup_get_int (&setup_prefs, set) - set->extra);
@@ -754,7 +1008,7 @@ setup_filereq_cb (GtkWidget * entry, char *file)
 static void
 setup_browsefile_cb (GtkWidget * button, GtkWidget * entry)
 {
-    gtkutil_file_req ("Select an Image File", setup_filereq_cb, entry,
+    gtkutil_file_req (_("Select an Image File"), setup_filereq_cb, entry,
                       NULL, 0);
 }
 
@@ -770,7 +1024,7 @@ setup_fontsel_cb (GtkWidget * button, GtkFontSelectionDialog * dialog)
     GtkWidget *entry;
     char *font_name;
 
-    entry = g_object_get_data (G_OBJECT (button), "e";
+    entry = g_object_get_data (G_OBJECT (button), "e");
     font_name = gtk_font_selection_dialog_get_font_name (dialog);
 
     gtk_entry_set_text (GTK_ENTRY (entry), font_name);
@@ -790,7 +1044,7 @@ setup_fontsel_cancel (GtkWidget * button, GtkFontSelectionDialog * dialog)
 static void
 setup_browsefolder_cb (GtkWidget * button, GtkEntry * entry)
 {
-    gtkutil_file_req ("Select Download Folder", setup_filereq_cb, entry,
+    gtkutil_file_req (_("Select Download Folder"), setup_filereq_cb, entry,
                       entry->text, FRF_CHOOSEFOLDER);
 }
 
@@ -802,7 +1056,7 @@ setup_browsefont_cb (GtkWidget * button, GtkWidget * entry)
 
     dialog =
         (GtkFontSelectionDialog *)
-        gtk_font_selection_dialog_new ("Select font");
+        gtk_font_selection_dialog_new (_("Select font"));
     font_dialog = (GtkWidget *) dialog; /* global var */
 
     sel = (GtkFontSelection *) dialog->fontsel;
@@ -859,7 +1113,7 @@ static void
 setup_create_label (GtkWidget * table, int row, const setting * set)
 {
     gtk_table_attach (GTK_TABLE (table),
-                      setup_create_italic_label (set->label)),
+                      setup_create_italic_label (_(set->label)),
                       set->extra ? 1 : 3, 5, row, row + 1, GTK_FILL,
                       GTK_SHRINK | GTK_FILL, 0, 0);
 }
@@ -870,7 +1124,7 @@ setup_create_entry (GtkWidget * table, int row, const setting * set)
     GtkWidget *label;
     GtkWidget *wid, *bwid;
 
-    label = gtk_label_new (set->label));
+    label = gtk_label_new (_(set->label));
     gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
     gtk_table_attach (GTK_TABLE (table), label, 2, 3, row, row + 1,
                       GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL,
@@ -881,7 +1135,7 @@ setup_create_entry (GtkWidget * table, int row, const setting * set)
     if (set->list)
         gtk_entry_set_visibility (GTK_ENTRY (wid), FALSE);
     if (set->tooltip)
-        add_tip (wid, set->tooltip));
+        add_tip (wid, _(set->tooltip));
     gtk_entry_set_max_length (GTK_ENTRY (wid), set->extra - 1);
     gtk_entry_set_text (GTK_ENTRY (wid), setup_get_str (&setup_prefs, set));
     g_signal_connect (G_OBJECT (wid), "changed",
@@ -906,7 +1160,7 @@ setup_create_entry (GtkWidget * table, int row, const setting * set)
       {
           gtk_table_attach (GTK_TABLE (table), wid, 3, 5, row, row + 1,
                             GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
-          bwid = gtk_button_new_with_label ("Browse...");
+          bwid = gtk_button_new_with_label (_("Browse..."));
           gtk_table_attach (GTK_TABLE (table), bwid, 5, 6, row, row + 1,
                             GTK_SHRINK | GTK_FILL, GTK_FILL, 0, 0);
           if (set->type == ST_EFILE)
@@ -930,9 +1184,9 @@ setup_create_header (GtkWidget * table, int row, char *labeltext)
     char buf[128];
 
     if (row == 0)
-        snprintf (buf, sizeof (buf), "<b>%s</b>", labeltext));
+        snprintf (buf, sizeof (buf), "<b>%s</b>", _(labeltext));
     else
-        snprintf (buf, sizeof (buf), "\n<b>%s</b>", labeltext));
+        snprintf (buf, sizeof (buf), "\n<b>%s</b>", _(labeltext));
 
     label = gtk_label_new (NULL);
     gtk_label_set_markup (GTK_LABEL (label), buf);
@@ -1035,7 +1289,7 @@ setup_create_page (const setting * set)
                 gtk_widget_set_sensitive (wid,
                                           GTK_TOGGLE_BUTTON (prev)->active);
                 gtk_widget_set_sensitive (g_object_get_data
-                                          (G_OBJECT (wid), "lbl",
+                                          (G_OBJECT (wid), "lbl"),
                                           GTK_TOGGLE_BUTTON (prev)->active);
             }
 
@@ -1046,16 +1300,16 @@ setup_create_page (const setting * set)
 #if 0
     if (set == general_settings)
       {
-          setup_create_id_menu (tab, "Mark identified users with:",
+          setup_create_id_menu (tab, _("Mark identified users with:"),
                                 row, setup_prefs.irc_id_ytext);
-          setup_create_id_menu (tab, "Mark not-identified users with:",
+          setup_create_id_menu (tab, _("Mark not-identified users with:"),
                                 row + 1, setup_prefs.irc_id_ntext);
       }
 #endif
 
     if (set == logging_settings)
       {
-          GtkWidget *but = gtk_button_new_with_label ("Open Data Folder");
+          GtkWidget *but = gtk_button_new_with_label (_("Open Data Folder"));
           gtk_box_pack_start (GTK_BOX (left), but, 0, 0, 0);
           g_signal_connect (G_OBJECT (but), "clicked",
                             G_CALLBACK (open_data_cb), 0);
@@ -1072,10 +1326,10 @@ setup_color_ok_cb (GtkWidget * button, GtkWidget * dialog)
     GdkColor old_color;
     GtkStyle *style;
 
-    col = g_object_get_data (G_OBJECT (button), "c";
+    col = g_object_get_data (G_OBJECT (button), "c");
     old_color = *col;
 
-    button = g_object_get_data (G_OBJECT (button), "b";
+    button = g_object_get_data (G_OBJECT (button), "b");
 
     if (!GTK_IS_WIDGET (button))
       {
@@ -1112,7 +1366,7 @@ setup_color_cb (GtkWidget * button, gpointer userdata)
 
     color = &colors[GPOINTER_TO_INT (userdata)];
 
-    dialog = gtk_color_selection_dialog_new ("Select color");
+    dialog = gtk_color_selection_dialog_new (_("Select color"));
     cdialog = GTK_COLOR_SELECTION_DIALOG (dialog);
 
     gtk_widget_hide (cdialog->help_button);
@@ -1136,11 +1390,11 @@ setup_create_color_button (GtkWidget * table, int num, int row, int col)
     char buf[64];
 
     if (num > 31)
-        strcpy (buf, "<span size=\"x-small\"> </span>";
+        strcpy (buf, "<span size=\"x-small\"> </span>");
     else
         /* 12345678901 23456789 01  23456789 */
         sprintf (buf, "<span size=\"x-small\">%d</span>", num);
-    but = gtk_button_new_with_label (" ";
+    but = gtk_button_new_with_label (" ");
     gtk_label_set_markup (GTK_LABEL (GTK_BIN (but)->child), buf);
     /* win32 build uses this to turn off themeing */
     g_object_set_data (G_OBJECT (but), "xchat-color", (gpointer) 1);
@@ -1195,9 +1449,9 @@ setup_create_color_page (void)
     gtk_table_set_col_spacings (GTK_TABLE (tab), 3);
     gtk_container_add (GTK_CONTAINER (box), tab);
 
-    setup_create_header (tab, 0, "Text Colors");
+    setup_create_header (tab, 0, N_("Text Colors"));
 
-    label = gtk_label_new ("mIRC colors:");
+    label = gtk_label_new (_("mIRC colors:"));
     gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
     gtk_table_attach (GTK_TABLE (tab), label, 2, 3, 1, 2,
                       GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL,
@@ -1206,7 +1460,7 @@ setup_create_color_page (void)
     for (i = 0; i < 16; i++)
         setup_create_color_button (tab, i, 1, i + 3);
 
-    label = gtk_label_new ("Local colors:");
+    label = gtk_label_new (_("Local colors:"));
     gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
     gtk_table_attach (GTK_TABLE (tab), label, 2, 3, 2, 3,
                       GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL,
@@ -1215,21 +1469,21 @@ setup_create_color_page (void)
     for (i = 16; i < 32; i++)
         setup_create_color_button (tab, i, 2, (i + 3) - 16);
 
-    setup_create_other_color ("Foreground:", COL_FG, 3, tab);
-    setup_create_other_colorR ("Background:", COL_BG, 3, tab);
+    setup_create_other_color (_("Foreground:"), COL_FG, 3, tab);
+    setup_create_other_colorR (_("Background:"), COL_BG, 3, tab);
 
-    setup_create_header (tab, 5, "Marking Text");
+    setup_create_header (tab, 5, N_("Marking Text"));
 
-    setup_create_other_color ("Foreground:", COL_MARK_FG, 6, tab);
-    setup_create_other_colorR ("Background:", COL_MARK_BG, 6, tab);
+    setup_create_other_color (_("Foreground:"), COL_MARK_FG, 6, tab);
+    setup_create_other_colorR (_("Background:"), COL_MARK_BG, 6, tab);
 
-    setup_create_header (tab, 8, "Interface Colors");
+    setup_create_header (tab, 8, N_("Interface Colors"));
 
-    setup_create_other_color ("New data (if enabled):", COL_NEW_DATA, 9, tab);
-    setup_create_other_colorR ("Marker line:", COL_MARKER, 9, tab);
-    setup_create_other_color ("New message:", COL_NEW_MSG, 10, tab);
-    setup_create_other_colorR ("Away user:", COL_AWAY, 10, tab);
-    setup_create_other_color ("Highlight:", COL_HILIGHT, 11, tab);
+    setup_create_other_color (_("New data (if enabled):"), COL_NEW_DATA, 9, tab);
+    setup_create_other_colorR (_("Marker line:"), COL_MARKER, 9, tab);
+    setup_create_other_color (_("New message:"), COL_NEW_MSG, 10, tab);
+    setup_create_other_colorR (_("Away user:"), COL_AWAY, 10, tab);
+    setup_create_other_color (_("Highlight:"), COL_HILIGHT, 11, tab);
 
     return box;
 }
@@ -1316,7 +1570,7 @@ setup_snd_row_cb (GtkTreeSelection * sel, gpointer user_data)
     if (sound_files[n])
         gtk_entry_set_text (GTK_ENTRY (sndfile_entry), sound_files[n]);
     else
-        gtk_entry_set_text (GTK_ENTRY (sndfile_entry), "";
+        gtk_entry_set_text (GTK_ENTRY (sndfile_entry), "");
     ignore_changed = FALSE;
 }
 
@@ -1329,13 +1583,13 @@ setup_snd_add_columns (GtkTreeView * treeview)
     /* event column */
     renderer = gtk_cell_renderer_text_new ();
     gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
-                                                 -1, "Event", renderer,
+                                                 -1, _("Event"), renderer,
                                                  "text", 0, NULL);
 
     /* file column */
     renderer = gtk_cell_renderer_text_new ();
     gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
-                                                 -1, "Sound file",
+                                                 -1, _("Sound file"),
                                                  renderer, "text", 1, NULL);
 
     model =
@@ -1351,7 +1605,7 @@ setup_autotoggle_cb (GtkToggleButton * but, GtkToggleButton * ext)
     if (but->active)
       {
           setup_prefs.soundcmd[0] = 0;
-          gtk_entry_set_text (GTK_ENTRY (sndprog_entry), "";
+          gtk_entry_set_text (GTK_ENTRY (sndprog_entry), "");
           gtk_widget_set_sensitive (sndprog_entry, FALSE);
       }
     else
@@ -1373,7 +1627,7 @@ setup_snd_filereq_cb (GtkWidget * entry, char *file)
 static void
 setup_snd_browse_cb (GtkWidget * button, GtkEntry * entry)
 {
-    gtkutil_file_req ("Select a sound file", setup_snd_filereq_cb, entry,
+    gtkutil_file_req (_("Select a sound file"), setup_snd_filereq_cb, entry,
                       NULL, 0);
 }
 
@@ -1446,7 +1700,7 @@ setup_create_sound_page (void)
     gtk_table_set_row_spacings (GTK_TABLE (table2), 2);
     gtk_table_set_col_spacings (GTK_TABLE (table2), 4);
 
-    label2 = gtk_label_new ("Sound playing method:");
+    label2 = gtk_label_new (_("Sound playing method:"));
     gtk_widget_show (label2);
     gtk_table_attach (GTK_TABLE (table2), label2, 0, 1, 0, 1,
                       (GtkAttachOptions) (GTK_FILL),
@@ -1454,7 +1708,7 @@ setup_create_sound_page (void)
     gtk_misc_set_alignment (GTK_MISC (label2), 0, 0.5);
 
     label3 =
-        gtk_label_new_with_mnemonic ("External sound playing _program:");
+        gtk_label_new_with_mnemonic (_("External sound playing _program:"));
     gtk_widget_show (label3);
     gtk_table_attach (GTK_TABLE (table2), label3, 0, 1, 2, 3,
                       (GtkAttachOptions) (GTK_FILL),
@@ -1472,7 +1726,7 @@ setup_create_sound_page (void)
                       (GtkAttachOptions) (0), 0, 0);
 
     radio_external =
-        gtk_radio_button_new_with_mnemonic (NULL, "_External program");
+        gtk_radio_button_new_with_mnemonic (NULL, _("_External program"));
     gtk_widget_show (radio_external);
     gtk_table_attach (GTK_TABLE (table2), radio_external, 1, 3, 1, 2,
                       (GtkAttachOptions) (GTK_FILL),
@@ -1482,7 +1736,7 @@ setup_create_sound_page (void)
     radio_group =
         gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio_external));
 
-    radio_auto = gtk_radio_button_new_with_mnemonic (NULL, "_Automatic");
+    radio_auto = gtk_radio_button_new_with_mnemonic (NULL, _("_Automatic"));
     g_signal_connect (G_OBJECT (radio_auto), "toggled",
                       G_CALLBACK (setup_autotoggle_cb), radio_external);
     gtk_widget_show (radio_auto);
@@ -1494,7 +1748,7 @@ setup_create_sound_page (void)
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio_auto),
                                   setup_prefs.soundcmd[0] == 0);
 
-    label4 = gtk_label_new_with_mnemonic ("Sound files _directory:");
+    label4 = gtk_label_new_with_mnemonic (_("Sound files _directory:"));
     gtk_widget_show (label4);
     gtk_table_attach (GTK_TABLE (table2), label4, 0, 1, 3, 4,
                       (GtkAttachOptions) (GTK_FILL),
@@ -1533,7 +1787,7 @@ setup_create_sound_page (void)
     gtk_table_set_row_spacings (GTK_TABLE (table1), 2);
     gtk_table_set_col_spacings (GTK_TABLE (table1), 4);
 
-    sound_label = gtk_label_new_with_mnemonic ("Sound file:");
+    sound_label = gtk_label_new_with_mnemonic (_("Sound file:"));
     gtk_widget_show (sound_label);
     gtk_table_attach (GTK_TABLE (table1), sound_label, 0, 1, 0, 1,
                       (GtkAttachOptions) (GTK_FILL),
@@ -1548,7 +1802,7 @@ setup_create_sound_page (void)
                       (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                       (GtkAttachOptions) (0), 0, 0);
 
-    sound_browse = gtk_button_new_with_mnemonic ("_Browse...");
+    sound_browse = gtk_button_new_with_mnemonic (_("_Browse..."));
     g_signal_connect (G_OBJECT (sound_browse), "clicked",
                       G_CALLBACK (setup_snd_browse_cb), sndfile_entry);
     gtk_widget_show (sound_browse);
@@ -1559,7 +1813,7 @@ setup_create_sound_page (void)
 #ifdef GTK_STOCK_MEDIA_PLAY
     sound_play = gtk_button_new_from_stock (GTK_STOCK_MEDIA_PLAY);
 #else
-    sound_play = gtk_button_new_with_mnemonic ("_Play");
+    sound_play = gtk_button_new_with_mnemonic (_("_Play"));
 #endif
     g_signal_connect (G_OBJECT (sound_play), "clicked",
                       G_CALLBACK (setup_snd_play_cb), sndfile_entry);
@@ -1595,7 +1849,7 @@ setup_add_page (const char *title, GtkWidget * book, GtkWidget * tab)
 
     /* label */
     label = gtk_label_new (NULL);
-    snprintf (buf, sizeof (buf), "<b><big>%s</big></b>", title));
+    snprintf (buf, sizeof (buf), "<b><big>%s</big></b>", _(title));
     gtk_label_set_markup (GTK_LABEL (label), buf);
     gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
     gtk_misc_set_padding (GTK_MISC (label), 2, 1);
@@ -1607,24 +1861,23 @@ setup_add_page (const char *title, GtkWidget * book, GtkWidget * tab)
 }
 
 static const char *const cata[] = {
-    "Interface",
-    "Text box",
-    "Input box",
-    "User list",
-    "Channel switcher",
-    "Colors",
-    "Fine tuning",
+    N_("Interface"),
+    N_("Text box"),
+    N_("Input box"),
+    N_("User list"),
+    N_("Channel switcher"),
+    N_("Colors"),
     NULL,
-    "Chatting",
-    "Alerts",
-    "General",
-    "Logging",
-    "Sound",
-/*        "Advanced",*/
+    N_("Chatting"),
+    N_("Alerts"),
+    N_("General"),
+    N_("Logging"),
+    N_("Sound"),
+/*		N_("Advanced"),*/
     NULL,
-    "Network",
-    "Network setup",
-    "File transfers",
+    N_("Network"),
+    N_("Network setup"),
+    N_("File transfers"),
     NULL,
     NULL
 };
@@ -1705,13 +1958,13 @@ setup_create_tree (GtkWidget * box, GtkWidget * book)
     do
       {
           gtk_tree_store_append (model, &iter, NULL);
-          gtk_tree_store_set (model, &iter, 0, cata[i]), 1, -1, -1);
+          gtk_tree_store_set (model, &iter, 0, _(cata[i]), 1, -1, -1);
           i++;
 
           do
             {
                 gtk_tree_store_append (model, &child_iter, &iter);
-                gtk_tree_store_set (model, &child_iter, 0, cata[i]), 1,
+                gtk_tree_store_set (model, &child_iter, 0, _(cata[i]), 1,
                                     page, -1);
                 if (page == last_selected_page)
                     sel_iter = gtk_tree_iter_copy (&child_iter);
@@ -1736,7 +1989,7 @@ setup_create_tree (GtkWidget * box, GtkWidget * book)
 
     renderer = gtk_cell_renderer_text_new ();
     gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tree),
-                                                 -1, "Categories",
+                                                 -1, _("Categories"),
                                                  renderer, "text", 0, NULL);
     gtk_tree_view_expand_all (GTK_TREE_VIEW (tree));
 
@@ -1921,27 +2174,27 @@ setup_apply (struct xchatprefs *pr)
 
     if ((pr->tab_pos == 5 || pr->tab_pos == 6) &&
         pr->tab_layout == 2 && pr->tab_pos != prefs.tab_pos)
-        fe_message ("You cannot place the tree on the top or bottom!\n"
+        fe_message (_("You cannot place the tree on the top or bottom!\n"
                       "Please change to the <b>Tabs</b> layout in the <b>View</b>"
-                      " menu first.", FE_MSG_WARN | FE_MSG_MARKUP);
+                      " menu first."), FE_MSG_WARN | FE_MSG_MARKUP);
 
     memcpy (&prefs, pr, sizeof (prefs));
 
     setup_apply_real (new_pix, do_ulist, do_layout);
 
     if (noapply)
-        fe_message ("Some settings were changed that require a"
-                      " restart to take full effect.", FE_MSG_WARN);
+        fe_message (_("Some settings were changed that require a"
+                      " restart to take full effect."), FE_MSG_WARN);
 
 #ifndef WIN32
     if (prefs.autodccsend == 1)
       {
           if (!strcmp ((char *) g_get_home_dir (), prefs.dccdir))
             {
-                fe_message ("*WARNING*\n"
+                fe_message (_("*WARNING*\n"
                               "Auto accepting DCC to your home directory\n"
                               "can be dangerous and is exploitable. Eg:\n"
-                              "Someone could send you a .bash_profile",
+                              "Someone could send you a .bash_profile"),
                             FE_MSG_WARN);
             }
       }
@@ -1992,6 +2245,13 @@ setup_window_open (void)
     gtk_box_pack_end (GTK_BOX (hbox), hbbox, FALSE, FALSE, 0);
 
     /* standard buttons */
+    /* GNOME doesn't like apply */
+#if 0
+    wid = gtk_button_new_from_stock (GTK_STOCK_APPLY);
+    g_signal_connect (G_OBJECT (wid), "clicked",
+                      G_CALLBACK (setup_apply_cb), win);
+    gtk_box_pack_start (GTK_BOX (hbbox), wid, FALSE, FALSE, 0);
+#endif
 
     cancel_button = wid = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
     g_signal_connect (G_OBJECT (wid), "clicked",

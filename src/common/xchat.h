@@ -210,6 +210,7 @@ struct xchatprefs
     unsigned int servernotice;
     unsigned int wallops;
     unsigned int skipmotd;
+    unsigned int notices_tabs;
     unsigned int autorejoin;
     unsigned int colorednicks;
     unsigned int chanmodebuttons;
@@ -269,7 +270,6 @@ struct xchatprefs
     unsigned int userhost;
     unsigned int irc_whois_front;
     unsigned int use_server_tab;
-    unsigned int notices_tabs;
     unsigned int style_namelistgad;
     unsigned int style_inputbox;
     unsigned int windows_as_tabs;
