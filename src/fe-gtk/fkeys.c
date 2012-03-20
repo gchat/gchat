@@ -141,11 +141,11 @@ static int key_action_move_tab_right (GtkWidget * wid, GdkEventKey * evt,
                                       char *d1, char *d2,
                                       struct session *sess);
 static int key_action_move_tab_family_left (GtkWidget * wid,
-                                            GdkEventKey * evt, char *d1,
-                                            char *d2, struct session *sess);
+        GdkEventKey * evt, char *d1,
+        char *d2, struct session *sess);
 static int key_action_move_tab_family_right (GtkWidget * wid,
-                                             GdkEventKey * evt, char *d1,
-                                             char *d2, struct session *sess);
+        GdkEventKey * evt, char *d1,
+        char *d2, struct session *sess);
 static int key_action_put_history (GtkWidget * wid, GdkEventKey * evt,
                                    char *d1, char *d2, struct session *sess);
 
@@ -154,46 +154,61 @@ static struct key_binding *keys_root = NULL;
 
 static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 
-    {key_action_handle_command, "Run Command",
-     N_
-     ("The \002Run Command\002 action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \002\\n\002 characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \002\\\002 in the actual text run then enter \002\\\\\002")},
-    {key_action_page_switch, "Change Page",
-     N_
-     ("The \002Change Page\002 command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position")},
-    {key_action_insert, "Insert in Buffer",
-     N_
-     ("The \002Insert in Buffer\002 command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position")},
-    {key_action_scroll_page, "Scroll Page",
-     N_
-     ("The \002Scroll Page\002 command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, +1 or -1.")},
-    {key_action_set_buffer, "Set Buffer",
-     N_
-     ("The \002Set Buffer\002 command sets the entry where the key sequence was entered to the contents of Data 1")},
-    {key_action_history_up, "Last Command",
-     N_
-     ("The \002Last Command\002 command sets the entry to contain the last command entered - the same as pressing up in a shell")},
-    {key_action_history_down, "Next Command",
-     N_
-     ("The \002Next Command\002 command sets the entry to contain the next command entered - the same as pressing down in a shell")},
-    {key_action_tab_comp, "Complete nick/command",
-     N_
-     ("This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next")},
-    {key_action_comp_chng, "Change Selected Nick",
-     N_
-     ("This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down")},
-    {key_action_replace, "Check For Replace",
-     N_
-     ("This command checks the last word entered in the entry against the replace list and replaces it if it finds a match")},
-    {key_action_move_tab_left, "Move front tab left",
-     N_("This command moves the front tab left by one")},
-    {key_action_move_tab_right, "Move front tab right",
-     N_("This command moves the front tab right by one")},
-    {key_action_move_tab_family_left, "Move tab family left",
-     N_("This command moves the current tab family to the left")},
-    {key_action_move_tab_family_right, "Move tab family right",
-     N_("This command moves the current tab family to the right")},
-    {key_action_put_history, "Push input line into history",
-     N_("Push input line into history but doesn't send to server")},
+    {   key_action_handle_command, "Run Command",
+        N_
+        ("The \002Run Command\002 action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \002\\n\002 characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \002\\\002 in the actual text run then enter \002\\\\\002")
+    },
+    {   key_action_page_switch, "Change Page",
+        N_
+        ("The \002Change Page\002 command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position")
+    },
+    {   key_action_insert, "Insert in Buffer",
+        N_
+        ("The \002Insert in Buffer\002 command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position")
+    },
+    {   key_action_scroll_page, "Scroll Page",
+        N_
+        ("The \002Scroll Page\002 command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, +1 or -1.")
+    },
+    {   key_action_set_buffer, "Set Buffer",
+        N_
+        ("The \002Set Buffer\002 command sets the entry where the key sequence was entered to the contents of Data 1")
+    },
+    {   key_action_history_up, "Last Command",
+        N_
+        ("The \002Last Command\002 command sets the entry to contain the last command entered - the same as pressing up in a shell")
+    },
+    {   key_action_history_down, "Next Command",
+        N_
+        ("The \002Next Command\002 command sets the entry to contain the next command entered - the same as pressing down in a shell")
+    },
+    {   key_action_tab_comp, "Complete nick/command",
+        N_
+        ("This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next")
+    },
+    {   key_action_comp_chng, "Change Selected Nick",
+        N_
+        ("This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down")
+    },
+    {   key_action_replace, "Check For Replace",
+        N_
+        ("This command checks the last word entered in the entry against the replace list and replaces it if it finds a match")
+    },
+    {   key_action_move_tab_left, "Move front tab left",
+        N_("This command moves the front tab left by one")
+    },
+    {   key_action_move_tab_right, "Move front tab right",
+        N_("This command moves the front tab right by one")
+    },
+    {   key_action_move_tab_family_left, "Move tab family left",
+        N_("This command moves the current tab family to the left")
+    },
+    {   key_action_move_tab_family_right, "Move tab family right",
+        N_("This command moves the current tab family to the right")
+    },
+    {   key_action_put_history, "Push input line into history",
+        N_("Push input line into history but doesn't send to server")
+    },
 };
 
 void
@@ -201,12 +216,12 @@ key_init ()
 {
     keys_root = NULL;
     if (key_load_kbs (NULL) == 1)
-      {
-          key_load_defaults ();
-          if (key_load_kbs (NULL) == 1)
-              fe_message (_("There was an error loading key"
-                            " bindings configuration"), FE_MSG_ERROR);
-      }
+    {
+        key_load_defaults ();
+        if (key_load_kbs (NULL) == 1)
+            fe_message (_("There was an error loading key"
+                          " bindings configuration"), FE_MSG_ERROR);
+    }
 }
 
 static char *
@@ -240,10 +255,10 @@ key_get_key_name (int keyval)
    * key bindings are stored in a linked list of key_binding structs
    * which looks like {
    int keyval;  GDK keynumber
-   char *keyname;  String with the name of the function 
-   int action;  Index into key_actions 
-   int mod; Flags of STATE_* above 
-   char *data1, *data2;  Pointers to strings, these must be freed 
+   char *keyname;  String with the name of the function
+   int action;  Index into key_actions
+   int mod; Flags of STATE_* above
+   char *data1, *data2;  Pointers to strings, these must be freed
    struct key_binding *next;
    }
    * remember that is (data1 || data2) != NULL then they need to be free()'ed
@@ -263,22 +278,22 @@ key_handle_key_press (GtkWidget * wid, GdkEventKey * evt, session * sess)
     /* where did this event come from? */
     list = sess_list;
     while (list)
-      {
-          sess = list->data;
-          if (sess->gui->input_box == wid)
-            {
-                if (sess->gui->is_tab)
-                    sess = current_tab;
-                break;
-            }
-          list = list->next;
-      }
+    {
+        sess = list->data;
+        if (sess->gui->input_box == wid)
+        {
+            if (sess->gui->is_tab)
+                sess = current_tab;
+            break;
+        }
+        list = list->next;
+    }
     if (!list)
         return FALSE;
     current_sess = sess;
 
     if (plugin_emit_keypress
-        (sess, evt->state, evt->keyval, evt->length, evt->string))
+            (sess, evt->state, evt->keyval, evt->length, evt->string))
         return 1;
 
     /* maybe the plugin closed this tab? */
@@ -289,54 +304,54 @@ key_handle_key_press (GtkWidget * wid, GdkEventKey * evt, session * sess)
 
     kb = keys_root;
     while (kb)
-      {
-          if (kb->keyval == keyval && kb->mod == mod)
-            {
-                if (kb->action < 0 || kb->action > KEY_MAX_ACTIONS)
-                    return 0;
+    {
+        if (kb->keyval == keyval && kb->mod == mod)
+        {
+            if (kb->action < 0 || kb->action > KEY_MAX_ACTIONS)
+                return 0;
 
-                /* Bump this binding to the top of the list */
-                if (last != NULL)
-                  {
-                      last->next = kb->next;
-                      kb->next = keys_root;
-                      keys_root = kb;
-                  }
-                /* Run the function */
-                n = key_actions[kb->action].handler (wid, evt, kb->data1,
-                                                     kb->data2, sess);
-                switch (n)
-                  {
-                  case 0:
-                      return 1;
-                  case 2:
-                      g_signal_stop_emission_by_name (G_OBJECT (wid),
-                                                      "key_press_event");
-                      return 1;
-                  }
+            /* Bump this binding to the top of the list */
+            if (last != NULL)
+            {
+                last->next = kb->next;
+                kb->next = keys_root;
+                keys_root = kb;
             }
-          last = kb;
-          kb = kb->next;
-      }
-
-    switch (keyval)
-      {
-      case GDK_space:
-          key_action_tab_clean ();
-          break;
-
-#if defined(USE_GTKSPELL) && !defined(WIN32)
-          /* gtktextview has no 'activate' event, so we trap ENTER here */
-      case GDK_Return:
-      case GDK_KP_Enter:
-          if (!(evt->state & GDK_CONTROL_MASK))
+            /* Run the function */
+            n = key_actions[kb->action].handler (wid, evt, kb->data1,
+                                                 kb->data2, sess);
+            switch (n)
             {
+            case 0:
+                return 1;
+            case 2:
                 g_signal_stop_emission_by_name (G_OBJECT (wid),
                                                 "key_press_event");
-                mg_inputbox_cb (wid, sess->gui);
+                return 1;
             }
+        }
+        last = kb;
+        kb = kb->next;
+    }
+
+    switch (keyval)
+    {
+    case GDK_space:
+        key_action_tab_clean ();
+        break;
+
+#if defined(USE_GTKSPELL) && !defined(WIN32)
+        /* gtktextview has no 'activate' event, so we trap ENTER here */
+    case GDK_Return:
+    case GDK_KP_Enter:
+        if (!(evt->state & GDK_CONTROL_MASK))
+        {
+            g_signal_stop_emission_by_name (G_OBJECT (wid),
+                                            "key_press_event");
+            mg_inputbox_cb (wid, sess->gui);
+        }
 #endif
-      }
+    }
 
     return 0;
 }
@@ -368,23 +383,23 @@ key_make_mod_str (int mod, char *buf)
     int i = 0;
 
     if (mod & STATE_CTRL)
-      {
-          if (i)
-              buf[i++] = '-';
-          buf[i++] = 'C';
-      }
+    {
+        if (i)
+            buf[i++] = '-';
+        buf[i++] = 'C';
+    }
     if (mod & STATE_ALT)
-      {
-          if (i)
-              buf[i++] = '-';
-          buf[i++] = 'A';
-      }
+    {
+        if (i)
+            buf[i++] = '-';
+        buf[i++] = 'A';
+    }
     if (mod & STATE_SHIFT)
-      {
-          if (i)
-              buf[i++] = '-';
-          buf[i++] = 'S';
-      }
+    {
+        if (i)
+            buf[i++] = '-';
+        buf[i++] = 'S';
+    }
     buf[i] = 0;
     return buf;
 }
@@ -487,34 +502,34 @@ key_dialog_delete (GtkWidget * button, GtkCList * list)
     int row = gtkutil_clist_selection ((GtkWidget *) list);
 
     if (row != -1)
-      {
-          kb = gtk_clist_get_row_data (list, row);
-          cur = keys_root;
-          last = NULL;
-          while (cur)
+    {
+        kb = gtk_clist_get_row_data (list, row);
+        cur = keys_root;
+        last = NULL;
+        while (cur)
+        {
+            if (cur == kb)
             {
-                if (cur == kb)
-                  {
-                      if (last)
-                          last->next = kb->next;
-                      else
-                          keys_root = kb->next;
+                if (last)
+                    last->next = kb->next;
+                else
+                    keys_root = kb->next;
 
-                      if (kb->data1)
-                          free (kb->data1);
-                      if (kb->data2)
-                          free (kb->data2);
-                      free (kb);
-                      gtk_clist_remove (list, row);
-                      return;
-                  }
-                last = cur;
-                cur = cur->next;
+                if (kb->data1)
+                    free (kb->data1);
+                if (kb->data2)
+                    free (kb->data2);
+                free (kb);
+                gtk_clist_remove (list, row);
+                return;
             }
-          printf ("*** key_dialog_delete: couldn't find kb in list!\n");
-          /*if (getenv ("XCHAT_DEBUG"))
-             abort (); */
-      }
+            last = cur;
+            cur = cur->next;
+        }
+        printf ("*** key_dialog_delete: couldn't find kb in list!\n");
+        /*if (getenv ("XCHAT_DEBUG"))
+           abort (); */
+    }
 }
 
 static void
@@ -534,17 +549,17 @@ key_dialog_sel_act (GtkWidget * un, int num)
     struct key_binding *kb;
 
     if (row != -1)
-      {
-          kb = gtk_clist_get_row_data (GTK_CLIST (key_dialog_kb_clist), row);
-          kb->action = num;
-          gtk_clist_set_text (GTK_CLIST (key_dialog_kb_clist), row, 2,
-                              _(key_actions[num].name));
-          if (key_actions[num].help)
-            {
-                key_print_text (GTK_XTEXT (key_dialog_text),
-                                _(key_actions[num].help));
-            }
-      }
+    {
+        kb = gtk_clist_get_row_data (GTK_CLIST (key_dialog_kb_clist), row);
+        kb->action = num;
+        gtk_clist_set_text (GTK_CLIST (key_dialog_kb_clist), row, 2,
+                            _(key_actions[num].name));
+        if (key_actions[num].help)
+        {
+            key_print_text (GTK_XTEXT (key_dialog_text),
+                            _(key_actions[num].help));
+        }
+    }
 }
 
 static void
@@ -554,20 +569,20 @@ key_dialog_sel_row (GtkWidget * clist, gint row, gint column,
     struct key_binding *kb = gtk_clist_get_row_data (GTK_CLIST (clist), row);
 
     if (kb == NULL)
-      {
-          printf ("*** key_dialog_sel_row: kb == NULL\n");
-          abort ();
-      }
+    {
+        printf ("*** key_dialog_sel_row: kb == NULL\n");
+        abort ();
+    }
     if (kb->action > -1 && kb->action <= KEY_MAX_ACTIONS)
-      {
-          gtk_option_menu_set_history (GTK_OPTION_MENU (key_dialog_act_menu),
-                                       kb->action);
-          if (key_actions[kb->action].help)
-            {
-                key_print_text (GTK_XTEXT (key_dialog_text),
-                                _(key_actions[kb->action].help));
-            }
-      }
+    {
+        gtk_option_menu_set_history (GTK_OPTION_MENU (key_dialog_act_menu),
+                                     kb->action);
+        if (key_actions[kb->action].help)
+        {
+            key_print_text (GTK_XTEXT (key_dialog_text),
+                            _(key_actions[kb->action].help));
+        }
+    }
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (key_dialog_tog_c),
                                   (kb->mod & STATE_CTRL) == STATE_CTRL);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (key_dialog_tog_s),
@@ -636,17 +651,17 @@ key_dialog_make_entry (char *label, char *act, void *callback, void *option,
 
     hbox = gtk_hbox_new (0, 2);
     if (label)
-      {
-          wid = gtk_label_new (label);
-          gtk_widget_show (wid);
-          gtk_box_pack_start (GTK_BOX (hbox), wid, 0, 0, 0);
-      }
+    {
+        wid = gtk_label_new (label);
+        gtk_widget_show (wid);
+        gtk_box_pack_start (GTK_BOX (hbox), wid, 0, 0, 0);
+    }
     wid = gtk_entry_new ();
     if (act)
-      {
-          gtk_signal_connect (GTK_OBJECT (wid), act,
-                              GTK_SIGNAL_FUNC (callback), option);
-      }
+    {
+        gtk_signal_connect (GTK_OBJECT (wid), act,
+                            GTK_SIGNAL_FUNC (callback), option);
+    }
     gtk_box_pack_start (GTK_BOX (hbox), wid, 0, 0, 0);
     gtk_widget_show (wid);
     gtk_widget_show (hbox);
@@ -691,23 +706,23 @@ key_dialog_set_data (GtkWidget * entry, int d)
 
     kb = gtk_clist_get_row_data (GTK_CLIST (key_dialog_kb_clist), row);
     if (d == 0)
-      {                         /* using data1 */
-          if (kb->data1)
-              free (kb->data1);
-          buf = (char *) malloc (len);
-          memcpy (buf, text, len);
-          kb->data1 = buf;
-          gtk_clist_set_text (GTK_CLIST (key_dialog_kb_clist), row, 3, text);
-      }
+    {   /* using data1 */
+        if (kb->data1)
+            free (kb->data1);
+        buf = (char *) malloc (len);
+        memcpy (buf, text, len);
+        kb->data1 = buf;
+        gtk_clist_set_text (GTK_CLIST (key_dialog_kb_clist), row, 3, text);
+    }
     else
-      {
-          if (kb->data2)
-              free (kb->data2);
-          buf = (char *) malloc (len);
-          memcpy (buf, text, len);
-          kb->data2 = buf;
-          gtk_clist_set_text (GTK_CLIST (key_dialog_kb_clist), row, 4, text);
-      }
+    {
+        if (kb->data2)
+            free (kb->data2);
+        buf = (char *) malloc (len);
+        memcpy (buf, text, len);
+        kb->data2 = buf;
+        gtk_clist_set_text (GTK_CLIST (key_dialog_kb_clist), row, 4, text);
+    }
 }
 
 void
@@ -724,10 +739,10 @@ key_dialog_show ()
     titles[2] = _("Action");
 
     if (key_dialog)
-      {
-          mg_bring_tofront (key_dialog);
-          return;
-      }
+    {
+        mg_bring_tofront (key_dialog);
+        return;
+    }
 
     key_dialog =
         mg_create_generic_tab ("editkeys", _("XChat: Keyboard Shortcuts"),
@@ -752,29 +767,29 @@ key_dialog_show ()
     gtk_clist_set_column_width (GTK_CLIST (list), 4, 50);
 
     while (kb)
-      {
-          titles[0] = key_make_mod_str (kb->mod, temp);
-          titles[1] = kb->keyname;
-          if (kb->action < 0 || kb->action > KEY_MAX_ACTIONS)
-              titles[2] = _("<none>");
-          else
-              titles[2] = key_actions[kb->action].name;
-          if (kb->data1)
-              titles[3] = kb->data1;
-          else
-              titles[3] = _("<none>");
+    {
+        titles[0] = key_make_mod_str (kb->mod, temp);
+        titles[1] = kb->keyname;
+        if (kb->action < 0 || kb->action > KEY_MAX_ACTIONS)
+            titles[2] = _("<none>");
+        else
+            titles[2] = key_actions[kb->action].name;
+        if (kb->data1)
+            titles[3] = kb->data1;
+        else
+            titles[3] = _("<none>");
 
-          if (kb->data2)
-              titles[4] = kb->data2;
-          else
-              titles[4] = _("<none>");
+        if (kb->data2)
+            titles[4] = kb->data2;
+        else
+            titles[4] = _("<none>");
 
-          gtk_clist_set_row_data (GTK_CLIST (list),
-                                  gtk_clist_append (GTK_CLIST (list), titles),
-                                  kb);
+        gtk_clist_set_row_data (GTK_CLIST (list),
+                                gtk_clist_append (GTK_CLIST (list), titles),
+                                kb);
 
-          kb = kb->next;
-      }
+        kb = kb->next;
+    }
 
     vbox2 = gtk_vbox_new (0, 2);
     gtk_box_pack_end (GTK_BOX (hbox), vbox2, 1, 1, 0);
@@ -794,14 +809,14 @@ key_dialog_show ()
     wid2 = gtk_menu_new ();
 
     for (i = 0; i <= KEY_MAX_ACTIONS; i++)
-      {
-          wid3 = gtk_menu_item_new_with_label (_(key_actions[i].name));
-          gtk_widget_show (wid3);
-          gtk_menu_shell_append (GTK_MENU_SHELL (wid2), wid3);
-          gtk_signal_connect (GTK_OBJECT (wid3), "activate",
-                              GTK_SIGNAL_FUNC (key_dialog_sel_act),
-                              GINT_TO_POINTER (i));
-      }
+    {
+        wid3 = gtk_menu_item_new_with_label (_(key_actions[i].name));
+        gtk_widget_show (wid3);
+        gtk_menu_shell_append (GTK_MENU_SHELL (wid2), wid3);
+        gtk_signal_connect (GTK_OBJECT (wid3), "activate",
+                            GTK_SIGNAL_FUNC (key_dialog_sel_act),
+                            GINT_TO_POINTER (i));
+    }
 
     gtk_option_menu_set_menu (GTK_OPTION_MENU (wid), wid2);
     gtk_option_menu_set_history (GTK_OPTION_MENU (wid), 0);
@@ -810,22 +825,22 @@ key_dialog_show ()
     key_dialog_act_menu = wid;
 
     key_dialog_tog_s = key_dialog_make_toggle (_("Shift"), key_dialog_tog_key,
-                                               (void *) STATE_SHIFT, vbox2);
+                       (void *) STATE_SHIFT, vbox2);
     key_dialog_tog_a = key_dialog_make_toggle (_("Alt"), key_dialog_tog_key,
-                                               (void *) STATE_ALT, vbox2);
+                       (void *) STATE_ALT, vbox2);
     key_dialog_tog_c = key_dialog_make_toggle (_("Ctrl"), key_dialog_tog_key,
-                                               (void *) STATE_CTRL, vbox2);
+                       (void *) STATE_CTRL, vbox2);
 
     key_dialog_ent_key = key_dialog_make_entry (_("Key"), "key_press_event",
-                                                key_dialog_set_key, NULL,
-                                                vbox2);
+                         key_dialog_set_key, NULL,
+                         vbox2);
 
     key_dialog_ent_d1 = key_dialog_make_entry (_("Data 1"), "activate",
-                                               key_dialog_set_data, NULL,
-                                               vbox2);
+                        key_dialog_set_data, NULL,
+                        vbox2);
     key_dialog_ent_d2 = key_dialog_make_entry (_("Data 2"), "activate",
-                                               key_dialog_set_data,
-                                               (void *) 1, vbox2);
+                        key_dialog_set_data,
+                        (void *) 1, vbox2);
 
     hbox2 = gtk_hbox_new (0, 2);
     gtk_box_pack_end (GTK_BOX (vbox), hbox2, 0, 0, 1);
@@ -865,10 +880,10 @@ key_save_kbs (char *fn)
         fd = xchat_open_file (fn, O_CREAT | O_TRUNC | O_WRONLY,
                               0x180, XOF_DOMODE | XOF_FULLPATH);
     if (fd < 0)
-      {
-          fe_message (_("Error opening keys config file\n"), FE_MSG_ERROR);
-          return;
-      }
+    {
+        fe_message (_("Error opening keys config file\n"), FE_MSG_ERROR);
+        return;
+    }
     write (fd, buf,
            snprintf (buf, 510, "# XChat key bindings config file\n\n"));
 
@@ -876,49 +891,49 @@ key_save_kbs (char *fn)
     i = 0;
 
     while (kb)
-      {
-          if (kb->keyval == -1 || kb->keyname == NULL || kb->action < 0)
-            {
-                kb = kb->next;
-                continue;
-            }
-          i = 0;
-          if (kb->mod & STATE_CTRL)
-            {
-                i++;
-                write (fd, "C", 1);
-            }
-          if (kb->mod & STATE_ALT)
-            {
-                i++;
-                write (fd, "A", 1);
-            }
-          if (kb->mod & STATE_SHIFT)
-            {
-                i++;
-                write (fd, "S", 1);
-            }
-          if (i == 0)
-              write (fd, "None\n", 5);
-          else
-              write (fd, "\n", 1);
+    {
+        if (kb->keyval == -1 || kb->keyname == NULL || kb->action < 0)
+        {
+            kb = kb->next;
+            continue;
+        }
+        i = 0;
+        if (kb->mod & STATE_CTRL)
+        {
+            i++;
+            write (fd, "C", 1);
+        }
+        if (kb->mod & STATE_ALT)
+        {
+            i++;
+            write (fd, "A", 1);
+        }
+        if (kb->mod & STATE_SHIFT)
+        {
+            i++;
+            write (fd, "S", 1);
+        }
+        if (i == 0)
+            write (fd, "None\n", 5);
+        else
+            write (fd, "\n", 1);
 
-          write (fd, buf, snprintf (buf, 510, "%s\n%s\n", kb->keyname,
-                                    key_actions[kb->action].name));
-          if (kb->data1 && kb->data1[0])
-              write (fd, buf, snprintf (buf, 510, "D1:%s\n", kb->data1));
-          else
-              write (fd, "D1!\n", 4);
+        write (fd, buf, snprintf (buf, 510, "%s\n%s\n", kb->keyname,
+                                  key_actions[kb->action].name));
+        if (kb->data1 && kb->data1[0])
+            write (fd, buf, snprintf (buf, 510, "D1:%s\n", kb->data1));
+        else
+            write (fd, "D1!\n", 4);
 
-          if (kb->data2 && kb->data2[0])
-              write (fd, buf, snprintf (buf, 510, "D2:%s\n", kb->data2));
-          else
-              write (fd, "D2!\n", 4);
+        if (kb->data2 && kb->data2[0])
+            write (fd, buf, snprintf (buf, 510, "D2:%s\n", kb->data2));
+        else
+            write (fd, "D2!\n", 4);
 
-          write (fd, "\n", 1);
+        write (fd, "\n", 1);
 
-          kb = kb->next;
-      }
+        kb = kb->next;
+    }
 
     close (fd);
 }
@@ -936,33 +951,33 @@ key_load_kbs_helper_mod (char *in, int *out)
         in++;
     len = strlen (in);
     while (in[len] == ' ' || in[len] == '\t')
-      {
-          in[len] = 0;
-          len--;
-      }
+    {
+        in[len] = 0;
+        len--;
+    }
 
     if (strcmp (in, "None") == 0)
-      {
-          *out = 0;
-          return 0;
-      }
+    {
+        *out = 0;
+        return 0;
+    }
     for (n = 0; n < len; n++)
-      {
-          switch (in[n])
-            {
-            case 'C':
-                mod |= STATE_CTRL;
-                break;
-            case 'A':
-                mod |= STATE_ALT;
-                break;
-            case 'S':
-                mod |= STATE_SHIFT;
-                break;
-            default:
-                return 1;
-            }
-      }
+    {
+        switch (in[n])
+        {
+        case 'C':
+            mod |= STATE_CTRL;
+            break;
+        case 'A':
+            mod |= STATE_ALT;
+            break;
+        case 'S':
+            mod |= STATE_SHIFT;
+            break;
+        default:
+            return 1;
+        }
+    }
 
     *out = mod;
     return 0;
@@ -999,172 +1014,172 @@ key_load_kbs (char *filename)
     close (fd);
 
     while (buf_get_line (ibuf, &buf, &pnt, st.st_size))
-      {
-          if (buf[0] == '#')
-              continue;
-          if (strlen (buf) == 0)
-              continue;
+    {
+        if (buf[0] == '#')
+            continue;
+        if (strlen (buf) == 0)
+            continue;
 
-          switch (state)
+        switch (state)
+        {
+        case KBSTATE_MOD:
+            kb = (struct key_binding *)
+                 malloc (sizeof (struct key_binding));
+            if (key_load_kbs_helper_mod (buf, &kb->mod))
+                goto corrupt_file;
+            state = KBSTATE_KEY;
+            continue;
+        case KBSTATE_KEY:
+            /* First strip off the fluff */
+            while (buf[0] == ' ' || buf[0] == '\t')
+                buf++;
+            len = strlen (buf);
+            while (buf[len] == ' ' || buf[len] == '\t')
             {
-            case KBSTATE_MOD:
-                kb = (struct key_binding *)
-                    malloc (sizeof (struct key_binding));
-                if (key_load_kbs_helper_mod (buf, &kb->mod))
+                buf[len] = 0;
+                len--;
+            }
+
+            n = gdk_keyval_from_name (buf);
+            if (n == 0)
+            {
+                /* Unknown keyname, abort */
+                if (last)
+                    last->next = NULL;
+                free (ibuf);
+                ibuf = malloc (1024);
+                snprintf (ibuf, 1024,
+                          _
+                          ("Unknown keyname %s in key bindings config file\nLoad aborted, please fix %s/keybindings.conf\n"),
+                          buf, get_xdir_utf8 ());
+                fe_message (ibuf, FE_MSG_ERROR);
+                free (ibuf);
+                return 2;
+            }
+            kb->keyname = gdk_keyval_name (n);
+            kb->keyval = n;
+
+            state = KBSTATE_ACT;
+            continue;
+        case KBSTATE_ACT:
+            /* First strip off the fluff */
+            while (buf[0] == ' ' || buf[0] == '\t')
+                buf++;
+            len = strlen (buf);
+            while (buf[len] == ' ' || buf[len] == '\t')
+            {
+                buf[len] = 0;
+                len--;
+            }
+
+            for (n = 0; n < KEY_MAX_ACTIONS + 1; n++)
+            {
+                if (strcmp (key_actions[n].name, buf) == 0)
+                {
+                    kb->action = n;
+                    break;
+                }
+            }
+
+            if (n == KEY_MAX_ACTIONS + 1)
+            {
+                if (last)
+                    last->next = NULL;
+                free (ibuf);
+                ibuf = malloc (1024);
+                snprintf (ibuf, 1024,
+                          _
+                          ("Unknown action %s in key bindings config file\nLoad aborted, Please fix %s/keybindings\n"),
+                          buf, get_xdir_utf8 ());
+                fe_message (ibuf, FE_MSG_ERROR);
+                free (ibuf);
+                return 3;
+            }
+            state = KBSTATE_DT1;
+            continue;
+        case KBSTATE_DT1:
+        case KBSTATE_DT2:
+            if (state == KBSTATE_DT1)
+                kb->data1 = kb->data2 = NULL;
+
+            while (buf[0] == ' ' || buf[0] == '\t')
+                buf++;
+
+            if (buf[0] != 'D')
+            {
+                free (ibuf);
+                ibuf = malloc (1024);
+                snprintf (ibuf, 1024,
+                          _
+                          ("Expecting Data line (beginning Dx{:|!}) but got:\n%s\n\nLoad aborted, Please fix %s/keybindings\n"),
+                          buf, get_xdir_utf8 ());
+                fe_message (ibuf, FE_MSG_ERROR);
+                free (ibuf);
+                return 4;
+            }
+            switch (buf[1])
+            {
+            case '1':
+                if (state != KBSTATE_DT1)
                     goto corrupt_file;
-                state = KBSTATE_KEY;
-                continue;
-            case KBSTATE_KEY:
-                /* First strip off the fluff */
-                while (buf[0] == ' ' || buf[0] == '\t')
-                    buf++;
+                break;
+            case '2':
+                if (state != KBSTATE_DT2)
+                    goto corrupt_file;
+                break;
+            default:
+                goto corrupt_file;
+            }
+
+            if (buf[2] == ':')
+            {
                 len = strlen (buf);
-                while (buf[len] == ' ' || buf[len] == '\t')
-                  {
-                      buf[len] = 0;
-                      len--;
-                  }
-
-                n = gdk_keyval_from_name (buf);
-                if (n == 0)
-                  {
-                      /* Unknown keyname, abort */
-                      if (last)
-                          last->next = NULL;
-                      free (ibuf);
-                      ibuf = malloc (1024);
-                      snprintf (ibuf, 1024,
-                                _
-                                ("Unknown keyname %s in key bindings config file\nLoad aborted, please fix %s/keybindings.conf\n"),
-                                buf, get_xdir_utf8 ());
-                      fe_message (ibuf, FE_MSG_ERROR);
-                      free (ibuf);
-                      return 2;
-                  }
-                kb->keyname = gdk_keyval_name (n);
-                kb->keyval = n;
-
-                state = KBSTATE_ACT;
-                continue;
-            case KBSTATE_ACT:
-                /* First strip off the fluff */
-                while (buf[0] == ' ' || buf[0] == '\t')
-                    buf++;
-                len = strlen (buf);
-                while (buf[len] == ' ' || buf[len] == '\t')
-                  {
-                      buf[len] = 0;
-                      len--;
-                  }
-
-                for (n = 0; n < KEY_MAX_ACTIONS + 1; n++)
-                  {
-                      if (strcmp (key_actions[n].name, buf) == 0)
-                        {
-                            kb->action = n;
-                            break;
-                        }
-                  }
-
-                if (n == KEY_MAX_ACTIONS + 1)
-                  {
-                      if (last)
-                          last->next = NULL;
-                      free (ibuf);
-                      ibuf = malloc (1024);
-                      snprintf (ibuf, 1024,
-                                _
-                                ("Unknown action %s in key bindings config file\nLoad aborted, Please fix %s/keybindings\n"),
-                                buf, get_xdir_utf8 ());
-                      fe_message (ibuf, FE_MSG_ERROR);
-                      free (ibuf);
-                      return 3;
-                  }
-                state = KBSTATE_DT1;
-                continue;
-            case KBSTATE_DT1:
-            case KBSTATE_DT2:
+                /* Add one for the NULL, subtract 3 for the "Dx:" */
+                len++;
+                len -= 3;
                 if (state == KBSTATE_DT1)
-                    kb->data1 = kb->data2 = NULL;
-
-                while (buf[0] == ' ' || buf[0] == '\t')
-                    buf++;
-
-                if (buf[0] != 'D')
-                  {
-                      free (ibuf);
-                      ibuf = malloc (1024);
-                      snprintf (ibuf, 1024,
-                                _
-                                ("Expecting Data line (beginning Dx{:|!}) but got:\n%s\n\nLoad aborted, Please fix %s/keybindings\n"),
-                                buf, get_xdir_utf8 ());
-                      fe_message (ibuf, FE_MSG_ERROR);
-                      free (ibuf);
-                      return 4;
-                  }
-                switch (buf[1])
-                  {
-                  case '1':
-                      if (state != KBSTATE_DT1)
-                          goto corrupt_file;
-                      break;
-                  case '2':
-                      if (state != KBSTATE_DT2)
-                          goto corrupt_file;
-                      break;
-                  default:
-                      goto corrupt_file;
-                  }
-
-                if (buf[2] == ':')
-                  {
-                      len = strlen (buf);
-                      /* Add one for the NULL, subtract 3 for the "Dx:" */
-                      len++;
-                      len -= 3;
-                      if (state == KBSTATE_DT1)
-                        {
-                            kb->data1 = malloc (len);
-                            memcpy (kb->data1, &buf[3], len);
-                        }
-                      else
-                        {
-                            kb->data2 = malloc (len);
-                            memcpy (kb->data2, &buf[3], len);
-                        }
-                  }
-                else if (buf[2] == '!')
-                  {
-                      if (state == KBSTATE_DT1)
-                          kb->data1 = NULL;
-                      else
-                          kb->data2 = NULL;
-                  }
-                if (state == KBSTATE_DT1)
-                  {
-                      state = KBSTATE_DT2;
-                      continue;
-                  }
+                {
+                    kb->data1 = malloc (len);
+                    memcpy (kb->data1, &buf[3], len);
+                }
                 else
-                  {
-                      if (last)
-                          last->next = kb;
-                      else
-                          keys_root = kb;
-                      last = kb;
-
-                      state = KBSTATE_MOD;
-                  }
-
+                {
+                    kb->data2 = malloc (len);
+                    memcpy (kb->data2, &buf[3], len);
+                }
+            }
+            else if (buf[2] == '!')
+            {
+                if (state == KBSTATE_DT1)
+                    kb->data1 = NULL;
+                else
+                    kb->data2 = NULL;
+            }
+            if (state == KBSTATE_DT1)
+            {
+                state = KBSTATE_DT2;
                 continue;
             }
-      }
+            else
+            {
+                if (last)
+                    last->next = kb;
+                else
+                    keys_root = kb;
+                last = kb;
+
+                state = KBSTATE_MOD;
+            }
+
+            continue;
+        }
+    }
     if (last)
         last->next = NULL;
     free (ibuf);
     return 0;
 
-  corrupt_file:
+corrupt_file:
     /*if (getenv ("XCHAT_DEBUG"))
        abort (); */
     snprintf (ibuf, 1024,
@@ -1194,25 +1209,25 @@ key_action_handle_command (GtkWidget * wid, GdkEventKey * evt, char *d1,
 
     /* Replace each "\n" substring with '\n' */
     for (ii = oi = 0; ii < len; ii++)
-      {
-          d = d1[ii];
-          if (d == '\\')
+    {
+        d = d1[ii];
+        if (d == '\\')
+        {
+            ii++;
+            d = d1[ii];
+            if (d == 'n')
+                out[oi++] = '\n';
+            else if (d == '\\')
+                out[oi++] = '\\';
+            else
             {
-                ii++;
-                d = d1[ii];
-                if (d == 'n')
-                    out[oi++] = '\n';
-                else if (d == '\\')
-                    out[oi++] = '\\';
-                else
-                  {
-                      out[oi++] = '\\';
-                      out[oi++] = d;
-                  }
-                continue;
+                out[oi++] = '\\';
+                out[oi++] = d;
             }
-          out[oi++] = d;
-      }
+            continue;
+        }
+        out[oi++] = d;
+    }
     out[oi] = 0;
 
     handle_multiline (sess, out, 0, 0);
@@ -1233,15 +1248,15 @@ key_action_page_switch (GtkWidget * wid, GdkEventKey * evt, char *d1,
         return 1;
 
     for (i = 0; i < len; i++)
-      {
-          if (d1[i] < '0' || d1[i] > '9')
-            {
-                if (i == 0 && (d1[i] == '+' || d1[i] == '-'))
-                    continue;
-                else
-                    return 1;
-            }
-      }
+    {
+        if (d1[i] < '0' || d1[i] > '9')
+        {
+            if (i == 0 && (d1[i] == '+' || d1[i] == '-'))
+                continue;
+            else
+                return 1;
+        }
+    }
 
     num = atoi (d1);
     if (!d2)
@@ -1280,14 +1295,14 @@ key_action_scroll_page (GtkWidget * wid, GdkEventKey * evt, char *d1,
     int type = PAGE_DOWN;
 
     if (d1)
-      {
-          if (!strcasecmp (d1, "up"))
-              type = PAGE_UP;
-          else if (!strcasecmp (d1, "+1"))
-              type = LINE_DOWN;
-          else if (!strcasecmp (d1, "-1"))
-              type = LINE_UP;
-      }
+    {
+        if (!strcasecmp (d1, "up"))
+            type = PAGE_UP;
+        else if (!strcasecmp (d1, "+1"))
+            type = LINE_DOWN;
+        else if (!strcasecmp (d1, "-1"))
+            type = LINE_UP;
+    }
 
     if (!sess)
         return 0;
@@ -1296,23 +1311,23 @@ key_action_scroll_page (GtkWidget * wid, GdkEventKey * evt, char *d1,
     end = adj->upper - adj->lower - adj->page_size;
 
     switch (type)
-      {
-      case LINE_UP:
-          value = adj->value - 1.0;
-          break;
+    {
+    case LINE_UP:
+        value = adj->value - 1.0;
+        break;
 
-      case LINE_DOWN:
-          value = adj->value + 1.0;
-          break;
+    case LINE_DOWN:
+        value = adj->value + 1.0;
+        break;
 
-      case PAGE_UP:
-          value = adj->value - (adj->page_size - 1);
-          break;
+    case PAGE_UP:
+        value = adj->value - (adj->page_size - 1);
+        break;
 
-      default:                 /* PAGE_DOWN */
-          value = adj->value + (adj->page_size - 1);
-          break;
-      }
+    default:                 /* PAGE_DOWN */
+        value = adj->value + (adj->page_size - 1);
+        break;
+    }
 
     if (value < 0)
         value = 0;
@@ -1347,10 +1362,10 @@ key_action_history_up (GtkWidget * wid, GdkEventKey * ent, char *d1, char *d2,
 
     new_line = history_up (&sess->history, SPELL_ENTRY_GET_TEXT (wid));
     if (new_line)
-      {
-          SPELL_ENTRY_SET_TEXT (wid, new_line);
-          SPELL_ENTRY_SET_POS (wid, -1);
-      }
+    {
+        SPELL_ENTRY_SET_TEXT (wid, new_line);
+        SPELL_ENTRY_SET_POS (wid, -1);
+    }
 
     return 2;
 }
@@ -1363,10 +1378,10 @@ key_action_history_down (GtkWidget * wid, GdkEventKey * ent, char *d1,
 
     new_line = history_down (&sess->history);
     if (new_line)
-      {
-          SPELL_ENTRY_SET_TEXT (wid, new_line);
-          SPELL_ENTRY_SET_POS (wid, -1);
-      }
+    {
+        SPELL_ENTRY_SET_TEXT (wid, new_line);
+        SPELL_ENTRY_SET_POS (wid, -1);
+    }
 
     return 2;
 }
@@ -1421,10 +1436,10 @@ void
 key_action_tab_clean (void)
 {
     if (old_gcomp.elen)
-      {
-          old_gcomp.data[0] = 0;
-          old_gcomp.elen = 0;
-      }
+    {
+        old_gcomp.data[0] = 0;
+        old_gcomp.elen = 0;
+    }
 }
 
 /* Used in the followig completers */
@@ -1448,7 +1463,7 @@ key_action_tab_comp (GtkWidget * t, GdkEventKey * entry, char *d1, char *d2,
                      struct session *sess)
 {
     int len = 0, elen = 0, i = 0, cursor_pos, ent_start = 0, comp = 0, found =
-        0, prefix_len, skip_len = 0, is_nick, is_cmd = 0;
+                                   0, prefix_len, skip_len = 0, is_nick, is_cmd = 0;
     char buf[COMP_BUF], ent[CHANLEN], *postfix = NULL, *result, *ch;
     GList *list = NULL, *tmp_list = NULL;
     const char *text;
@@ -1472,26 +1487,26 @@ key_action_tab_comp (GtkWidget * t, GdkEventKey * entry, char *d1, char *d2,
     ch = g_utf8_find_prev_char (text,
                                 g_utf8_offset_to_pointer (text, cursor_pos));
     if (ch && ch[0] == ' ')
-      {
-          skip_len++;
-          ch = g_utf8_find_prev_char (text, ch);
-          if (!ch)
-              return 2;
+    {
+        skip_len++;
+        ch = g_utf8_find_prev_char (text, ch);
+        if (!ch)
+            return 2;
 
-          cursor_pos = g_utf8_pointer_to_offset (text, ch);
-          if (cursor_pos && (g_utf8_get_char_validated (ch, -1) == ':' ||
-                             g_utf8_get_char_validated (ch, -1) == ',' ||
-                             g_utf8_get_char_validated (ch,
-                                                        -1) ==
-                             prefs.nick_suffix[0]))
-            {
-                skip_len++;
-            }
-          else
-              cursor_pos =
-                  g_utf8_pointer_to_offset (text,
-                                            g_utf8_offset_to_pointer (ch, 1));
-      }
+        cursor_pos = g_utf8_pointer_to_offset (text, ch);
+        if (cursor_pos && (g_utf8_get_char_validated (ch, -1) == ':' ||
+                           g_utf8_get_char_validated (ch, -1) == ',' ||
+                           g_utf8_get_char_validated (ch,
+                                   -1) ==
+                           prefs.nick_suffix[0]))
+        {
+            skip_len++;
+        }
+        else
+            cursor_pos =
+                g_utf8_pointer_to_offset (text,
+                                          g_utf8_offset_to_pointer (ch, 1));
+    }
 
     comp = skip_len;
 
@@ -1500,19 +1515,19 @@ key_action_tab_comp (GtkWidget * t, GdkEventKey * entry, char *d1, char *d2,
         postfix = g_utf8_offset_to_pointer (text, cursor_pos + skip_len);
 
     for (ent_start = cursor_pos;; --ent_start)
-      {
-          if (ent_start == 0)
-              break;
-          ch = g_utf8_offset_to_pointer (text, ent_start - 1);
-          if (ch && ch[0] == ' ')
-              break;
-      }
+    {
+        if (ent_start == 0)
+            break;
+        ch = g_utf8_offset_to_pointer (text, ent_start - 1);
+        if (ch && ch[0] == ' ')
+            break;
+    }
 
     if (ent_start == 0 && text[0] == prefs.cmdchar[0])
-      {
-          ent_start++;
-          is_cmd = 1;
-      }
+    {
+        ent_start++;
+        is_cmd = 1;
+    }
 
     prefix_len = ent_start;
     elen = cursor_pos - ent_start;
@@ -1522,198 +1537,198 @@ key_action_tab_comp (GtkWidget * t, GdkEventKey * entry, char *d1, char *d2,
     is_nick = (ent[0] == '#' || ent[0] == '&' || is_cmd) ? 0 : 1;
 
     if (sess->type == SESS_DIALOG && is_nick)
-      {
-          /* tab in a dialog completes the other person's name */
-          if (rfc_ncasecmp (sess->channel, ent, elen) == 0)
-            {
-                result = sess->channel;
-                is_nick = 0;
-            }
-          else
-              return 2;
-      }
+    {
+        /* tab in a dialog completes the other person's name */
+        if (rfc_ncasecmp (sess->channel, ent, elen) == 0)
+        {
+            result = sess->channel;
+            is_nick = 0;
+        }
+        else
+            return 2;
+    }
     else
-      {
-          if (is_nick)
+    {
+        if (is_nick)
+        {
+            gcomp = g_completion_new ((GCompletionFunc) gcomp_nick_func);
+            tmp_list = userlist_double_list (sess); /* create a temp list so we can free the memory */
+            if (prefs.completion_sort == 1) /* sort in last-talk order? */
+                tmp_list =
+                    g_list_sort (tmp_list, (void *) talked_recent_cmp);
+        }
+        else
+        {
+            gcomp = g_completion_new (NULL);
+            if (is_cmd)
             {
-                gcomp = g_completion_new ((GCompletionFunc) gcomp_nick_func);
-                tmp_list = userlist_double_list (sess); /* create a temp list so we can free the memory */
-                if (prefs.completion_sort == 1) /* sort in last-talk order? */
+                tmp_list = cmdlist_double_list (command_list);
+                for (i = 0; xc_cmds[i].name != NULL; i++)
+                {
                     tmp_list =
-                        g_list_sort (tmp_list, (void *) talked_recent_cmp);
+                        g_list_prepend (tmp_list, xc_cmds[i].name);
+                }
+                tmp_list = plugin_command_list (tmp_list);
             }
-          else
-            {
-                gcomp = g_completion_new (NULL);
-                if (is_cmd)
-                  {
-                      tmp_list = cmdlist_double_list (command_list);
-                      for (i = 0; xc_cmds[i].name != NULL; i++)
-                        {
-                            tmp_list =
-                                g_list_prepend (tmp_list, xc_cmds[i].name);
-                        }
-                      tmp_list = plugin_command_list (tmp_list);
-                  }
-                else
-                    tmp_list = chanlist_double_list (sess_list);
-            }
-          tmp_list = g_list_reverse (tmp_list); /* make the comp entries turn up in the right order */
-          g_completion_set_compare (gcomp,
-                                    (GCompletionStrncmpFunc) rfc_ncasecmp);
-          if (tmp_list)
-            {
-                g_completion_add_items (gcomp, tmp_list);
-                g_list_free (tmp_list);
-            }
+            else
+                tmp_list = chanlist_double_list (sess_list);
+        }
+        tmp_list = g_list_reverse (tmp_list); /* make the comp entries turn up in the right order */
+        g_completion_set_compare (gcomp,
+                                  (GCompletionStrncmpFunc) rfc_ncasecmp);
+        if (tmp_list)
+        {
+            g_completion_add_items (gcomp, tmp_list);
+            g_list_free (tmp_list);
+        }
 
-          if (comp
-              && !(rfc_ncasecmp (old_gcomp.data, ent, old_gcomp.elen) == 0))
-            {
-                key_action_tab_clean ();
-                comp = 0;
-            }
+        if (comp
+                && !(rfc_ncasecmp (old_gcomp.data, ent, old_gcomp.elen) == 0))
+        {
+            key_action_tab_clean ();
+            comp = 0;
+        }
 
 #if GLIB_CHECK_VERSION(2,4,0)
-          list =
-              g_completion_complete_utf8 (gcomp, comp ? old_gcomp.data : ent,
-                                          &result);
+        list =
+            g_completion_complete_utf8 (gcomp, comp ? old_gcomp.data : ent,
+                                        &result);
 #else
-          list =
-              g_completion_complete (gcomp, comp ? old_gcomp.data : ent,
-                                     &result);
+        list =
+            g_completion_complete (gcomp, comp ? old_gcomp.data : ent,
+                                   &result);
 #endif
 
-          if (result == NULL)   /* No matches found */
+        if (result == NULL)   /* No matches found */
+        {
+            g_completion_free (gcomp);
+            return 2;
+        }
+
+        if (comp)             /* existing completion */
+        {
+            while (list)    /* find the current entry */
             {
+                if (rfc_ncasecmp (list->data, ent, elen) == 0)
+                {
+                    found = 1;
+                    break;
+                }
+                list = list->next;
+            }
+
+            if (found)
+            {
+                if (!(d1 && d1[0]))       /* not holding down shift */
+                {
+                    if (g_list_next (list) == NULL)
+                        list = g_list_first (list);
+                    else
+                        list = g_list_next (list);
+                }
+                else
+                {
+                    if (g_list_previous (list) == NULL)
+                        list = g_list_last (list);
+                    else
+                        list = g_list_previous (list);
+                }
+                g_free (result);
+                result = (char *) list->data;
+            }
+            else
+            {
+                g_free (result);
                 g_completion_free (gcomp);
                 return 2;
             }
+        }
+        else
+        {
+            strcpy (old_gcomp.data, ent);
+            old_gcomp.elen = elen;
 
-          if (comp)             /* existing completion */
-            {
-                while (list)    /* find the current entry */
-                  {
-                      if (rfc_ncasecmp (list->data, ent, elen) == 0)
-                        {
-                            found = 1;
-                            break;
-                        }
-                      list = list->next;
-                  }
-
-                if (found)
-                  {
-                      if (!(d1 && d1[0]))       /* not holding down shift */
-                        {
-                            if (g_list_next (list) == NULL)
-                                list = g_list_first (list);
-                            else
-                                list = g_list_next (list);
-                        }
-                      else
-                        {
-                            if (g_list_previous (list) == NULL)
-                                list = g_list_last (list);
-                            else
-                                list = g_list_previous (list);
-                        }
-                      g_free (result);
-                      result = (char *) list->data;
-                  }
-                else
-                  {
-                      g_free (result);
-                      g_completion_free (gcomp);
-                      return 2;
-                  }
-            }
-          else
-            {
-                strcpy (old_gcomp.data, ent);
-                old_gcomp.elen = elen;
-
-                /* Get the first nick and put out the data for future nickcompletes */
-                if (prefs.completion_amount
+            /* Get the first nick and put out the data for future nickcompletes */
+            if (prefs.completion_amount
                     && g_list_length (list) <= prefs.completion_amount)
-                  {
-                      g_free (result);
-                      result = (char *) list->data;
-                  }
-                else
-                  {
-                      /* bash style completion */
-                      if (g_list_next (list) != NULL)
-                        {
-                            if (strlen (result) > elen) /* the largest common prefix is larger than nick, change the data */
-                              {
-                                  if (prefix_len)
-                                      g_utf8_strncpy (buf, text, prefix_len);
-                                  strncat (buf, result,
-                                           COMP_BUF - prefix_len);
-                                  cursor_pos = strlen (buf);
-                                  g_free (result);
-#if !GLIB_CHECK_VERSION(2,4,0)
-                                  g_utf8_validate (buf, -1,
-                                                   (const gchar **) &result);
-                                  (*result) = 0;
-#endif
-                                  if (postfix)
-                                    {
-                                        strcat (buf, " ");
-                                        strncat (buf, postfix,
-                                                 COMP_BUF - cursor_pos - 1);
-                                    }
-                                  SPELL_ENTRY_SET_TEXT (t, buf);
-                                  SPELL_ENTRY_SET_POS (t,
-                                                       g_utf8_pointer_to_offset
-                                                       (buf,
-                                                        buf + cursor_pos));
-                                  buf[0] = 0;
-                              }
-                            else
-                                g_free (result);
-                            while (list)
-                              {
-                                  len = strlen (buf);   /* current buffer */
-                                  elen = strlen (list->data);   /* next item to add */
-                                  if (len + elen + 2 >= COMP_BUF)       /* +2 is space + null */
-                                    {
-                                        PrintText (sess, buf);
-                                        buf[0] = 0;
-                                        len = 0;
-                                    }
-                                  strcpy (buf + len, (char *) list->data);
-                                  strcpy (buf + len + elen, " ");
-                                  list = list->next;
-                              }
-                            PrintText (sess, buf);
-                            g_completion_free (gcomp);
-                            return 2;
-                        }
-                      /* Only one matching entry */
-                      g_free (result);
-                      result = list->data;
-                  }
+            {
+                g_free (result);
+                result = (char *) list->data;
             }
-      }
+            else
+            {
+                /* bash style completion */
+                if (g_list_next (list) != NULL)
+                {
+                    if (strlen (result) > elen) /* the largest common prefix is larger than nick, change the data */
+                    {
+                        if (prefix_len)
+                            g_utf8_strncpy (buf, text, prefix_len);
+                        strncat (buf, result,
+                                 COMP_BUF - prefix_len);
+                        cursor_pos = strlen (buf);
+                        g_free (result);
+#if !GLIB_CHECK_VERSION(2,4,0)
+                        g_utf8_validate (buf, -1,
+                                         (const gchar **) &result);
+                        (*result) = 0;
+#endif
+                        if (postfix)
+                        {
+                            strcat (buf, " ");
+                            strncat (buf, postfix,
+                                     COMP_BUF - cursor_pos - 1);
+                        }
+                        SPELL_ENTRY_SET_TEXT (t, buf);
+                        SPELL_ENTRY_SET_POS (t,
+                                             g_utf8_pointer_to_offset
+                                             (buf,
+                                              buf + cursor_pos));
+                        buf[0] = 0;
+                    }
+                    else
+                        g_free (result);
+                    while (list)
+                    {
+                        len = strlen (buf);   /* current buffer */
+                        elen = strlen (list->data);   /* next item to add */
+                        if (len + elen + 2 >= COMP_BUF)       /* +2 is space + null */
+                        {
+                            PrintText (sess, buf);
+                            buf[0] = 0;
+                            len = 0;
+                        }
+                        strcpy (buf + len, (char *) list->data);
+                        strcpy (buf + len + elen, " ");
+                        list = list->next;
+                    }
+                    PrintText (sess, buf);
+                    g_completion_free (gcomp);
+                    return 2;
+                }
+                /* Only one matching entry */
+                g_free (result);
+                result = list->data;
+            }
+        }
+    }
 
     if (result)
-      {
-          if (prefix_len)
-              g_utf8_strncpy (buf, text, prefix_len);
-          strncat (buf, result, COMP_BUF - (prefix_len + 3));   /* make sure nicksuffix and space fits */
-          if (!prefix_len && is_nick)
-              strcat (buf, &prefs.nick_suffix[0]);
-          strcat (buf, " ");
-          cursor_pos = strlen (buf);
-          if (postfix)
-              strncat (buf, postfix, COMP_BUF - cursor_pos - 2);
-          SPELL_ENTRY_SET_TEXT (t, buf);
-          SPELL_ENTRY_SET_POS (t,
-                               g_utf8_pointer_to_offset (buf,
-                                                         buf + cursor_pos));
-      }
+    {
+        if (prefix_len)
+            g_utf8_strncpy (buf, text, prefix_len);
+        strncat (buf, result, COMP_BUF - (prefix_len + 3));   /* make sure nicksuffix and space fits */
+        if (!prefix_len && is_nick)
+            strcat (buf, &prefs.nick_suffix[0]);
+        strcat (buf, " ");
+        cursor_pos = strlen (buf);
+        if (postfix)
+            strncat (buf, postfix, COMP_BUF - cursor_pos - 2);
+        SPELL_ENTRY_SET_TEXT (t, buf);
+        SPELL_ENTRY_SET_POS (t,
+                             g_utf8_pointer_to_offset (buf,
+                                     buf + cursor_pos));
+    }
     if (gcomp)
         g_completion_free (gcomp);
     return 2;
@@ -1806,10 +1821,10 @@ replace_handle (GtkWidget * t)
         return;
 
     for (c = len - 1; c > 0; c--)
-      {
-          if (text[c] == ' ')
-              break;
-      }
+    {
+        if (text[c] == ' ')
+            break;
+    }
     if (text[c] == ' ')
         c++;
     xlen = c;
@@ -1824,37 +1839,37 @@ replace_handle (GtkWidget * t)
         return;
     postfix_pnt = NULL;
     for (c = 0; c < len; c++)
-      {
-          if (word[c] == '\'')
-            {
-                postfix_pnt = &word[c + 1];
-                word[c] = 0;
-                break;
-            }
-      }
+    {
+        if (word[c] == '\'')
+        {
+            postfix_pnt = &word[c + 1];
+            word[c] = 0;
+            break;
+        }
+    }
 
     if (postfix_pnt != NULL)
-      {
-          if (strlen (postfix_pnt) > sizeof (postfix) - 12)
-              return;
-          strcpy (postfix, postfix_pnt);
-      }
+    {
+        if (strlen (postfix_pnt) > sizeof (postfix) - 12)
+            return;
+        strcpy (postfix, postfix_pnt);
+    }
     while (list)
-      {
-          pop = (struct popup *) list->data;
-          if (strcmp (pop->name, word) == 0)
-            {
-                memcpy (outbuf, text, xlen);
-                outbuf[xlen] = 0;
-                if (postfix_pnt == NULL)
-                    snprintf (word, sizeof (word), "%s", pop->cmd);
-                else
-                    snprintf (word, sizeof (word), "%s%s", pop->cmd, postfix);
-                strcat (outbuf, word);
-                SPELL_ENTRY_SET_TEXT (t, outbuf);
-                SPELL_ENTRY_SET_POS (t, -1);
-                return;
-            }
-          list = list->next;
-      }
+    {
+        pop = (struct popup *) list->data;
+        if (strcmp (pop->name, word) == 0)
+        {
+            memcpy (outbuf, text, xlen);
+            outbuf[xlen] = 0;
+            if (postfix_pnt == NULL)
+                snprintf (word, sizeof (word), "%s", pop->cmd);
+            else
+                snprintf (word, sizeof (word), "%s%s", pop->cmd, postfix);
+            strcat (outbuf, word);
+            SPELL_ENTRY_SET_TEXT (t, outbuf);
+            SPELL_ENTRY_SET_POS (t, -1);
+            return;
+        }
+        list = list->next;
+    }
 }

@@ -54,16 +54,16 @@ rawlog_save (server * serv, char *file)
     int fh = -1;
 
     if (file)
-      {
-          if (serv->gui->rawlog_window)
-              fh = xchat_open_file (file, O_TRUNC | O_WRONLY | O_CREAT,
-                                    0600, XOF_DOMODE | XOF_FULLPATH);
-          if (fh != -1)
-            {
-                gtk_xtext_save (GTK_XTEXT (serv->gui->rawlog_textlist), fh);
-                close (fh);
-            }
-      }
+    {
+        if (serv->gui->rawlog_window)
+            fh = xchat_open_file (file, O_TRUNC | O_WRONLY | O_CREAT,
+                                  0600, XOF_DOMODE | XOF_FULLPATH);
+        if (fh != -1)
+        {
+            gtk_xtext_save (GTK_XTEXT (serv->gui->rawlog_textlist), fh);
+            close (fh);
+        }
+    }
 }
 
 static int
@@ -87,10 +87,10 @@ open_rawlog (struct server *serv)
     char tbuf[256];
 
     if (serv->gui->rawlog_window)
-      {
-          mg_bring_tofront (serv->gui->rawlog_window);
-          return;
-      }
+    {
+        mg_bring_tofront (serv->gui->rawlog_window);
+        return;
+    }
 
     snprintf (tbuf, sizeof tbuf, _("GChat: Rawlog (%s)"), serv->servername);
     serv->gui->rawlog_window =
@@ -145,11 +145,11 @@ fe_add_rawlog (server * serv, char *text, int len, int outbound)
 
     len = sprintf (new_text, "\0033>>\017 %s", text);
     if (outbound)
-      {
-          new_text[1] = '4';
-          new_text[2] = '<';
-          new_text[3] = '<';
-      }
+    {
+        new_text[1] = '4';
+        new_text[2] = '<';
+        new_text[3] = '<';
+    }
     gtk_xtext_append (GTK_XTEXT (serv->gui->rawlog_textlist)->buffer,
                       new_text, len);
     free (new_text);

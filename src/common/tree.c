@@ -33,11 +33,11 @@ void
 tree_destroy (tree * t)
 {
     if (t)
-      {
-          if (t->array)
-              free (t->array);
-          free (t);
-      }
+    {
+        if (t->array)
+            free (t->array);
+        free (t);
+    }
 }
 
 static int
@@ -46,29 +46,29 @@ tree_find_insertion_pos (tree * t, void *key, int *done)
     int c, u, l, idx;
 
     if (t->elements < 1)
-      {
-          *done = 1;
-          t->array[0] = key;
-          t->elements++;
-          return 0;
-      }
+    {
+        *done = 1;
+        t->array[0] = key;
+        t->elements++;
+        return 0;
+    }
 
     if (t->elements < 2)
-      {
-          *done = 1;
-          c = t->cmp (key, t->array[0], t->data);
-          if (c == 0)
-              return -1;
-          t->elements++;
-          if (c > 0)
-            {
-                t->array[1] = key;
-                return 1;
-            }
-          t->array[1] = t->array[0];
-          t->array[0] = key;
-          return 0;
-      }
+    {
+        *done = 1;
+        c = t->cmp (key, t->array[0], t->data);
+        if (c == 0)
+            return -1;
+        t->elements++;
+        if (c > 0)
+        {
+            t->array[1] = key;
+            return 1;
+        }
+        t->array[1] = t->array[0];
+        t->array[0] = key;
+        return 0;
+    }
 
     *done = 0;
 
@@ -83,19 +83,19 @@ tree_find_insertion_pos (tree * t, void *key, int *done)
     l = 0;
     u = t->elements - 1;
     while (1)
-      {
-          idx = (l + u) / 2;
-          c = t->cmp (key, t->array[idx], t->data);
+    {
+        idx = (l + u) / 2;
+        c = t->cmp (key, t->array[idx], t->data);
 
-          if (0 > c)
-              u = idx;
-          else if (0 < c && 0 > t->cmp (key, t->array[idx + 1], t->data))
-              return idx + 1;
-          else if (c == 0)
-              return -1;
-          else
-              l = idx + 1;
-      }
+        if (0 > c)
+            u = idx;
+        else if (0 < c && 0 > t->cmp (key, t->array[idx + 1], t->data))
+            return idx + 1;
+        else if (c == 0)
+            return -1;
+        else
+            l = idx + 1;
+    }
 }
 
 static void
@@ -105,10 +105,10 @@ tree_insert_at_pos (tree * t, void *key, int pos)
 
     /* append is easy */
     if (pos != t->elements)
-      {
-          post_bytes = (t->elements - pos) * sizeof (void *);
-          memmove (&t->array[pos + 1], &t->array[pos], post_bytes);
-      }
+    {
+        post_bytes = (t->elements - pos) * sizeof (void *);
+        memmove (&t->array[pos + 1], &t->array[pos], post_bytes);
+    }
 
     t->array[pos] = key;
     t->elements++;
@@ -125,19 +125,19 @@ mybsearch (const void *key, void **array, size_t nmemb,
     l = 0;
     u = nmemb;
     while (l < u)
-      {
-          idx = (l + u) / 2;
-          comparison = (*compar) (key, array[idx], data);
-          if (comparison < 0)
-              u = idx;
-          else if (comparison > 0)
-              l = idx + 1;
-          else
-            {
-                *pos = idx;
-                return array[idx];
-            }
-      }
+    {
+        idx = (l + u) / 2;
+        comparison = (*compar) (key, array[idx], data);
+        if (comparison < 0)
+            u = idx;
+        else if (comparison > 0)
+            l = idx + 1;
+        else
+        {
+            *pos = idx;
+            return array[idx];
+        }
+    }
 
     return NULL;
 }
@@ -158,10 +158,10 @@ tree_remove_at_pos (tree * t, int pos)
 
     t->elements--;
     if (pos != t->elements)
-      {
-          post_bytes = (t->elements - pos) * sizeof (void *);
-          memmove (&t->array[pos], &t->array[pos + 1], post_bytes);
-      }
+    {
+        post_bytes = (t->elements - pos) * sizeof (void *);
+        memmove (&t->array[pos], &t->array[pos + 1], post_bytes);
+    }
 }
 
 int
@@ -186,10 +186,10 @@ tree_foreach (tree * t, tree_traverse_func * func, void *data)
         return;
 
     for (j = 0; j < t->elements; j++)
-      {
-          if (!func (t->array[j], data))
-              break;
-      }
+    {
+        if (!func (t->array[j], data))
+            break;
+    }
 }
 
 int
@@ -201,12 +201,12 @@ tree_insert (tree * t, void *key)
         return -1;
 
     if (t->array_size < t->elements + 1)
-      {
-          int new_size = t->array_size + ARRAY_GROW;
+    {
+        int new_size = t->array_size + ARRAY_GROW;
 
-          t->array = realloc (t->array, sizeof (void *) * new_size);
-          t->array_size = new_size;
-      }
+        t->array = realloc (t->array, sizeof (void *) * new_size);
+        t->array_size = new_size;
+    }
 
     pos = tree_find_insertion_pos (t, key, &done);
     if (!done && pos != -1)

@@ -117,15 +117,15 @@ mask_edited (GtkCellRendererText * render, gchar * path, gchar * new,
     else if (ignore_exists (new))       /* duplicate, ignore */
         fe_message (_("That mask already exists."), FE_MSG_ERROR);
     else
-      {
-          /* delete old mask, and add new one with original flags */
-          ignore_del (old, NULL);
-          flags = ignore_get_flags (GTK_TREE_MODEL (store), &iter);
-          ignore_add (new, flags);
+    {
+        /* delete old mask, and add new one with original flags */
+        ignore_del (old, NULL);
+        flags = ignore_get_flags (GTK_TREE_MODEL (store), &iter);
+        ignore_add (new, flags);
 
-          /* update tree */
-          gtk_list_store_set (store, &iter, MASK_COLUMN, new, -1);
-      }
+        /* update tree */
+        gtk_list_store_set (store, &iter, MASK_COLUMN, new, -1);
+    }
     g_free (old);
 
 }
@@ -188,37 +188,37 @@ ignore_treeview_new (GtkWidget * box)
 
     /* attach to signals and customise columns */
     for (col_id = 0;
-         (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
-         col_id++)
-      {
-          GList *list = gtk_tree_view_column_get_cell_renderers (col);
-          GList *tmp;
+            (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
+            col_id++)
+    {
+        GList *list = gtk_tree_view_column_get_cell_renderers (col);
+        GList *tmp;
 
-          for (tmp = list; tmp; tmp = tmp->next)
+        for (tmp = list; tmp; tmp = tmp->next)
+        {
+            render = tmp->data;
+            if (col_id > 0) /* it's a toggle button column */
             {
-                render = tmp->data;
-                if (col_id > 0) /* it's a toggle button column */
-                  {
-                      g_signal_connect (render, "toggled",
-                                        G_CALLBACK (option_toggled),
-                                        GINT_TO_POINTER (col_id));
-                  }
-                else            /* mask column */
-                  {
-                      g_object_set (G_OBJECT (render), "editable", TRUE,
-                                    NULL);
-                      g_signal_connect (render, "edited",
-                                        G_CALLBACK (mask_edited), NULL);
-                      /* make this column sortable */
-                      gtk_tree_view_column_set_sort_column_id (col, col_id);
-                      gtk_tree_view_column_set_min_width (col, 272);
-                  }
-                /* centre titles */
-                gtk_tree_view_column_set_alignment (col, 0.5);
+                g_signal_connect (render, "toggled",
+                                  G_CALLBACK (option_toggled),
+                                  GINT_TO_POINTER (col_id));
             }
+            else            /* mask column */
+            {
+                g_object_set (G_OBJECT (render), "editable", TRUE,
+                              NULL);
+                g_signal_connect (render, "edited",
+                                  G_CALLBACK (mask_edited), NULL);
+                /* make this column sortable */
+                gtk_tree_view_column_set_sort_column_id (col, col_id);
+                gtk_tree_view_column_set_min_width (col, 272);
+            }
+            /* centre titles */
+            gtk_tree_view_column_set_alignment (col, 0.5);
+        }
 
-          g_list_free (list);
-      }
+        g_list_free (list);
+    }
 
     gtk_widget_show (view);
     return view;
@@ -234,25 +234,25 @@ ignore_delete_entry_clicked (GtkWidget * wid, struct session *sess)
     char *mask = NULL;
 
     if (gtkutil_treeview_get_selected (view, &iter, 0, &mask, -1))
-      {
-          /* delete this row, select next one */
+    {
+        /* delete this row, select next one */
 #if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
-          gtk_list_store_remove (store, &iter);
+        gtk_list_store_remove (store, &iter);
 #else
-          if (gtk_list_store_remove (store, &iter))
-            {
-                path =
-                    gtk_tree_model_get_path (GTK_TREE_MODEL (store), &iter);
-                gtk_tree_view_scroll_to_cell (view, path, NULL, TRUE, 1.0,
-                                              0.0);
-                gtk_tree_view_set_cursor (view, path, NULL, FALSE);
-                gtk_tree_path_free (path);
-            }
+        if (gtk_list_store_remove (store, &iter))
+        {
+            path =
+                gtk_tree_model_get_path (GTK_TREE_MODEL (store), &iter);
+            gtk_tree_view_scroll_to_cell (view, path, NULL, TRUE, 1.0,
+                                          0.0);
+            gtk_tree_view_set_cursor (view, path, NULL, FALSE);
+            gtk_tree_path_free (path);
+        }
 #endif
 
-          ignore_del (mask, NULL);
-          g_free (mask);
-      }
+        ignore_del (mask, NULL);
+        g_free (mask);
+    }
 }
 
 static void
@@ -268,10 +268,10 @@ ignore_store_new (int cancel, char *mask, gpointer data)
         return;
     /* check if it already exists */
     if (ignore_exists (mask))
-      {
-          fe_message (_("That mask already exists."), FE_MSG_ERROR);
-          return;
-      }
+    {
+        fe_message (_("That mask already exists."), FE_MSG_ERROR);
+        return;
+    }
 
     ignore_add (mask, flags);
 
@@ -294,21 +294,21 @@ ignore_clear_entry_clicked (GtkWidget * wid, gpointer unused)
     char *mask;
 
     if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter))
-      {
-          /* remove from ignore_list */
-          do
-            {
-                mask = NULL;
-                gtk_tree_model_get (GTK_TREE_MODEL (store), &iter,
-                                    MASK_COLUMN, &mask, -1);
-                ignore_del (mask, NULL);
-                g_free (mask);
-            }
-          while (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter));
+    {
+        /* remove from ignore_list */
+        do
+        {
+            mask = NULL;
+            gtk_tree_model_get (GTK_TREE_MODEL (store), &iter,
+                                MASK_COLUMN, &mask, -1);
+            ignore_del (mask, NULL);
+            g_free (mask);
+        }
+        while (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter));
 
-          /* remove from GUI */
-          gtk_list_store_clear (store);
-      }
+        /* remove from GUI */
+        gtk_list_store_clear (store);
+    }
 }
 
 static void
@@ -355,10 +355,10 @@ ignore_gui_open ()
     gboolean private, chan, notice, ctcp, dcc, invite, unignore;
 
     if (ignorewin)
-      {
-          mg_bring_tofront (ignorewin);
-          return;
-      }
+    {
+        mg_bring_tofront (ignorewin);
+        return;
+    }
 
     ignorewin =
         mg_create_generic_tab ("IgnoreList", _("GChat: Ignore list"),
@@ -400,31 +400,31 @@ ignore_gui_open ()
     store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (view)));
 
     while (temp)
-      {
-          struct ignore *ignore = temp->data;
+    {
+        struct ignore *ignore = temp->data;
 
-          mask = ignore->mask;
-          chan = (ignore->type & IG_CHAN);
-          private = (ignore->type & IG_PRIV);
-          notice = (ignore->type & IG_NOTI);
-          ctcp = (ignore->type & IG_CTCP);
-          dcc = (ignore->type & IG_DCC);
-          invite = (ignore->type & IG_INVI);
-          unignore = (ignore->type & IG_UNIG);
+        mask = ignore->mask;
+        chan = (ignore->type & IG_CHAN);
+        private = (ignore->type & IG_PRIV);
+        notice = (ignore->type & IG_NOTI);
+        ctcp = (ignore->type & IG_CTCP);
+        dcc = (ignore->type & IG_DCC);
+        invite = (ignore->type & IG_INVI);
+        unignore = (ignore->type & IG_UNIG);
 
-          gtk_list_store_append (store, &iter);
-          gtk_list_store_set (store, &iter,
-                              MASK_COLUMN, mask,
-                              CHAN_COLUMN, chan,
-                              PRIV_COLUMN, private,
-                              NOTICE_COLUMN, notice,
-                              CTCP_COLUMN, ctcp,
-                              DCC_COLUMN, dcc,
-                              INVITE_COLUMN, invite,
-                              UNIGNORE_COLUMN, unignore, -1);
+        gtk_list_store_append (store, &iter);
+        gtk_list_store_set (store, &iter,
+                            MASK_COLUMN, mask,
+                            CHAN_COLUMN, chan,
+                            PRIV_COLUMN, private,
+                            NOTICE_COLUMN, notice,
+                            CTCP_COLUMN, ctcp,
+                            DCC_COLUMN, dcc,
+                            INVITE_COLUMN, invite,
+                            UNIGNORE_COLUMN, unignore, -1);
 
-          temp = temp->next;
-      }
+        temp = temp->next;
+    }
     gtk_widget_show (ignorewin);
 }
 
@@ -440,20 +440,20 @@ fe_ignore_update (int level)
     char buf[16];
 
     if (level == 2 && ignorewin)
-      {
-          sprintf (buf, "%d", ignored_ctcp);
-          gtk_entry_set_text (GTK_ENTRY (num_ctcp), buf);
+    {
+        sprintf (buf, "%d", ignored_ctcp);
+        gtk_entry_set_text (GTK_ENTRY (num_ctcp), buf);
 
-          sprintf (buf, "%d", ignored_noti);
-          gtk_entry_set_text (GTK_ENTRY (num_noti), buf);
+        sprintf (buf, "%d", ignored_noti);
+        gtk_entry_set_text (GTK_ENTRY (num_noti), buf);
 
-          sprintf (buf, "%d", ignored_chan);
-          gtk_entry_set_text (GTK_ENTRY (num_chan), buf);
+        sprintf (buf, "%d", ignored_chan);
+        gtk_entry_set_text (GTK_ENTRY (num_chan), buf);
 
-          sprintf (buf, "%d", ignored_invi);
-          gtk_entry_set_text (GTK_ENTRY (num_invi), buf);
+        sprintf (buf, "%d", ignored_invi);
+        gtk_entry_set_text (GTK_ENTRY (num_invi), buf);
 
-          sprintf (buf, "%d", ignored_priv);
-          gtk_entry_set_text (GTK_ENTRY (num_priv), buf);
-      }
+        sprintf (buf, "%d", ignored_priv);
+        gtk_entry_set_text (GTK_ENTRY (num_priv), buf);
+    }
 }

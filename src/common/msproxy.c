@@ -45,10 +45,10 @@
 
 static int
 send_msprequest (s, state, request, end)
-     int s;
-     struct msproxy_state_t *state;
-     struct msproxy_request_t *request;
-     char *end;
+int s;
+struct msproxy_state_t *state;
+struct msproxy_request_t *request;
+char *end;
 {
     ssize_t w;
     size_t l;
@@ -64,21 +64,21 @@ send_msprequest (s, state, request, end)
     l = end - (char *) request;
     /* all requests must be atleast MSPROXY_MINLENGTH it seems. */
     if (l < MSPROXY_MINLENGTH)
-      {
-          bzero (end, (size_t) (MSPROXY_MINLENGTH - l));
-          l = MSPROXY_MINLENGTH;
-      }
+    {
+        bzero (end, (size_t) (MSPROXY_MINLENGTH - l));
+        l = MSPROXY_MINLENGTH;
+    }
 
     if ((w = send (s, request, l, 0)) != l)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf
-              ("send_msprequest(): send() failed (%d bytes sent instead of %d\n",
-               w, l);
-          perror ("Error is");
+        printf
+        ("send_msprequest(): send() failed (%d bytes sent instead of %d\n",
+         w, l);
+        perror ("Error is");
 #endif
-          return -1;
-      }
+        return -1;
+    }
     state->seq_sent = request->sequence;
 
     return w;
@@ -86,32 +86,32 @@ send_msprequest (s, state, request, end)
 
 static int
 recv_mspresponse (s, state, response)
-     int s;
-     struct msproxy_state_t *state;
-     struct msproxy_response_t *response;
+int s;
+struct msproxy_state_t *state;
+struct msproxy_response_t *response;
 {
     ssize_t r;
 
     do
-      {
-          if ((r =
-               recv (s, response, sizeof (*response), 0)) < MSPROXY_MINLENGTH)
-            {
+    {
+        if ((r =
+                    recv (s, response, sizeof (*response), 0)) < MSPROXY_MINLENGTH)
+        {
 #ifdef DEBUG_MSPROXY
-                printf
-                    ("recv_mspresponse(): expected to read atleast %d, read %d\n",
-                     MSPROXY_MINLENGTH, r);
+            printf
+            ("recv_mspresponse(): expected to read atleast %d, read %d\n",
+             MSPROXY_MINLENGTH, r);
 #endif
-                return -1;
-            }
-          if (state->seq_recv == 0)
-              break;            /* not started incrementing yet. */
+            return -1;
+        }
+        if (state->seq_recv == 0)
+            break;            /* not started incrementing yet. */
 #ifdef DEBUG_MSPROXY
-          if (response->sequence == state->seq_recv)
-              printf ("seq_recv: %d, dup response, seqnumber: 0x%x\n",
-                      state->seq_recv, response->sequence);
+        if (response->sequence == state->seq_recv)
+            printf ("seq_recv: %d, dup response, seqnumber: 0x%x\n",
+                    state->seq_recv, response->sequence);
 #endif
-      }
+    }
     while (response->sequence == state->seq_recv);
 
     state->seq_recv = response->sequence;
@@ -183,20 +183,20 @@ traverse_msproxy (int sok, char *serverAddr, int port,
         return 1;
 
     if (strcmp (res.RWSP, "RWSP") != 0)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("Received mailformed packet (no RWSP signature)\n");
+        printf ("Received mailformed packet (no RWSP signature)\n");
 #endif
-          return 1;
-      }
+        return 1;
+    }
 
     if (ntohs (res.command) >> 8 != 0x10)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("expected res.command = 10??, is %x", ntohs (res.command));
+        printf ("expected res.command = 10??, is %x", ntohs (res.command));
 #endif
-          return 1;
-      }
+        return 1;
+    }
 
     state->clientid = htonl (rand ());
     state->serverid = res.serverid;
@@ -218,30 +218,30 @@ traverse_msproxy (int sok, char *serverAddr, int port,
         return 1;
 
     if (res.serverid != state->serverid)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("expected serverid = 0x%x, is 0x%x\n", state->serverid,
-                  res.serverid);
+        printf ("expected serverid = 0x%x, is 0x%x\n", state->serverid,
+                res.serverid);
 #endif
-          return 1;
-      }
+        return 1;
+    }
 
     if (res.sequence != 0x01)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("expected res.sequence = 0x01, is 0x%x\n", res.sequence);
+        printf ("expected res.sequence = 0x01, is 0x%x\n", res.sequence);
 #endif
-          return 1;
-      }
+        return 1;
+    }
 
     if (ntohs (res.command) != MSPROXY_USERINFO_ACK)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("expected res.command = 0x%x, is 0x%x\n",
-                  MSPROXY_USERINFO_ACK, ntohs (res.command));
+        printf ("expected res.command = 0x%x, is 0x%x\n",
+                MSPROXY_USERINFO_ACK, ntohs (res.command));
 #endif
-          return 1;
-      }
+        return 1;
+    }
 
 #ifdef DEBUG_MSPROXY
     printf ("packet #3\n");
@@ -270,22 +270,22 @@ traverse_msproxy (int sok, char *serverAddr, int port,
         return 1;
 
     if (res.serverid != state->serverid)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("expected serverid = 0x%x, is 0x%x\n", state->serverid,
-                  res.serverid);
+        printf ("expected serverid = 0x%x, is 0x%x\n", state->serverid,
+                res.serverid);
 #endif
-          return 1;
-      }
+        return 1;
+    }
 
     if (ntohs (res.command) != MSPROXY_AUTHENTICATE_ACK)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("expected res.command = 0x%x, is 0x%x\n",
-                  MSPROXY_AUTHENTICATE_ACK, ntohs (res.command));
+        printf ("expected res.command = 0x%x, is 0x%x\n",
+                MSPROXY_AUTHENTICATE_ACK, ntohs (res.command));
 #endif
-          return 1;
-      }
+        return 1;
+    }
 
     flags = res.packet.auth.flags & htonl (0x00020000); /* Remember if the server supports NTLM */
     memcpy (challenge, &res.packet.auth.challenge, sizeof (challenge));
@@ -308,27 +308,27 @@ traverse_msproxy (int sok, char *serverAddr, int port,
     req.packet.auth2.flags = flags | htonl (0x02000000);        /* Choose authentication method                 */
     data = req.packet.auth2.data;
     if (flags)
-      {
-          req.packet.auth2.lm_resp.len = 0;     /* We are here if NTLM is supported,            */
-          req.packet.auth2.lm_resp.alloc = 0;   /* Do not fill in insecure LM response          */
-          req.packet.auth2.lm_resp.offset = data - req.packet.auth2.NTLMSSP;
-          req.packet.auth2.ntlm_resp.len = 24;  /* Fill in NTLM response security buffer        */
-          req.packet.auth2.ntlm_resp.alloc = 24;
-          req.packet.auth2.ntlm_resp.offset = data - req.packet.auth2.NTLMSSP;
-          ntlm_smb_nt_encrypt (prefs.proxy_pass, challenge, data);      /* Append an NTLM response                      */
-          data += 24;
-      }
+    {
+        req.packet.auth2.lm_resp.len = 0;     /* We are here if NTLM is supported,            */
+        req.packet.auth2.lm_resp.alloc = 0;   /* Do not fill in insecure LM response          */
+        req.packet.auth2.lm_resp.offset = data - req.packet.auth2.NTLMSSP;
+        req.packet.auth2.ntlm_resp.len = 24;  /* Fill in NTLM response security buffer        */
+        req.packet.auth2.ntlm_resp.alloc = 24;
+        req.packet.auth2.ntlm_resp.offset = data - req.packet.auth2.NTLMSSP;
+        ntlm_smb_nt_encrypt (prefs.proxy_pass, challenge, data);      /* Append an NTLM response                      */
+        data += 24;
+    }
     else
-      {
-          req.packet.auth2.lm_resp.len = 24;    /* Fill in LM response security buffer          */
-          req.packet.auth2.lm_resp.alloc = 24;
-          req.packet.auth2.lm_resp.offset = data - req.packet.auth2.NTLMSSP;
-          ntlm_smb_encrypt (prefs.proxy_pass, challenge, data); /* Append an LM response                        */
-          data += 24;
-          req.packet.auth2.ntlm_resp.len = 0;   /* NTLM response is empty                       */
-          req.packet.auth2.ntlm_resp.alloc = 0;
-          req.packet.auth2.ntlm_resp.offset = data - req.packet.auth2.NTLMSSP;
-      }
+    {
+        req.packet.auth2.lm_resp.len = 24;    /* Fill in LM response security buffer          */
+        req.packet.auth2.lm_resp.alloc = 24;
+        req.packet.auth2.lm_resp.offset = data - req.packet.auth2.NTLMSSP;
+        ntlm_smb_encrypt (prefs.proxy_pass, challenge, data); /* Append an LM response                        */
+        data += 24;
+        req.packet.auth2.ntlm_resp.len = 0;   /* NTLM response is empty                       */
+        req.packet.auth2.ntlm_resp.alloc = 0;
+        req.packet.auth2.ntlm_resp.offset = data - req.packet.auth2.NTLMSSP;
+    }
     req.packet.auth2.ntdomain_buf.len = strlen (ntdomain);      /* Domain name                                  */
     req.packet.auth2.ntdomain_buf.alloc = req.packet.auth2.ntdomain_buf.len;
     req.packet.auth2.ntdomain_buf.offset = data - req.packet.auth2.NTLMSSP;
@@ -356,38 +356,38 @@ traverse_msproxy (int sok, char *serverAddr, int port,
         return 1;
 
     if (res.serverid != state->serverid)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("expected res.serverid = 0x%x, is 0x%x\n", state->serverid,
-                  res.serverid);
+        printf ("expected res.serverid = 0x%x, is 0x%x\n", state->serverid,
+                res.serverid);
 #endif
-          return 1;
-      }
+        return 1;
+    }
 
     if (res.clientack != 0x01)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("expected res.clientack = 0x01, is 0x%x\n", res.clientack);
+        printf ("expected res.clientack = 0x01, is 0x%x\n", res.clientack);
 #endif
-          return 1;
-      }
+        return 1;
+    }
 
     if (ntohs (res.command) >> 8 != 0x47)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("expected res.command = 47??, is 0x%x\n",
-                  ntohs (res.command));
+        printf ("expected res.command = 47??, is 0x%x\n",
+                ntohs (res.command));
 #endif
-          return 1;
-      }
+        return 1;
+    }
 
     if (ntohs (res.command) == MSPROXY_AUTHENTICATE_2_NAK)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("Authentication failed\n");
+        printf ("Authentication failed\n");
 #endif
-          return -1;
-      }
+        return -1;
+    }
 
 #ifdef DEBUG_MSPROXY
     printf ("packet #5\n");
@@ -410,21 +410,21 @@ traverse_msproxy (int sok, char *serverAddr, int port,
      */
     ns_client = net_store_new ();
     if (!bound)
-      {
-          net_store_fill_any (ns_client);
-          net_bind (ns_client, csok4, csok6);
+    {
+        net_store_fill_any (ns_client);
+        net_bind (ns_client, csok4, csok6);
 #ifdef DEBUG_MSPROXY
-          perror ("bind() result");
+        perror ("bind() result");
 #endif
-      }
+    }
     clientport = net_getsockport (csok4, csok6);
     if (clientport == -1)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("Unable to obtain source port\n");
+        printf ("Unable to obtain source port\n");
 #endif
-          return 1;
-      }
+        return 1;
+    }
     req.packet.connect.srcport = clientport;
 
     if (send_msprequest (sok, state, &req, data) == -1)
@@ -434,13 +434,13 @@ traverse_msproxy (int sok, char *serverAddr, int port,
         return 1;
 
     if (ntohs (res.command) != MSPROXY_CONNECT_ACK)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("expected res.command = 0x%x, is 0x%x\n",
-                  MSPROXY_CONNECT_ACK, ntohs (res.command));
+        printf ("expected res.command = 0x%x, is 0x%x\n",
+                MSPROXY_CONNECT_ACK, ntohs (res.command));
 #endif
-          return 1;
-      }
+        return 1;
+    }
 
     net_store_fill_v4 (ns_client, res.packet.connect.clientaddr,
                        res.packet.connect.clientport);
@@ -449,14 +449,14 @@ traverse_msproxy (int sok, char *serverAddr, int port,
     printf ("Connecting...\n");
 #endif
     if (net_connect (ns_client, csok4, csok6, csok) != 0)
-      {
+    {
 #ifdef DEBUG_MSPROXY
-          printf ("Failed to connect to port %d\n",
-                  htons (res.packet.connect.clientport));
+        printf ("Failed to connect to port %d\n",
+                htons (res.packet.connect.clientport));
 #endif
-          net_store_destroy (ns_client);
-          return 1;
-      }
+        net_store_destroy (ns_client);
+        return 1;
+    }
     net_store_destroy (ns_client);
 #ifdef DEBUG_MSPROXY
     printf ("packet #6\n");
@@ -481,34 +481,34 @@ msproxy_keepalive (void)
     struct msproxy_response_t res;
 
     while (list)
-      {
-          serv = list->data;
-          if (serv->connected && (serv->proxy_sok != -1))
-            {
+    {
+        serv = list->data;
+        if (serv->connected && (serv->proxy_sok != -1))
+        {
 #ifdef DEBUG_MSPROXY
-                printf ("sending MS proxy keepalive packet\n");
+            printf ("sending MS proxy keepalive packet\n");
 #endif
 
-                bzero (&req, sizeof (req));
-                req.clientid = serv->msp_state.clientid;
-                req.serverid = serv->msp_state.serverid;
-                req.command = htons (MSPROXY_HELLO);
+            bzero (&req, sizeof (req));
+            req.clientid = serv->msp_state.clientid;
+            req.serverid = serv->msp_state.serverid;
+            req.command = htons (MSPROXY_HELLO);
 
-                if (send_msprequest
+            if (send_msprequest
                     (serv->proxy_sok, &serv->msp_state, &req,
                      req.packet.hello.data) == -1)
-                    continue;
+                continue;
 
-                recv_mspresponse (serv->proxy_sok, &serv->msp_state, &res);
+            recv_mspresponse (serv->proxy_sok, &serv->msp_state, &res);
 
 #ifdef DEBUG_MSPROXY
-                if (ntohs (res.command) != MSPROXY_USERINFO_ACK)
-                    printf ("expected res.command = 0x%x, is 0x%x\n",
-                            MSPROXY_USERINFO_ACK, ntohs (res.command));
+            if (ntohs (res.command) != MSPROXY_USERINFO_ACK)
+                printf ("expected res.command = 0x%x, is 0x%x\n",
+                        MSPROXY_USERINFO_ACK, ntohs (res.command));
 #endif
-            }
-          list = list->next;
-      }
+        }
+        list = list->next;
+    }
 }
 
 #endif

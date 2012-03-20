@@ -36,9 +36,9 @@ static void
 write_error (char *message, GError ** error)
 {
     if (error == NULL || *error == NULL)
-      {
-          return;
-      }
+    {
+        return;
+    }
     g_printerr ("%s: %s\n", message, (*error)->message);
     g_clear_error (error);
 }
@@ -50,9 +50,9 @@ test_server_cb (DBusGProxy * proxy,
                 guint hook_id, guint context_id, gpointer user_data)
 {
     if (hook_id == server_id)
-      {
-          g_print ("message: %s\n", word_eol[0]);
-      }
+    {
+        g_print ("message: %s\n", word_eol[0]);
+    }
 }
 
 static void
@@ -64,25 +64,25 @@ test_command_cb (DBusGProxy * proxy,
     GError *error = NULL;
 
     if (hook_id == command_id)
-      {
-          if (!dbus_g_proxy_call (proxy, "Unhook",
-                                  &error,
-                                  G_TYPE_UINT, hook_id,
-                                  G_TYPE_INVALID, G_TYPE_INVALID))
-            {
-                write_error ("Failed to complete unhook", &error);
-            }
-          /* Now if you write "/test blah" again in the xchat window
-           * you'll get a "Unknown command" error message */
-          g_print ("test command received: %s\n", word_eol[1]);
-          if (!dbus_g_proxy_call (proxy, "Print",
-                                  &error,
-                                  G_TYPE_STRING, "test command succeed",
-                                  G_TYPE_INVALID, G_TYPE_INVALID))
-            {
-                write_error ("Failed to complete Print", &error);
-            }
-      }
+    {
+        if (!dbus_g_proxy_call (proxy, "Unhook",
+                                &error,
+                                G_TYPE_UINT, hook_id,
+                                G_TYPE_INVALID, G_TYPE_INVALID))
+        {
+            write_error ("Failed to complete unhook", &error);
+        }
+        /* Now if you write "/test blah" again in the xchat window
+         * you'll get a "Unknown command" error message */
+        g_print ("test command received: %s\n", word_eol[1]);
+        if (!dbus_g_proxy_call (proxy, "Print",
+                                &error,
+                                G_TYPE_STRING, "test command succeed",
+                                G_TYPE_INVALID, G_TYPE_INVALID))
+        {
+            write_error ("Failed to complete Print", &error);
+        }
+    }
 }
 
 static void
@@ -105,15 +105,15 @@ main (int argc, char **argv)
 
     connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
     if (connection == NULL)
-      {
-          write_error ("Couldn't connect to session bus", &error);
-          return EXIT_FAILURE;
-      }
+    {
+        write_error ("Couldn't connect to session bus", &error);
+        return EXIT_FAILURE;
+    }
 
     remote_object = dbus_g_proxy_new_for_name (connection,
-                                               DBUS_SERVICE,
-                                               DBUS_REMOTE,
-                                               DBUS_REMOTE_CONNECTION_INTERFACE);
+                    DBUS_SERVICE,
+                    DBUS_REMOTE,
+                    DBUS_REMOTE_CONNECTION_INTERFACE);
     if (!dbus_g_proxy_call (remote_object, "Connect",
                             &error,
                             G_TYPE_STRING, argv[0],
@@ -122,16 +122,16 @@ main (int argc, char **argv)
                             G_TYPE_STRING, "1.0",
                             G_TYPE_INVALID,
                             G_TYPE_STRING, &path, G_TYPE_INVALID))
-      {
-          write_error ("Failed to complete Connect", &error);
-          return EXIT_FAILURE;
-      }
+    {
+        write_error ("Failed to complete Connect", &error);
+        return EXIT_FAILURE;
+    }
     g_object_unref (remote_object);
 
     remote_object = dbus_g_proxy_new_for_name (connection,
-                                               DBUS_SERVICE,
-                                               path,
-                                               DBUS_REMOTE_PLUGIN_INTERFACE);
+                    DBUS_SERVICE,
+                    path,
+                    DBUS_REMOTE_PLUGIN_INTERFACE);
     g_free (path);
 
     if (!dbus_g_proxy_call (remote_object, "HookCommand",
@@ -141,10 +141,10 @@ main (int argc, char **argv)
                             G_TYPE_STRING, "Simple D-BUS example",
                             G_TYPE_INT, 1, G_TYPE_INVALID,
                             G_TYPE_UINT, &command_id, G_TYPE_INVALID))
-      {
-          write_error ("Failed to complete HookCommand", &error);
-          return EXIT_FAILURE;
-      }
+    {
+        write_error ("Failed to complete HookCommand", &error);
+        return EXIT_FAILURE;
+    }
     g_print ("Command hook id=%d\n", command_id);
 
     if (!dbus_g_proxy_call (remote_object, "HookServer",
@@ -153,15 +153,15 @@ main (int argc, char **argv)
                             G_TYPE_INT, 0,
                             G_TYPE_INT, 0, G_TYPE_INVALID,
                             G_TYPE_UINT, &server_id, G_TYPE_INVALID))
-      {
-          write_error ("Failed to complete HookServer", &error);
-          return EXIT_FAILURE;
-      }
+    {
+        write_error ("Failed to complete HookServer", &error);
+        return EXIT_FAILURE;
+    }
     g_print ("Server hook id=%d\n", server_id);
 
     dbus_g_object_register_marshaller
-        (g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT_UINT, G_TYPE_NONE,
-         G_TYPE_STRV, G_TYPE_STRV, G_TYPE_UINT, G_TYPE_UINT, G_TYPE_INVALID);
+    (g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT_UINT, G_TYPE_NONE,
+     G_TYPE_STRV, G_TYPE_STRV, G_TYPE_UINT, G_TYPE_UINT, G_TYPE_INVALID);
 
     dbus_g_object_register_marshaller (g_cclosure_marshal_VOID__VOID,
                                        G_TYPE_NONE, G_TYPE_INVALID);

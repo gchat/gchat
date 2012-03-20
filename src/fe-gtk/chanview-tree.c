@@ -32,12 +32,12 @@ cv_tree_sel_cb (GtkTreeSelection * sel, chanview * cv)
     chan *ch;
 
     if (gtk_tree_selection_get_selected (sel, &model, &iter))
-      {
-          gtk_tree_model_get (model, &iter, COL_CHAN, &ch, -1);
+    {
+        gtk_tree_model_get (model, &iter, COL_CHAN, &ch, -1);
 
-          cv->focused = ch;
-          cv->cb_focus (cv, ch, ch->tag, ch->userdata);
-      }
+        cv->focused = ch;
+        cv->cb_focus (cv, ch, ch->tag, ch->userdata);
+    }
 }
 
 static gboolean
@@ -54,23 +54,23 @@ cv_tree_click_cb (GtkTreeView * tree, GdkEventButton * event, chanview * cv)
 
     sel = gtk_tree_view_get_selection (tree);
     if (gtk_tree_view_get_path_at_pos
-        (tree, event->x, event->y, &path, 0, 0, 0))
-      {
-          if (event->button == 2)
-            {
-                gtk_tree_selection_unselect_all (sel);
-                gtk_tree_selection_select_path (sel, path);
-            }
-          if (gtk_tree_model_get_iter
-              (GTK_TREE_MODEL (cv->store), &iter, path))
-            {
-                gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter,
-                                    COL_CHAN, &ch, -1);
-                ret =
-                    cv->cb_contextmenu (cv, ch, ch->tag, ch->userdata, event);
-            }
-          gtk_tree_path_free (path);
-      }
+            (tree, event->x, event->y, &path, 0, 0, 0))
+    {
+        if (event->button == 2)
+        {
+            gtk_tree_selection_unselect_all (sel);
+            gtk_tree_selection_select_path (sel, path);
+        }
+        if (gtk_tree_model_get_iter
+                (GTK_TREE_MODEL (cv->store), &iter, path))
+        {
+            gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter,
+                                COL_CHAN, &ch, -1);
+            ret =
+                cv->cb_contextmenu (cv, ch, ch->tag, ch->userdata, event);
+        }
+        gtk_tree_path_free (path);
+    }
     return ret;
 }
 
@@ -110,26 +110,26 @@ cv_tree_init (chanview * cv)
 
     /* icon column */
     if (cv->use_icons)
-      {
-          renderer = gtk_cell_renderer_pixbuf_new ();
-          if (prefs.tweak_smallrow)
-              g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
-          gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view),
-                                                       -1, NULL, renderer,
-                                                       "pixbuf", COL_PIXBUF,
-                                                       NULL);
-      }
+    {
+        renderer = gtk_cell_renderer_pixbuf_new ();
+        if (prefs.tweak_smallrow)
+            g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
+        gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view),
+                -1, NULL, renderer,
+                "pixbuf", COL_PIXBUF,
+                NULL);
+    }
 
     /* main column */
     renderer = gtk_cell_renderer_text_new ();
     if (prefs.tweak_smallrow)
         g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
     gtk_cell_renderer_text_set_fixed_height_from_font (GTK_CELL_RENDERER_TEXT
-                                                       (renderer), 1);
+            (renderer), 1);
     gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view), -1,
-                                                 NULL, renderer, "text",
-                                                 COL_NAME, "attributes",
-                                                 COL_ATTR, NULL);
+            NULL, renderer, "text",
+            COL_NAME, "attributes",
+            COL_ATTR, NULL);
 
     g_signal_connect (G_OBJECT
                       (gtk_tree_view_get_selection (GTK_TREE_VIEW (view))),
@@ -172,16 +172,16 @@ cv_tree_add (chanview * cv, chan * ch, char *name, GtkTreeIter * parent)
     GtkTreePath *path;
 
     if (parent)
-      {
-          /* expand the parent node */
-          path = gtk_tree_model_get_path (GTK_TREE_MODEL (cv->store), parent);
-          if (path)
-            {
-                gtk_tree_view_expand_row (((treeview *) cv)->tree, path,
-                                          FALSE);
-                gtk_tree_path_free (path);
-            }
-      }
+    {
+        /* expand the parent node */
+        path = gtk_tree_model_get_path (GTK_TREE_MODEL (cv->store), parent);
+        if (path)
+        {
+            gtk_tree_view_expand_row (((treeview *) cv)->tree, path,
+                                      FALSE);
+            gtk_tree_path_free (path);
+        }
+    }
 
     return NULL;
 }
@@ -204,51 +204,51 @@ cv_tree_focus (chan * ch)
 
     /* expand the parent node */
     if (gtk_tree_model_iter_parent (model, &parent, &ch->iter))
-      {
-          path = gtk_tree_model_get_path (model, &parent);
-          if (path)
-            {
-                /*if (!gtk_tree_view_row_expanded (tree, path))
-                   {
-                   gtk_tree_path_free (path);
-                   return;
-                   } */
-                gtk_tree_view_expand_row (tree, path, FALSE);
-                gtk_tree_path_free (path);
-            }
-      }
+    {
+        path = gtk_tree_model_get_path (model, &parent);
+        if (path)
+        {
+            /*if (!gtk_tree_view_row_expanded (tree, path))
+               {
+               gtk_tree_path_free (path);
+               return;
+               } */
+            gtk_tree_view_expand_row (tree, path, FALSE);
+            gtk_tree_path_free (path);
+        }
+    }
 
     path = gtk_tree_model_get_path (model, &ch->iter);
     if (path)
-      {
-          /* This full section does what
-           * gtk_tree_view_scroll_to_cell (tree, path, NULL, TRUE, 0.5, 0.5);
-           * does, except it only scrolls the window if the provided cell is
-           * not visible. Basic algorithm taken from gtktreeview.c */
+    {
+        /* This full section does what
+         * gtk_tree_view_scroll_to_cell (tree, path, NULL, TRUE, 0.5, 0.5);
+         * does, except it only scrolls the window if the provided cell is
+         * not visible. Basic algorithm taken from gtktreeview.c */
 
-          /* obtain information to see if the cell is visible */
-          gtk_tree_view_get_background_area (tree, path, NULL, &cell_rect);
-          gtk_tree_view_get_visible_rect (tree, &vis_rect);
+        /* obtain information to see if the cell is visible */
+        gtk_tree_view_get_background_area (tree, path, NULL, &cell_rect);
+        gtk_tree_view_get_visible_rect (tree, &vis_rect);
 
-          /* The cordinates aren't offset correctly */
-          gtk_tree_view_widget_to_tree_coords (tree, cell_rect.x, cell_rect.y,
-                                               NULL, &cell_rect.y);
+        /* The cordinates aren't offset correctly */
+        gtk_tree_view_widget_to_tree_coords (tree, cell_rect.x, cell_rect.y,
+                                             NULL, &cell_rect.y);
 
-          /* only need to scroll if out of bounds */
-          if (cell_rect.y < vis_rect.y ||
-              cell_rect.y + cell_rect.height > vis_rect.y + vis_rect.height)
-            {
-                dest_y =
-                    cell_rect.y -
-                    ((vis_rect.height - cell_rect.height) * 0.5);
-                if (dest_y < 0)
-                    dest_y = 0;
-                gtk_tree_view_scroll_to_point (tree, -1, dest_y);
-            }
-          /* theft done, now make it focused like */
-          gtk_tree_view_set_cursor (tree, path, NULL, FALSE);
-          gtk_tree_path_free (path);
-      }
+        /* only need to scroll if out of bounds */
+        if (cell_rect.y < vis_rect.y ||
+                cell_rect.y + cell_rect.height > vis_rect.y + vis_rect.height)
+        {
+            dest_y =
+                cell_rect.y -
+                ((vis_rect.height - cell_rect.height) * 0.5);
+            if (dest_y < 0)
+                dest_y = 0;
+            gtk_tree_view_scroll_to_point (tree, -1, dest_y);
+        }
+        /* theft done, now make it focused like */
+        gtk_tree_view_set_cursor (tree, path, NULL, FALSE);
+        gtk_tree_path_free (path);
+    }
 }
 
 static void
@@ -257,13 +257,13 @@ cv_tree_move_focus (chanview * cv, gboolean relative, int num)
     chan *ch;
 
     if (relative)
-      {
-          num += cv_find_number_of_chan (cv, cv->focused);
-          num %= cv->size;
-          /* make it wrap around at both ends */
-          if (num < 0)
-              num = cv->size - 1;
-      }
+    {
+        num += cv_find_number_of_chan (cv, cv->focused);
+        num %= cv->size;
+        /* make it wrap around at both ends */
+        if (num < 0)
+            num = cv->size - 1;
+    }
 
     ch = cv_find_chan_by_number (cv, num);
     if (ch)
@@ -284,29 +284,29 @@ move_row (chan * ch, int delta, GtkTreeIter * parent)
     GtkTreePath *dest_path;
 
     if (delta < 0)              /* down */
-      {
-          if (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &dest))
-              gtk_tree_store_swap (store, src, &dest);
-          else                  /* move to top */
-              gtk_tree_store_move_after (store, src, NULL);
+    {
+        if (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &dest))
+            gtk_tree_store_swap (store, src, &dest);
+        else                  /* move to top */
+            gtk_tree_store_move_after (store, src, NULL);
 
-      }
+    }
     else
-      {
-          dest_path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), &dest);
-          if (gtk_tree_path_prev (dest_path))
-            {
-                gtk_tree_model_get_iter (GTK_TREE_MODEL (store), &dest,
-                                         dest_path);
-                gtk_tree_store_swap (store, src, &dest);
-            }
-          else
-            {                   /* move to bottom */
-                gtk_tree_store_move_before (store, src, NULL);
-            }
+    {
+        dest_path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), &dest);
+        if (gtk_tree_path_prev (dest_path))
+        {
+            gtk_tree_model_get_iter (GTK_TREE_MODEL (store), &dest,
+                                     dest_path);
+            gtk_tree_store_swap (store, src, &dest);
+        }
+        else
+        {   /* move to bottom */
+            gtk_tree_store_move_before (store, src, NULL);
+        }
 
-          gtk_tree_path_free (dest_path);
-      }
+        gtk_tree_path_free (dest_path);
+    }
 }
 
 static void
@@ -316,7 +316,7 @@ cv_tree_move (chan * ch, int delta)
 
     /* do nothing if this is a server row */
     if (gtk_tree_model_iter_parent
-        (GTK_TREE_MODEL (ch->cv->store), &parent, &ch->iter))
+            (GTK_TREE_MODEL (ch->cv->store), &parent, &ch->iter))
         move_row (ch, delta, &parent);
 }
 
@@ -353,11 +353,11 @@ cv_tree_get_parent (chan * ch)
     GtkTreeIter parent;
 
     if (gtk_tree_model_iter_parent
-        (GTK_TREE_MODEL (ch->cv->store), &parent, &ch->iter))
-      {
-          gtk_tree_model_get (GTK_TREE_MODEL (ch->cv->store), &parent,
-                              COL_CHAN, &parent_ch, -1);
-      }
+            (GTK_TREE_MODEL (ch->cv->store), &parent, &ch->iter))
+    {
+        gtk_tree_model_get (GTK_TREE_MODEL (ch->cv->store), &parent,
+                            COL_CHAN, &parent_ch, -1);
+    }
 
     return parent_ch;
 }

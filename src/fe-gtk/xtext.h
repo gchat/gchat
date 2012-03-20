@@ -275,7 +275,7 @@ void gtk_xtext_set_tint (GtkXText * xtext, int tint_red, int tint_green,
                          int tint_blue);
 void gtk_xtext_set_urlcheck_function (GtkXText * xtext,
                                       int (*urlcheck_function) (GtkWidget *,
-                                                                char *, int));
+                                              char *, int));
 void gtk_xtext_set_wordwrap (GtkXText * xtext, gboolean word_wrap);
 
 xtext_buffer *gtk_xtext_buffer_new (GtkXText * xtext);

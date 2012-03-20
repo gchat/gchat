@@ -19,13 +19,13 @@ static GtkTreeModelFlags custom_list_get_flags (GtkTreeModel * tree_model);
 static gint custom_list_get_n_columns (GtkTreeModel * tree_model);
 
 static GType custom_list_get_column_type (GtkTreeModel * tree_model,
-                                          gint index);
+        gint index);
 
 static gboolean custom_list_get_iter (GtkTreeModel * tree_model,
                                       GtkTreeIter * iter, GtkTreePath * path);
 
 static GtkTreePath *custom_list_get_path (GtkTreeModel * tree_model,
-                                          GtkTreeIter * iter);
+        GtkTreeIter * iter);
 
 static void custom_list_get_value (GtkTreeModel * tree_model,
                                    GtkTreeIter * iter,
@@ -35,52 +35,52 @@ static gboolean custom_list_iter_next (GtkTreeModel * tree_model,
                                        GtkTreeIter * iter);
 
 static gboolean custom_list_iter_children (GtkTreeModel * tree_model,
-                                           GtkTreeIter * iter,
-                                           GtkTreeIter * parent);
+        GtkTreeIter * iter,
+        GtkTreeIter * parent);
 
 static gboolean custom_list_iter_has_child (GtkTreeModel * tree_model,
-                                            GtkTreeIter * iter);
+        GtkTreeIter * iter);
 
 static gint custom_list_iter_n_children (GtkTreeModel * tree_model,
-                                         GtkTreeIter * iter);
+        GtkTreeIter * iter);
 
 static gboolean custom_list_iter_nth_child (GtkTreeModel * tree_model,
-                                            GtkTreeIter * iter,
-                                            GtkTreeIter * parent, gint n);
+        GtkTreeIter * iter,
+        GtkTreeIter * parent, gint n);
 
 static gboolean custom_list_iter_parent (GtkTreeModel * tree_model,
-                                         GtkTreeIter * iter,
-                                         GtkTreeIter * child);
+        GtkTreeIter * iter,
+        GtkTreeIter * child);
 
-  /* -- GtkTreeSortable interface functions -- */
+/* -- GtkTreeSortable interface functions -- */
 
 static gboolean custom_list_sortable_get_sort_column_id (GtkTreeSortable *
-                                                         sortable,
-                                                         gint * sort_col_id,
-                                                         GtkSortType * order);
+        sortable,
+        gint * sort_col_id,
+        GtkSortType * order);
 
 static void custom_list_sortable_set_sort_column_id (GtkTreeSortable *
-                                                     sortable,
-                                                     gint sort_col_id,
-                                                     GtkSortType order);
+        sortable,
+        gint sort_col_id,
+        GtkSortType order);
 
 static void custom_list_sortable_set_sort_func (GtkTreeSortable * sortable,
-                                                gint sort_col_id,
-                                                GtkTreeIterCompareFunc
-                                                sort_func, gpointer user_data,
-                                                GtkDestroyNotify
-                                                destroy_func);
+        gint sort_col_id,
+        GtkTreeIterCompareFunc
+        sort_func, gpointer user_data,
+        GtkDestroyNotify
+        destroy_func);
 
 static void custom_list_sortable_set_default_sort_func (GtkTreeSortable *
-                                                        sortable,
-                                                        GtkTreeIterCompareFunc
-                                                        sort_func,
-                                                        gpointer user_data,
-                                                        GtkDestroyNotify
-                                                        destroy_func);
+        sortable,
+        GtkTreeIterCompareFunc
+        sort_func,
+        gpointer user_data,
+        GtkDestroyNotify
+        destroy_func);
 
 static gboolean custom_list_sortable_has_default_sort_func (GtkTreeSortable *
-                                                            sortable);
+        sortable);
 
 
 
@@ -116,50 +116,50 @@ custom_list_get_type (void)
 
     /* Some boilerplate type registration stuff */
     if (1)
-      {
-          static const GTypeInfo custom_list_info = {
-              sizeof (CustomListClass),
-              NULL,             /* base_init */
-              NULL,             /* base_finalize */
-              (GClassInitFunc) custom_list_class_init,
-              NULL,             /* class finalize */
-              NULL,             /* class_data */
-              sizeof (CustomList),
-              0,                /* n_preallocs */
-              (GInstanceInitFunc) custom_list_init
-          };
+    {
+        static const GTypeInfo custom_list_info = {
+            sizeof (CustomListClass),
+            NULL,             /* base_init */
+            NULL,             /* base_finalize */
+            (GClassInitFunc) custom_list_class_init,
+            NULL,             /* class finalize */
+            NULL,             /* class_data */
+            sizeof (CustomList),
+            0,                /* n_preallocs */
+            (GInstanceInitFunc) custom_list_init
+        };
 
-          custom_list_type =
-              g_type_register_static (G_TYPE_OBJECT, "CustomList",
-                                      &custom_list_info, (GTypeFlags) 0);
-      }
+        custom_list_type =
+            g_type_register_static (G_TYPE_OBJECT, "CustomList",
+                                    &custom_list_info, (GTypeFlags) 0);
+    }
 
     /* Here we register our GtkTreeModel interface with the type system */
     if (1)
-      {
-          static const GInterfaceInfo tree_model_info = {
-              (GInterfaceInitFunc) custom_list_tree_model_init,
-              NULL,
-              NULL
-          };
+    {
+        static const GInterfaceInfo tree_model_info = {
+            (GInterfaceInitFunc) custom_list_tree_model_init,
+            NULL,
+            NULL
+        };
 
-          g_type_add_interface_static (custom_list_type, GTK_TYPE_TREE_MODEL,
-                                       &tree_model_info);
-      }
+        g_type_add_interface_static (custom_list_type, GTK_TYPE_TREE_MODEL,
+                                     &tree_model_info);
+    }
 
     /* Add GtkTreeSortable interface */
     if (1)
-      {
-          static const GInterfaceInfo tree_sortable_info = {
-              (GInterfaceInitFunc) custom_list_sortable_init,
-              NULL,
-              NULL
-          };
+    {
+        static const GInterfaceInfo tree_sortable_info = {
+            (GInterfaceInitFunc) custom_list_sortable_init,
+            NULL,
+            NULL
+        };
 
-          g_type_add_interface_static (custom_list_type,
-                                       GTK_TYPE_TREE_SORTABLE,
-                                       &tree_sortable_info);
-      }
+        g_type_add_interface_static (custom_list_type,
+                                     GTK_TYPE_TREE_SORTABLE,
+                                     &tree_sortable_info);
+    }
 
     return custom_list_type;
 }
@@ -373,19 +373,19 @@ custom_list_get_value (GtkTreeModel * tree_model,
     record = (chanlistrow *) iter->user_data;
 
     switch (column)
-      {
-      case CUSTOM_LIST_COL_NAME:
-          g_value_set_static_string (value, GET_CHAN (record));
-          break;
+    {
+    case CUSTOM_LIST_COL_NAME:
+        g_value_set_static_string (value, GET_CHAN (record));
+        break;
 
-      case CUSTOM_LIST_COL_USERS:
-          g_value_set_uint (value, record->users);
-          break;
+    case CUSTOM_LIST_COL_USERS:
+        g_value_set_uint (value, record->users);
+        break;
 
-      case CUSTOM_LIST_COL_TOPIC:
-          g_value_set_static_string (value, record->topic);
-          break;
-      }
+    case CUSTOM_LIST_COL_TOPIC:
+        g_value_set_static_string (value, record->topic);
+        break;
+    }
 }
 
 
@@ -539,8 +539,8 @@ custom_list_iter_parent (GtkTreeModel * tree_model,
 
 static gboolean
 custom_list_sortable_get_sort_column_id (GtkTreeSortable * sortable,
-                                         gint * sort_col_id,
-                                         GtkSortType * order)
+        gint * sort_col_id,
+        GtkSortType * order)
 {
     CustomList *custom_list = CUSTOM_LIST (sortable);
 
@@ -556,12 +556,12 @@ custom_list_sortable_get_sort_column_id (GtkTreeSortable * sortable,
 
 static void
 custom_list_sortable_set_sort_column_id (GtkTreeSortable * sortable,
-                                         gint sort_col_id, GtkSortType order)
+        gint sort_col_id, GtkSortType order)
 {
     CustomList *custom_list = CUSTOM_LIST (sortable);
 
     if (custom_list->sort_id == sort_col_id
-        && custom_list->sort_order == order)
+            && custom_list->sort_order == order)
         return;
 
     custom_list->sort_id = sort_col_id;
@@ -588,9 +588,9 @@ custom_list_sortable_set_sort_func (GtkTreeSortable * sortable,
 
 static void
 custom_list_sortable_set_default_sort_func (GtkTreeSortable * sortable,
-                                            GtkTreeIterCompareFunc sort_func,
-                                            gpointer user_data,
-                                            GtkDestroyNotify destroy_func)
+        GtkTreeIterCompareFunc sort_func,
+        gpointer user_data,
+        GtkDestroyNotify destroy_func)
 {
 }
 
@@ -611,14 +611,14 @@ fast_ascii_stricmp (const char *s1, const char *s2)
     int c1, c2;
 
     while (*s1 && *s2)
-      {
-          c1 = (int) (unsigned char) TOSML (*s1);
-          c2 = (int) (unsigned char) TOSML (*s2);
-          if (c1 != c2)
-              return (c1 - c2);
-          s1++;
-          s2++;
-      }
+    {
+        c1 = (int) (unsigned char) TOSML (*s1);
+        c2 = (int) (unsigned char) TOSML (*s2);
+        if (c1 != c2)
+            return (c1 - c2);
+        s1++;
+        s2++;
+    }
 
     return (((int) (unsigned char) *s1) - ((int) (unsigned char) *s2));
 }
@@ -628,21 +628,21 @@ custom_list_qsort_compare_func (chanlistrow ** a, chanlistrow ** b,
                                 CustomList * custom_list)
 {
     if (custom_list->sort_order == GTK_SORT_DESCENDING)
-      {
-          chanlistrow **tmp = a;
-          a = b;
-          b = tmp;
-      }
+    {
+        chanlistrow **tmp = a;
+        a = b;
+        b = tmp;
+    }
 
     if (custom_list->sort_id == SORT_ID_USERS)
-      {
-          return (*a)->users - (*b)->users;
-      }
+    {
+        return (*a)->users - (*b)->users;
+    }
 
     if (custom_list->sort_id == SORT_ID_TOPIC)
-      {
-          return fast_ascii_stricmp ((*a)->topic, (*b)->topic);
-      }
+    {
+        return fast_ascii_stricmp ((*a)->topic, (*b)->topic);
+    }
 
     return strcmp ((*a)->collation_key, (*b)->collation_key);
 }
@@ -669,11 +669,11 @@ custom_list_append (CustomList * custom_list, chanlistrow * newrecord)
     guint pos;
 
     if (custom_list->num_rows >= custom_list->num_alloc)
-      {
-          custom_list->num_alloc += 64;
-          newsize = custom_list->num_alloc * sizeof (chanlistrow *);
-          custom_list->rows = g_realloc (custom_list->rows, newsize);
-      }
+    {
+        custom_list->num_alloc += 64;
+        newsize = custom_list->num_alloc * sizeof (chanlistrow *);
+        custom_list->rows = g_realloc (custom_list->rows, newsize);
+    }
 
     /* TODO: Binary search insert? */
 
@@ -688,7 +688,7 @@ custom_list_append (CustomList * custom_list, chanlistrow * newrecord)
 
     path = gtk_tree_path_new ();
     gtk_tree_path_append_index (path, newrecord->pos);
-/*  custom_list_get_iter(GTK_TREE_MODEL(custom_list), &iter, path);*/
+    /*  custom_list_get_iter(GTK_TREE_MODEL(custom_list), &iter, path);*/
     iter.user_data = newrecord;
     gtk_tree_model_row_inserted (GTK_TREE_MODEL (custom_list), path, &iter);
     gtk_tree_path_free (path);
@@ -714,15 +714,15 @@ custom_list_resort (CustomList * custom_list)
     neworder = malloc (sizeof (gint) * custom_list->num_rows);
 
     for (i = custom_list->num_rows - 1; i >= 0; i--)
-      {
-          /* Note that the API reference might be wrong about
-           * this, see bug number 124790 on bugs.gnome.org.
-           * Both will work, but one will give you 'jumpy'
-           * selections after row reordering. */
-          /* neworder[(custom_list->rows[i])->pos] = i; */
-          neworder[i] = (custom_list->rows[i])->pos;
-          (custom_list->rows[i])->pos = i;
-      }
+    {
+        /* Note that the API reference might be wrong about
+         * this, see bug number 124790 on bugs.gnome.org.
+         * Both will work, but one will give you 'jumpy'
+         * selections after row reordering. */
+        /* neworder[(custom_list->rows[i])->pos] = i; */
+        neworder[i] = (custom_list->rows[i])->pos;
+        (custom_list->rows[i])->pos = i;
+    }
 
     path = gtk_tree_path_new ();
     gtk_tree_model_rows_reordered (GTK_TREE_MODEL (custom_list), path, NULL,
@@ -738,12 +738,12 @@ custom_list_clear (CustomList * custom_list)
     GtkTreePath *path;
 
     for (i = max; i >= 0; i--)
-      {
-          path = gtk_tree_path_new ();
-          gtk_tree_path_append_index (path, custom_list->rows[i]->pos);
-          gtk_tree_model_row_deleted (GTK_TREE_MODEL (custom_list), path);
-          gtk_tree_path_free (path);
-      }
+    {
+        path = gtk_tree_path_new ();
+        gtk_tree_path_append_index (path, custom_list->rows[i]->pos);
+        gtk_tree_model_row_deleted (GTK_TREE_MODEL (custom_list), path);
+        gtk_tree_path_free (path);
+    }
 
     custom_list->num_rows = 0;
     custom_list->num_alloc = 0;

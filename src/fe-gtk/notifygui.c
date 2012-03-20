@@ -101,12 +101,12 @@ notify_row_cb (GtkTreeSelection * sel, GtkTreeView * view)
     struct notify_per_server *servnot;
 
     if (gtkutil_treeview_get_selected (view, &iter, NPS_COLUMN, &servnot, -1))
-      {
-          gtk_widget_set_sensitive (notify_button_opendialog,
-                                    servnot ? servnot->ison : 0);
-          gtk_widget_set_sensitive (notify_button_remove, TRUE);
-          return;
-      }
+    {
+        gtk_widget_set_sensitive (notify_button_opendialog,
+                                  servnot ? servnot->ison : 0);
+        gtk_widget_set_sensitive (notify_button_remove, TRUE);
+        return;
+    }
 
     gtk_widget_set_sensitive (notify_button_opendialog, FALSE);
     gtk_widget_set_sensitive (notify_button_remove, FALSE);
@@ -134,8 +134,8 @@ notify_treeview_new (GtkWidget * box)
                                      (GTK_TREE_VIEW (view), 0), TRUE);
 
     for (col_id = 0;
-         (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
-         col_id++)
+            (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
+            col_id++)
         gtk_tree_view_column_set_alignment (col, 0.5);
 
     g_signal_connect (G_OBJECT
@@ -171,94 +171,94 @@ notify_gui_update (void)
     valid = gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter);
 
     while (list)
-      {
-          notify = (struct notify *) list->data;
-          name = notify->name;
-          status = _("Offline");
-          server = "";
+    {
+        notify = (struct notify *) list->data;
+        name = notify->name;
+        status = _("Offline");
+        server = "";
 
-          online = FALSE;
-          lastseen = 0;
-          /* First see if they're online on any servers */
-          slist = notify->server_list;
-          while (slist)
+        online = FALSE;
+        lastseen = 0;
+        /* First see if they're online on any servers */
+        slist = notify->server_list;
+        while (slist)
+        {
+            servnot = (struct notify_per_server *) slist->data;
+            if (servnot->ison)
+                online = TRUE;
+            if (servnot->lastseen > lastseen)
+                lastseen = servnot->lastseen;
+            slist = slist->next;
+        }
+
+        if (!online)          /* Offline on all servers */
+        {
+            if (!lastseen)
+                seen = _("Never");
+            else
+            {
+                snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"),
+                          (int) (time (0) - lastseen) / 60);
+                seen = agobuf;
+            }
+            if (!valid)     /* create new tree row if required */
+                gtk_list_store_append (store, &iter);
+            gtk_list_store_set (store, &iter, 0, name, 1, status,
+                                2, server, 3, seen, 4, &colors[4], 5,
+                                NULL, -1);
+            if (valid)
+                valid =
+                    gtk_tree_model_iter_next (GTK_TREE_MODEL (store),
+                                              &iter);
+
+        }
+        else
+        {
+            /* Online - add one line per server */
+            servcount = 0;
+            slist = notify->server_list;
+            status = _("Online");
+            while (slist)
             {
                 servnot = (struct notify_per_server *) slist->data;
                 if (servnot->ison)
-                    online = TRUE;
-                if (servnot->lastseen > lastseen)
-                    lastseen = servnot->lastseen;
+                {
+                    if (servcount > 0)
+                        name = "";
+                    server =
+                        server_get_network (servnot->server, TRUE);
+
+                    snprintf (agobuf, sizeof (agobuf),
+                              _("%d minutes ago"),
+                              (int) (time (0) - lastseen) / 60);
+                    seen = agobuf;
+
+                    if (!valid) /* create new tree row if required */
+                        gtk_list_store_append (store, &iter);
+                    gtk_list_store_set (store, &iter, 0, name, 1,
+                                        status, 2, server, 3, seen, 4,
+                                        &colors[3], 5, servnot, -1);
+                    if (valid)
+                        valid =
+                            gtk_tree_model_iter_next (GTK_TREE_MODEL
+                                                      (store), &iter);
+
+                    servcount++;
+                }
                 slist = slist->next;
             }
+        }
 
-          if (!online)          /* Offline on all servers */
-            {
-                if (!lastseen)
-                    seen = _("Never");
-                else
-                  {
-                      snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"),
-                                (int) (time (0) - lastseen) / 60);
-                      seen = agobuf;
-                  }
-                if (!valid)     /* create new tree row if required */
-                    gtk_list_store_append (store, &iter);
-                gtk_list_store_set (store, &iter, 0, name, 1, status,
-                                    2, server, 3, seen, 4, &colors[4], 5,
-                                    NULL, -1);
-                if (valid)
-                    valid =
-                        gtk_tree_model_iter_next (GTK_TREE_MODEL (store),
-                                                  &iter);
-
-            }
-          else
-            {
-                /* Online - add one line per server */
-                servcount = 0;
-                slist = notify->server_list;
-                status = _("Online");
-                while (slist)
-                  {
-                      servnot = (struct notify_per_server *) slist->data;
-                      if (servnot->ison)
-                        {
-                            if (servcount > 0)
-                                name = "";
-                            server =
-                                server_get_network (servnot->server, TRUE);
-
-                            snprintf (agobuf, sizeof (agobuf),
-                                      _("%d minutes ago"),
-                                      (int) (time (0) - lastseen) / 60);
-                            seen = agobuf;
-
-                            if (!valid) /* create new tree row if required */
-                                gtk_list_store_append (store, &iter);
-                            gtk_list_store_set (store, &iter, 0, name, 1,
-                                                status, 2, server, 3, seen, 4,
-                                                &colors[3], 5, servnot, -1);
-                            if (valid)
-                                valid =
-                                    gtk_tree_model_iter_next (GTK_TREE_MODEL
-                                                              (store), &iter);
-
-                            servcount++;
-                        }
-                      slist = slist->next;
-                  }
-            }
-
-          list = list->next;
-      }
+        list = list->next;
+    }
 
     while (valid)
-      {
-          GtkTreeIter old = iter;
-          /* get next iter now because removing invalidates old one */
-          valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter);
-          gtk_list_store_remove (store, &old);
-      }
+    {
+        GtkTreeIter old = iter;
+        /* get next iter now because removing invalidates old one */
+        valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter);
+        gtk_list_store_remove (store, &old);
+    }
 }
 
 static void
@@ -270,10 +270,10 @@ notify_opendialog_clicked (GtkWidget * igad)
 
     view = g_object_get_data (G_OBJECT (notify_window), "view");
     if (gtkutil_treeview_get_selected (view, &iter, NPS_COLUMN, &servnot, -1))
-      {
-          if (servnot)
-              open_query (servnot->server, servnot->notify->name, TRUE);
-      }
+    {
+        if (servnot)
+            open_query (servnot->server, servnot->notify->name, TRUE);
+    }
 }
 
 static void
@@ -288,34 +288,34 @@ notify_remove_clicked (GtkWidget * igad)
 
     view = g_object_get_data (G_OBJECT (notify_window), "view");
     if (gtkutil_treeview_get_selected (view, &iter, USER_COLUMN, &name, -1))
-      {
-          model = gtk_tree_view_get_model (view);
-          found = (*name != 0);
-          while (!found)        /* the real nick is some previous node */
+    {
+        model = gtk_tree_view_get_model (view);
+        found = (*name != 0);
+        while (!found)        /* the real nick is some previous node */
+        {
+            g_free (name);  /* it's useless to us */
+            if (!path)
+                path = gtk_tree_model_get_path (model, &iter);
+            if (!gtk_tree_path_prev (path)) /* arrgh! no previous node! */
             {
-                g_free (name);  /* it's useless to us */
-                if (!path)
-                    path = gtk_tree_model_get_path (model, &iter);
-                if (!gtk_tree_path_prev (path)) /* arrgh! no previous node! */
-                  {
-                      g_warning ("notify list state is invalid\n");
-                      break;
-                  }
-                if (!gtk_tree_model_get_iter (model, &iter, path))
-                    break;
-                gtk_tree_model_get (model, &iter, USER_COLUMN, &name, -1);
-                found = (*name != 0);
+                g_warning ("notify list state is invalid\n");
+                break;
             }
-          if (path)
-              gtk_tree_path_free (path);
-          if (!found)
-              return;
+            if (!gtk_tree_model_get_iter (model, &iter, path))
+                break;
+            gtk_tree_model_get (model, &iter, USER_COLUMN, &name, -1);
+            found = (*name != 0);
+        }
+        if (path)
+            gtk_tree_path_free (path);
+        if (!found)
+            return;
 
-          /* ok, now we can remove it */
-          gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
-          notify_deluser (name);
-          g_free (name);
-      }
+        /* ok, now we can remove it */
+        gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+        notify_deluser (name);
+        g_free (name);
+    }
 }
 
 static void
@@ -326,14 +326,14 @@ notifygui_add_cb (GtkDialog * dialog, gint response, gpointer entry)
 
     text = GTK_ENTRY (entry)->text;
     if (text[0] && response == GTK_RESPONSE_ACCEPT)
-      {
-          networks =
-              GTK_ENTRY (g_object_get_data (G_OBJECT (entry), "net"))->text;
-          if (strcasecmp (networks, "ALL") == 0 || networks[0] == 0)
-              notify_adduser (text, NULL);
-          else
-              notify_adduser (text, networks);
-      }
+    {
+        networks =
+            GTK_ENTRY (g_object_get_data (G_OBJECT (entry), "net"))->text;
+        if (strcasecmp (networks, "ALL") == 0 || networks[0] == 0)
+            notify_adduser (text, NULL);
+        else
+            notify_adduser (text, networks);
+    }
 
     gtk_widget_destroy (GTK_WIDGET (dialog));
 }
@@ -414,10 +414,10 @@ notify_opengui (void)
     GtkWidget *view;
 
     if (notify_window)
-      {
-          mg_bring_tofront (notify_window);
-          return;
-      }
+    {
+        mg_bring_tofront (notify_window);
+        return;
+    }
 
     notify_window =
         mg_create_generic_tab ("Notify", _("GChat: Friends List"), FALSE,

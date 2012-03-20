@@ -83,10 +83,10 @@ _SSL_context_init (void (*info_cb_func), int server)
 #ifdef WIN32
     /* under win32, OpenSSL needs to be seeded with some randomness */
     for (i = 0; i < 128; i++)
-      {
-          r = rand ();
-          RAND_seed ((unsigned char *) &r, sizeof (r));
-      }
+    {
+        r = rand ();
+        RAND_seed ((unsigned char *) &r, sizeof (r));
+    }
 #endif
 
     return (ctx);
@@ -102,10 +102,10 @@ ASN1_TIME_snprintf (char *buf, int buf_len, ASN1_TIME * tm)
     BIO_get_mem_data (inMem, &expires);
     buf[0] = 0;
     if (expires != NULL)
-      {
-          memset (buf, 0, buf_len);
-          strncpy (buf, expires, 24);
-      }
+    {
+        memset (buf, 0, buf_len);
+        strncpy (buf, expires, 24);
+    }
     BIO_free (inMem);
 }
 
@@ -120,11 +120,11 @@ broke_oneline (char *oneline, char *parray[])
     i = 0;
     ppt = pt = oneline + 1;
     while ((pt = strchr (pt, '/')))
-      {
-          *pt = 0;
-          parray[i++] = ppt;
-          ppt = ++pt;
-      }
+    {
+        *pt = 0;
+        parray[i++] = ppt;
+        ppt = ++pt;
+    }
     parray[i++] = ppt;
     parray[i] = NULL;
 }
@@ -181,15 +181,15 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
     EVP_PKEY_free (peer_pkey);
 
     /* SSL_SESSION_print_fp(stdout, SSL_get_session(ssl)); */
-/*
-	if (ssl->session->sess_cert->peer_rsa_tmp) {
-		tmp_pkey = EVP_PKEY_new();
-		EVP_PKEY_assign_RSA(tmp_pkey, ssl->session->sess_cert->peer_rsa_tmp);
-		cert_info->rsa_tmp_bits = EVP_PKEY_bits (tmp_pkey);
-		EVP_PKEY_free(tmp_pkey);
-	} else
-		fprintf(stderr, "REMOTE SIDE DOESN'T PROVIDES ->peer_rsa_tmp\n");
-*/
+    /*
+    	if (ssl->session->sess_cert->peer_rsa_tmp) {
+    		tmp_pkey = EVP_PKEY_new();
+    		EVP_PKEY_assign_RSA(tmp_pkey, ssl->session->sess_cert->peer_rsa_tmp);
+    		cert_info->rsa_tmp_bits = EVP_PKEY_bits (tmp_pkey);
+    		EVP_PKEY_free(tmp_pkey);
+    	} else
+    		fprintf(stderr, "REMOTE SIDE DOESN'T PROVIDES ->peer_rsa_tmp\n");
+    */
     cert_info->rsa_tmp_bits = 0;
 
     X509_free (peer_cert);
@@ -224,20 +224,20 @@ _SSL_send (SSL * ssl, char *buf, int len)
     num = SSL_write (ssl, buf, len);
 
     switch (SSL_get_error (ssl, num))
-      {
-      case SSL_ERROR_SSL:      /* setup errno! */
-          /* ??? */
-          __SSL_fill_err_buf ("SSL_write");
-          fprintf (stderr, "%s\n", err_buf);
-          break;
-      case SSL_ERROR_SYSCALL:
-          /* ??? */
-          perror ("SSL_write/write");
-          break;
-      case SSL_ERROR_ZERO_RETURN:
-          /* fprintf(stderr, "SSL closed on write\n"); */
-          break;
-      }
+    {
+    case SSL_ERROR_SSL:      /* setup errno! */
+        /* ??? */
+        __SSL_fill_err_buf ("SSL_write");
+        fprintf (stderr, "%s\n", err_buf);
+        break;
+    case SSL_ERROR_SYSCALL:
+        /* ??? */
+        perror ("SSL_write/write");
+        break;
+    case SSL_ERROR_ZERO_RETURN:
+        /* fprintf(stderr, "SSL closed on write\n"); */
+        break;
+    }
 
     return (num);
 }
@@ -252,21 +252,21 @@ _SSL_recv (SSL * ssl, char *buf, int len)
     num = SSL_read (ssl, buf, len);
 
     switch (SSL_get_error (ssl, num))
-      {
-      case SSL_ERROR_SSL:
-          /* ??? */
-          __SSL_fill_err_buf ("SSL_read");
-          fprintf (stderr, "%s\n", err_buf);
-          break;
-      case SSL_ERROR_SYSCALL:
-          /* ??? */
-          if (!would_block ())
-              perror ("SSL_read/read");
-          break;
-      case SSL_ERROR_ZERO_RETURN:
-          /* fprintf(stdeerr, "SSL closed on read\n"); */
-          break;
-      }
+    {
+    case SSL_ERROR_SSL:
+        /* ??? */
+        __SSL_fill_err_buf ("SSL_read");
+        fprintf (stderr, "%s\n", err_buf);
+        break;
+    case SSL_ERROR_SYSCALL:
+        /* ??? */
+        if (!would_block ())
+            perror ("SSL_read/read");
+        break;
+    case SSL_ERROR_ZERO_RETURN:
+        /* fprintf(stdeerr, "SSL closed on read\n"); */
+        break;
+    }
 
     return (num);
 }
@@ -296,20 +296,20 @@ char *
 _SSL_set_verify (SSL_CTX * ctx, void *verify_callback, char *cacert)
 {
     if (!SSL_CTX_set_default_verify_paths (ctx))
-      {
-          __SSL_fill_err_buf ("SSL_CTX_set_default_verify_paths");
-          return (err_buf);
-      }
-/*
-	if (cacert)
-	{
-		if (!SSL_CTX_load_verify_locations (ctx, cacert, NULL))
-		{
-			__SSL_fill_err_buf ("SSL_CTX_load_verify_locations");
-			return (err_buf);
-		}
-	}
-*/
+    {
+        __SSL_fill_err_buf ("SSL_CTX_set_default_verify_paths");
+        return (err_buf);
+    }
+    /*
+    	if (cacert)
+    	{
+    		if (!SSL_CTX_load_verify_locations (ctx, cacert, NULL))
+    		{
+    			__SSL_fill_err_buf ("SSL_CTX_load_verify_locations");
+    			return (err_buf);
+    		}
+    	}
+    */
     SSL_CTX_set_verify (ctx, SSL_VERIFY_PEER, verify_callback);
 
     return (NULL);

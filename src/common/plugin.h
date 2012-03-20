@@ -10,27 +10,27 @@ struct _xchat_plugin
                                        const char *name,
                                        int pri,
                                        int (*callback) (char *word[],
-                                                        char *word_eol[],
-                                                        void *user_data),
+                                               char *word_eol[],
+                                               void *user_data),
                                        const char *help_text, void *userdata);
     xchat_hook *(*xchat_hook_server) (xchat_plugin * ph, const char *name,
                                       int pri, int (*callback) (char *word[],
-                                                                char
-                                                                *word_eol[],
-                                                                void
-                                                                *user_data),
+                                              char
+                                              *word_eol[],
+                                              void
+                                              *user_data),
                                       void *userdata);
     xchat_hook *(*xchat_hook_print) (xchat_plugin * ph, const char *name,
                                      int pri, int (*callback) (char *word[],
-                                                               void
-                                                               *user_data),
+                                             void
+                                             *user_data),
                                      void *userdata);
     xchat_hook *(*xchat_hook_timer) (xchat_plugin * ph, int timeout,
                                      int (*callback) (void *user_data),
                                      void *userdata);
     xchat_hook *(*xchat_hook_fd) (xchat_plugin * ph, int fd, int flags,
                                   int (*callback) (int fd, int flags,
-                                                   void *user_data),
+                                          void *user_data),
                                   void *userdata);
     void *(*xchat_unhook) (xchat_plugin * ph, xchat_hook * hook);
     void (*xchat_print) (xchat_plugin * ph, const char *text);
@@ -50,7 +50,7 @@ struct _xchat_plugin
     xchat_list *(*xchat_list_get) (xchat_plugin * ph, const char *name);
     void (*xchat_list_free) (xchat_plugin * ph, xchat_list * xlist);
     const char *const *(*xchat_list_fields) (xchat_plugin * ph,
-                                             const char *name);
+            const char *name);
     int (*xchat_list_next) (xchat_plugin * ph, xchat_list * xlist);
     const char *(*xchat_list_str) (xchat_plugin * ph,
                                    xchat_list * xlist, const char *name);
@@ -64,8 +64,8 @@ struct _xchat_plugin
     void (*xchat_plugingui_remove) (xchat_plugin * ph, void *handle);
     int (*xchat_emit_print) (xchat_plugin * ph, const char *event_name, ...);
     void *(*xchat_read_fd) (xchat_plugin * ph);
-      time_t (*xchat_list_time) (xchat_plugin * ph,
-                                 xchat_list * xlist, const char *name);
+    time_t (*xchat_list_time) (xchat_plugin * ph,
+                               xchat_list * xlist, const char *name);
     char *(*xchat_gettext) (xchat_plugin * ph, const char *msgid);
     void (*xchat_send_modes) (xchat_plugin * ph,
                               const char **targets,
@@ -109,6 +109,6 @@ GList *plugin_command_list (GList * tmp_list);
 int plugin_show_help (session * sess, char *cmd);
 void plugin_command_foreach (session * sess, void *userdata,
                              void (*cb) (session * sess, void *userdata,
-                                         char *name, char *usage));
+                                     char *name, char *usage));
 
 #endif

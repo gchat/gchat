@@ -101,25 +101,31 @@ typedef struct
 
 static const setting textbox_settings[] = {
     {ST_HEADER, N_("Text Box Appearance"), 0, 0, 0},
-    {ST_EFONT, N_("Font:"), P_OFFSETNL (font_normal), 0, 0,
-     sizeof prefs.font_normal}
+    {   ST_EFONT, N_("Font:"), P_OFFSETNL (font_normal), 0, 0,
+        sizeof prefs.font_normal
+    }
     ,
-    {ST_EFILE, N_("Background image:"), P_OFFSETNL (background), 0, 0,
-     sizeof prefs.background}
+    {   ST_EFILE, N_("Background image:"), P_OFFSETNL (background), 0, 0,
+        sizeof prefs.background
+    }
     ,
     {ST_NUMBER, N_("Scrollback lines:"), P_OFFINTNL (max_lines), 0, 0, 100000}
     ,
-    {ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL (colorednicks),
-     N_("Give each person on IRC a different color"), 0, 0}
+    {   ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL (colorednicks),
+        N_("Give each person on IRC a different color"), 0, 0
+    }
     ,
-    {ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL (indent_nicks),
-     N_("Make nick names right-justified"), 0, 0}
+    {   ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL (indent_nicks),
+        N_("Make nick names right-justified"), 0, 0
+    }
     ,
-    {ST_TOGGLE, N_("Transparent background"), P_OFFINTNL (transparent), 0, 0,
-     0}
+    {   ST_TOGGLE, N_("Transparent background"), P_OFFINTNL (transparent), 0, 0,
+        0
+    }
     ,
-    {ST_TOGGLR, N_("Show marker line"), P_OFFINTNL (show_marker),
-     N_("Insert a red line after the last read text."), 0, 0}
+    {   ST_TOGGLR, N_("Show marker line"), P_OFFINTNL (show_marker),
+        N_("Insert a red line after the last read text."), 0, 0
+    }
     ,
     {ST_HEADER, N_("Transparency Settings"), 0, 0, 0}
     ,
@@ -134,8 +140,9 @@ static const setting textbox_settings[] = {
     ,
     {ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL (timestamp), 0, 0, 2}
     ,
-    {ST_ENTRY, N_("Time stamp format:"), P_OFFSETNL (stamp_format),
-     N_("See strftime manpage for details."), 0, sizeof prefs.stamp_format}
+    {   ST_ENTRY, N_("Time stamp format:"), P_OFFSETNL (stamp_format),
+        N_("See strftime manpage for details."), 0, sizeof prefs.stamp_format
+    }
     ,
 
     {ST_END, 0, 0, 0, 0, 0}
@@ -149,38 +156,44 @@ static const char *const tabcompmenu[] = {
 
 static const setting inputbox_settings[] = {
     {ST_HEADER, N_("Input box"), 0, 0, 0},
-    {ST_TOGGLE, N_("Use the Text box font and colors"),
-     P_OFFINTNL (style_inputbox), 0, 0, 0},
+    {   ST_TOGGLE, N_("Use the Text box font and colors"),
+        P_OFFINTNL (style_inputbox), 0, 0, 0
+    },
 #if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
     {ST_TOGGLE, N_("Spell checking"), P_OFFINTNL (gui_input_spell), 0, 0, 0},
 #endif
 
     {ST_HEADER, N_("Nick Completion"), 0, 0, 0},
-    {ST_TOGGLE, N_("Automatic nick completion (without TAB key)"),
-     P_OFFINTNL (nickcompletion),
-     0, 0, 0},
-    {ST_ENTRY, N_("Nick completion suffix:"), P_OFFSETNL (nick_suffix), 0, 0,
-     sizeof prefs.nick_suffix}
+    {   ST_TOGGLE, N_("Automatic nick completion (without TAB key)"),
+        P_OFFINTNL (nickcompletion),
+        0, 0, 0
+    },
+    {   ST_ENTRY, N_("Nick completion suffix:"), P_OFFSETNL (nick_suffix), 0, 0,
+        sizeof prefs.nick_suffix
+    }
     ,
-    {ST_MENU, N_("Nick completion sorted:"), P_OFFINTNL (completion_sort), 0,
-     tabcompmenu, 0}
+    {   ST_MENU, N_("Nick completion sorted:"), P_OFFINTNL (completion_sort), 0,
+        tabcompmenu, 0
+    }
     ,
 
 #if 0                           /* obsolete */
     {ST_HEADER, N_("Input Box Codes"), 0, 0, 0}
     ,
-    {ST_TOGGLE, N_("Interpret %nnn as an ASCII value"),
-     P_OFFINTNL (perc_ascii), 0, 0, 0}
+    {   ST_TOGGLE, N_("Interpret %nnn as an ASCII value"),
+        P_OFFINTNL (perc_ascii), 0, 0, 0
+    }
     ,
-    {ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"),
-     P_OFFINTNL (perc_color), 0, 0, 0}
+    {   ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"),
+        P_OFFINTNL (perc_color), 0, 0, 0
+    }
     ,
 #endif
 
     {ST_END, 0, 0, 0, 0, 0}
 };
 
-/*static const char *const lagmenutext[] = 
+/*static const char *const lagmenutext[] =
 {
 	N_("Off"),
 	N_("Graph"),
@@ -226,31 +239,38 @@ static const char *const ulpos[] = {
 
 static const setting userlist_settings[] = {
     {ST_HEADER, N_("User List"), 0, 0, 0},
-    {ST_TOGGLE, N_("Show hostnames in user list"),
-     P_OFFINTNL (showhostname_in_userlist), 0, 0, 0},
-    {ST_TOGGLE, N_("Use the Text box font and colors"),
-     P_OFFINTNL (style_namelistgad), 0, 0, 0},
-/*	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(paned_userlist),0,0,0},*/
-    {ST_MENU, N_("User list sorted by:"), P_OFFINTNL (userlist_sort), 0,
-     ulmenutext, 0},
-    {ST_MENU, N_("Show user list at:"), P_OFFINTNL (gui_ulist_pos), 0, ulpos,
-     1},
+    {   ST_TOGGLE, N_("Show hostnames in user list"),
+        P_OFFINTNL (showhostname_in_userlist), 0, 0, 0
+    },
+    {   ST_TOGGLE, N_("Use the Text box font and colors"),
+        P_OFFINTNL (style_namelistgad), 0, 0, 0
+    },
+    /*	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(paned_userlist),0,0,0},*/
+    {   ST_MENU, N_("User list sorted by:"), P_OFFINTNL (userlist_sort), 0,
+        ulmenutext, 0
+    },
+    {   ST_MENU, N_("Show user list at:"), P_OFFINTNL (gui_ulist_pos), 0, ulpos,
+        1
+    },
 
     {ST_HEADER, N_("Away tracking"), 0, 0, 0},
-    {ST_TOGGLE,
-     N_("Track the Away status of users and mark them in a different color"),
-     P_OFFINTNL (away_track), 0, 0, 2},
-    {ST_NUMBER, N_("On channels smaller than:"), P_OFFINTNL (away_size_max),
-     0, 0, 10000},
+    {   ST_TOGGLE,
+        N_("Track the Away status of users and mark them in a different color"),
+        P_OFFINTNL (away_track), 0, 0, 2
+    },
+    {   ST_NUMBER, N_("On channels smaller than:"), P_OFFINTNL (away_size_max),
+        0, 0, 10000
+    },
 
     {ST_HEADER, N_("Action Upon Double Click"), 0, 0, 0},
-    {ST_ENTRY, N_("Execute command:"), P_OFFSETNL (doubleclickuser), 0, 0,
-     sizeof prefs.doubleclickuser}
+    {   ST_ENTRY, N_("Execute command:"), P_OFFSETNL (doubleclickuser), 0, 0,
+        sizeof prefs.doubleclickuser
+    }
     ,
 
-/*	{ST_HEADER,	N_("Extra Gadgets"),0,0,0},
-	{ST_MENU,	N_("Lag meter:"), P_OFFINTNL(lagometer), 0, lagmenutext, 0},
-	{ST_MENU,	N_("Throttle meter:"), P_OFFINTNL(throttlemeter), 0, lagmenutext, 0},*/
+    /*	{ST_HEADER,	N_("Extra Gadgets"),0,0,0},
+    	{ST_MENU,	N_("Lag meter:"), P_OFFINTNL(lagometer), 0, lagmenutext, 0},
+    	{ST_MENU,	N_("Throttle meter:"), P_OFFINTNL(throttlemeter), 0, lagmenutext, 0},*/
 
     {ST_END, 0, 0, 0, 0, 0}
 };
@@ -280,30 +300,38 @@ static const char *const swtype[] = {
 static const setting tabs_settings[] = {
     /*{ST_HEADER,   N_("Channel Switcher"),0,0,0}, */
     {ST_RADIO, N_("Switcher type:"), P_OFFINTNL (tab_layout), 0, swtype, 0},
-    {ST_TOGGLE, N_("Open an extra tab for server messages"),
-     P_OFFINTNL (use_server_tab), 0, 0, 0},
-    {ST_TOGGLE, N_("Open an extra tab for server notices"),
-     P_OFFINTNL (notices_tabs), 0, 0, 0},
-    {ST_TOGGLE, N_("Open a new tab when you receive a private message"),
-     P_OFFINTNL (autodialog), 0, 0, 0},
-    {ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL (tab_sort),
-     0, 0, 0},
+    {   ST_TOGGLE, N_("Open an extra tab for server messages"),
+        P_OFFINTNL (use_server_tab), 0, 0, 0
+    },
+    {   ST_TOGGLE, N_("Open an extra tab for server notices"),
+        P_OFFINTNL (notices_tabs), 0, 0, 0
+    },
+    {   ST_TOGGLE, N_("Open a new tab when you receive a private message"),
+        P_OFFINTNL (autodialog), 0, 0, 0
+    },
+    {   ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL (tab_sort),
+        0, 0, 0
+    },
     {ST_TOGGLE, N_("Smaller text"), P_OFFINTNL (tab_small), 0, 0, 0},
 #if 0
-    {ST_MENU, N_("Focus new tabs:"), P_OFFINTNL (newtabstofront), 0,
-     focusnewtabsmenu, 0},
+    {   ST_MENU, N_("Focus new tabs:"), P_OFFINTNL (newtabstofront), 0,
+        focusnewtabsmenu, 0
+    },
 #endif
     {ST_MENU, N_("When channel data is received:"), P_OFFINTNL (data_color), 0, datapos, 1},
     {ST_MENU, N_("Show channel switcher at:"), P_OFFINTNL (tab_pos), 0, cspos, 1},
-    {ST_NUMBER, N_("Shorten tab labels to:"), P_OFFINTNL (truncchans), 0,
-     (const char **) N_("letters."), 99},
+    {   ST_NUMBER, N_("Shorten tab labels to:"), P_OFFINTNL (truncchans), 0,
+        (const char **) N_("letters."), 99
+    },
 
     {ST_HEADER, N_("Tabs or Windows"), 0, 0, 0},
-    {ST_MENU, N_("Open channels in:"), P_OFFINTNL (tabchannels), 0, tabwin,
-     0},
+    {   ST_MENU, N_("Open channels in:"), P_OFFINTNL (tabchannels), 0, tabwin,
+        0
+    },
     {ST_MENU, N_("Open dialogs in:"), P_OFFINTNL (privmsgtab), 0, tabwin, 0},
-    {ST_MENU, N_("Open utilities in:"), P_OFFINTNL (windows_as_tabs),
-     N_("Open DCC, Ignore, Notify etc, in tabs or windows?"), tabwin, 0},
+    {   ST_MENU, N_("Open utilities in:"), P_OFFINTNL (windows_as_tabs),
+        N_("Open DCC, Ignore, Notify etc, in tabs or windows?"), tabwin, 0
+    },
 
     {ST_END, 0, 0, 0, 0, 0}
 };
@@ -329,70 +357,83 @@ static const char *const dccaccept[] = {
 
 static const setting filexfer_settings[] = {
     {ST_HEADER, N_("Files and Directories"), 0, 0, 0},
-    {ST_MENU, N_("Auto accept file offers:"), P_OFFINTNL (autodccsend), 0,
-     dccaccept, 0},
-    {ST_EFOLDER, N_("Download files to:"), P_OFFSETNL (dccdir), 0, 0,
-     sizeof prefs.dccdir}
+    {   ST_MENU, N_("Auto accept file offers:"), P_OFFINTNL (autodccsend), 0,
+        dccaccept, 0
+    },
+    {   ST_EFOLDER, N_("Download files to:"), P_OFFSETNL (dccdir), 0, 0,
+        sizeof prefs.dccdir
+    }
     ,
-    {ST_EFOLDER, N_("Move completed files to:"),
-     P_OFFSETNL (dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir}
+    {   ST_EFOLDER, N_("Move completed files to:"),
+        P_OFFSETNL (dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir
+    }
     ,
-    {ST_TOGGLE, N_("Save nick name in filenames"), P_OFFINTNL (dccwithnick),
-     0, 0, 0}
+    {   ST_TOGGLE, N_("Save nick name in filenames"), P_OFFINTNL (dccwithnick),
+        0, 0, 0
+    }
     ,
 
     {ST_HEADER, N_("Network Settings"), 0, 0, 0}
     ,
-    {ST_TOGGLE, N_("Get my address from the IRC server"),
-     P_OFFINTNL (ip_from_server),
-     N_
-     ("Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"),
-     0, 0}
+    {   ST_TOGGLE, N_("Get my address from the IRC server"),
+        P_OFFINTNL (ip_from_server),
+        N_
+        ("Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"),
+        0, 0
+    }
     ,
-    {ST_ENTRY, N_("DCC IP address:"), P_OFFSETNL (dcc_ip_str),
-     N_("Claim you are at this address when offering files."), 0,
-     sizeof prefs.dcc_ip_str}
+    {   ST_ENTRY, N_("DCC IP address:"), P_OFFSETNL (dcc_ip_str),
+        N_("Claim you are at this address when offering files."), 0,
+        sizeof prefs.dcc_ip_str
+    }
     ,
-    {ST_NUMBER, N_("First DCC send port:"), P_OFFINTNL (first_dcc_send_port),
-     0, 0, 65535}
+    {   ST_NUMBER, N_("First DCC send port:"), P_OFFINTNL (first_dcc_send_port),
+        0, 0, 65535
+    }
     ,
-    {ST_NUMBER, N_("Last DCC send port:"), P_OFFINTNL (last_dcc_send_port), 0,
-     (const char **) N_("!Leave ports at zero for full range."), 65535},
+    {   ST_NUMBER, N_("Last DCC send port:"), P_OFFINTNL (last_dcc_send_port), 0,
+        (const char **) N_("!Leave ports at zero for full range."), 65535
+    },
 
-    {ST_HEADER, N_("Maximum File Transfer Speeds (bytes per second)"), 0, 0,
-     0},
-    {ST_NUMBER, N_("One upload:"), P_OFFINTNL (dcc_max_send_cps),
-     N_("Maximum speed for one transfer"), 0, 1000000},
-    {ST_NUMBER, N_("One download:"), P_OFFINTNL (dcc_max_get_cps),
-     N_("Maximum speed for one transfer"), 0, 1000000},
-    {ST_NUMBER, N_("All uploads combined:"),
-     P_OFFINTNL (dcc_global_max_send_cps),
-     N_("Maximum speed for all files"), 0, 1000000},
-    {ST_NUMBER, N_("All downloads combined:"),
-     P_OFFINTNL (dcc_global_max_get_cps),
-     N_("Maximum speed for all files"), 0, 1000000},
+    {   ST_HEADER, N_("Maximum File Transfer Speeds (bytes per second)"), 0, 0,
+        0
+    },
+    {   ST_NUMBER, N_("One upload:"), P_OFFINTNL (dcc_max_send_cps),
+        N_("Maximum speed for one transfer"), 0, 1000000
+    },
+    {   ST_NUMBER, N_("One download:"), P_OFFINTNL (dcc_max_get_cps),
+        N_("Maximum speed for one transfer"), 0, 1000000
+    },
+    {   ST_NUMBER, N_("All uploads combined:"),
+        P_OFFINTNL (dcc_global_max_send_cps),
+        N_("Maximum speed for all files"), 0, 1000000
+    },
+    {   ST_NUMBER, N_("All downloads combined:"),
+        P_OFFINTNL (dcc_global_max_get_cps),
+        N_("Maximum speed for all files"), 0, 1000000
+    },
 
     {ST_END, 0, 0, 0, 0, 0}
 };
 
 static const int balloonlist[3] = {
     P_OFFINTNL (input_balloon_chans), P_OFFINTNL (input_balloon_priv),
-        P_OFFINTNL (input_balloon_hilight)
+    P_OFFINTNL (input_balloon_hilight)
 };
 
 static const int trayblinklist[3] = {
     P_OFFINTNL (input_tray_chans), P_OFFINTNL (input_tray_priv),
-        P_OFFINTNL (input_tray_hilight)
+    P_OFFINTNL (input_tray_hilight)
 };
 
 static const int taskbarlist[3] = {
     P_OFFINTNL (input_flash_chans), P_OFFINTNL (input_flash_priv),
-        P_OFFINTNL (input_flash_hilight)
+    P_OFFINTNL (input_flash_hilight)
 };
 
 static const int beeplist[3] = {
     P_OFFINTNL (input_beep_chans), P_OFFINTNL (input_beep_priv),
-        P_OFFINTNL (input_beep_hilight)
+    P_OFFINTNL (input_beep_hilight)
 };
 
 static const setting alert_settings[] = {
@@ -406,53 +447,65 @@ static const setting alert_settings[] = {
     {ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *) taskbarlist, 0},
     {ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *) beeplist, 0},
 
-    {ST_TOGGLE, N_("Enable system tray icon"), P_OFFINTNL (gui_tray), 0, 0,
-     0},
+    {   ST_TOGGLE, N_("Enable system tray icon"), P_OFFINTNL (gui_tray), 0, 0,
+        0
+    },
 
     {ST_HEADER, N_("Highlighted Messages"), 0, 0, 0},
-    {ST_LABEL,
-     N_
-     ("Highlighted messages are ones where your nickname is mentioned, but also:"),
-     0, 0, 0, 1},
+    {   ST_LABEL,
+        N_
+        ("Highlighted messages are ones where your nickname is mentioned, but also:"),
+        0, 0, 0, 1
+    },
 
-    {ST_ENTRY, N_("Extra words to highlight:"),
-     P_OFFSETNL (irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight}
+    {   ST_ENTRY, N_("Extra words to highlight:"),
+        P_OFFSETNL (irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight
+    }
     ,
-    {ST_ENTRY, N_("Nick names not to highlight:"),
-     P_OFFSETNL (irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight}
+    {   ST_ENTRY, N_("Nick names not to highlight:"),
+        P_OFFSETNL (irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight
+    }
     ,
-    {ST_ENTRY, N_("Nick names to always highlight:"),
-     P_OFFSETNL (irc_nick_hilight), 0, 0, sizeof prefs.irc_nick_hilight}
+    {   ST_ENTRY, N_("Nick names to always highlight:"),
+        P_OFFSETNL (irc_nick_hilight), 0, 0, sizeof prefs.irc_nick_hilight
+    }
     ,
-    {ST_LABEL,
-     N_("Separate multiple words with commas.\nWildcards are accepted.")}
+    {   ST_LABEL,
+        N_("Separate multiple words with commas.\nWildcards are accepted.")
+    }
     ,
     {ST_END, 0, 0, 0, 0, 0}
 };
 
 static const setting general_settings[] = {
     {ST_HEADER, N_("Default Messages"), 0, 0, 0},
-    {ST_ENTRY, N_("Quit:"), P_OFFSETNL (quitreason), 0, 0,
-     sizeof prefs.quitreason}
+    {   ST_ENTRY, N_("Quit:"), P_OFFSETNL (quitreason), 0, 0,
+        sizeof prefs.quitreason
+    }
     ,
-    {ST_ENTRY, N_("Leave channel:"), P_OFFSETNL (partreason), 0, 0,
-     sizeof prefs.partreason}
+    {   ST_ENTRY, N_("Leave channel:"), P_OFFSETNL (partreason), 0, 0,
+        sizeof prefs.partreason
+    }
     ,
-    {ST_ENTRY, N_("Away:"), P_OFFSETNL (awayreason), 0, 0,
-     sizeof prefs.awayreason}
+    {   ST_ENTRY, N_("Away:"), P_OFFSETNL (awayreason), 0, 0,
+        sizeof prefs.awayreason
+    }
     ,
 
     {ST_HEADER, N_("Away"), 0, 0, 0}
     ,
-    {ST_TOGGLE, N_("Announce away messages"), P_OFFINTNL (show_away_message),
-     N_("Announce your away messages to all channels"), 0, 0}
+    {   ST_TOGGLE, N_("Announce away messages"), P_OFFINTNL (show_away_message),
+        N_("Announce your away messages to all channels"), 0, 0
+    }
     ,
-    {ST_TOGGLE, N_("Show away once"), P_OFFINTNL (show_away_once),
-     N_("Show identical away messages only once"), 0, 0}
+    {   ST_TOGGLE, N_("Show away once"), P_OFFINTNL (show_away_once),
+        N_("Show identical away messages only once"), 0, 0
+    }
     ,
-    {ST_TOGGLE, N_("Automatically unmark away"),
-     P_OFFINTNL (auto_unmark_away),
-     N_("Unmark yourself as away before sending messages"), 0, 0}
+    {   ST_TOGGLE, N_("Automatically unmark away"),
+        P_OFFINTNL (auto_unmark_away),
+        N_("Unmark yourself as away before sending messages"), 0, 0
+    }
     ,
     {ST_END, 0, 0, 0, 0, 0}
 };
@@ -460,21 +513,28 @@ static const setting general_settings[] = {
 #if 0
 static const setting advanced_settings[] = {
     {ST_HEADER, N_("Advanced Settings"), 0, 0, 0},
-    {ST_NUMBER, N_("Auto reconnect delay:"), P_OFFINTNL (recon_delay), 0, 0,
-     9999},
-    {ST_TOGGLE, N_("Display MODEs in raw form"), P_OFFINTNL (raw_modes), 0, 0,
-     0},
-    {ST_TOGGLE, N_("Whois on notify"), P_OFFINTNL (whois_on_notifyonline),
-     N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
-    {ST_TOGGLE, N_("Hide join and part messages"), P_OFFINTNL (confmode),
-     N_("Hide channel join/part messages by default"), 0, 0},
+    {   ST_NUMBER, N_("Auto reconnect delay:"), P_OFFINTNL (recon_delay), 0, 0,
+        9999
+    },
+    {   ST_TOGGLE, N_("Display MODEs in raw form"), P_OFFINTNL (raw_modes), 0, 0,
+        0
+    },
+    {   ST_TOGGLE, N_("Whois on notify"), P_OFFINTNL (whois_on_notifyonline),
+        N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0
+    },
+    {   ST_TOGGLE, N_("Hide join and part messages"), P_OFFINTNL (confmode),
+        N_("Hide channel join/part messages by default"), 0, 0
+    },
     {ST_HEADER, N_("Auto Open DCC Windows"), 0, 0, 0},
-    {ST_TOGGLE, N_("Send window"), P_OFFINTNL (autoopendccsendwindow), 0, 0,
-     0},
-    {ST_TOGGLE, N_("Receive window"), P_OFFINTNL (autoopendccrecvwindow), 0,
-     0, 0},
-    {ST_TOGGLE, N_("Chat window"), P_OFFINTNL (autoopendccchatwindow), 0, 0,
-     0},
+    {   ST_TOGGLE, N_("Send window"), P_OFFINTNL (autoopendccsendwindow), 0, 0,
+        0
+    },
+    {   ST_TOGGLE, N_("Receive window"), P_OFFINTNL (autoopendccrecvwindow), 0,
+        0, 0
+    },
+    {   ST_TOGGLE, N_("Chat window"), P_OFFINTNL (autoopendccchatwindow), 0, 0,
+        0
+    },
 
     {ST_END, 0, 0, 0, 0, 0}
 };
@@ -482,23 +542,28 @@ static const setting advanced_settings[] = {
 
 static const setting logging_settings[] = {
     {ST_HEADER, N_("Logging"), 0, 0, 0},
-    {ST_TOGGLE, N_("Display scrollback from previous session"),
-     P_OFFINTNL (text_replay), 0, 0, 0},
-    {ST_TOGGLE, N_("Enable logging of conversations to disk"),
-     P_OFFINTNL (logging), 0, 0, 2},
-    {ST_ENTRY, N_("Log filename:"), P_OFFSETNL (logmask), 0, 0,
-     sizeof prefs.logmask}
+    {   ST_TOGGLE, N_("Display scrollback from previous session"),
+        P_OFFINTNL (text_replay), 0, 0, 0
+    },
+    {   ST_TOGGLE, N_("Enable logging of conversations to disk"),
+        P_OFFINTNL (logging), 0, 0, 2
+    },
+    {   ST_ENTRY, N_("Log filename:"), P_OFFSETNL (logmask), 0, 0,
+        sizeof prefs.logmask
+    }
     ,
     {ST_LABEL, N_("%s=Server %c=Channel %n=Network.")}
     ,
 
     {ST_HEADER, N_("Time Stamps"), 0, 0, 0}
     ,
-    {ST_TOGGLE, N_("Insert timestamps in logs"), P_OFFINTNL (timestamp_logs),
-     0, 0, 2}
+    {   ST_TOGGLE, N_("Insert timestamps in logs"), P_OFFINTNL (timestamp_logs),
+        0, 0, 2
+    }
     ,
-    {ST_ENTRY, N_("Log timestamp format:"), P_OFFSETNL (timestamp_log_format),
-     0, 0, sizeof prefs.timestamp_log_format}
+    {   ST_ENTRY, N_("Log timestamp format:"), P_OFFSETNL (timestamp_log_format),
+        0, 0, sizeof prefs.timestamp_log_format
+    }
     ,
     {ST_LABEL, N_("See strftime manpage for details.")}
     ,
@@ -527,16 +592,18 @@ static const char *const proxyuse[] = {
 
 static const setting network_settings[] = {
     {ST_HEADER, N_("Your Address"), 0, 0, 0, 0},
-    {ST_ENTRY, N_("Bind to:"), P_OFFSETNL (hostname), 0, 0,
-     sizeof prefs.hostname}
+    {   ST_ENTRY, N_("Bind to:"), P_OFFSETNL (hostname), 0, 0,
+        sizeof prefs.hostname
+    }
     ,
     {ST_LABEL, N_("Only useful for computers with multiple addresses.")}
     ,
 
     {ST_HEADER, N_("Proxy Server"), 0, 0, 0, 0}
     ,
-    {ST_ENTRY, N_("Hostname:"), P_OFFSETNL (proxy_host), 0, 0,
-     sizeof prefs.proxy_host}
+    {   ST_ENTRY, N_("Hostname:"), P_OFFSETNL (proxy_host), 0, 0,
+        sizeof prefs.proxy_host
+    }
     ,
     {ST_NUMBER, N_("Port:"), P_OFFINTNL (proxy_port), 0, 0, 65535}
     ,
@@ -548,19 +615,23 @@ static const setting network_settings[] = {
     {ST_HEADER, N_("Proxy Authentication"), 0, 0, 0, 0}
     ,
 #ifdef USE_MSPROXY
-    {ST_TOGGLE, N_("Use Authentication (MS Proxy, HTTP or Socks5 only)"),
-     P_OFFINTNL (proxy_auth), 0, 0, 0}
+    {   ST_TOGGLE, N_("Use Authentication (MS Proxy, HTTP or Socks5 only)"),
+        P_OFFINTNL (proxy_auth), 0, 0, 0
+    }
     ,
 #else
-    {ST_TOGGLE, N_("Use Authentication (HTTP or Socks5 only)"),
-     P_OFFINTNL (proxy_auth), 0, 0, 0}
+    {   ST_TOGGLE, N_("Use Authentication (HTTP or Socks5 only)"),
+        P_OFFINTNL (proxy_auth), 0, 0, 0
+    }
     ,
 #endif
-    {ST_ENTRY, N_("Username:"), P_OFFSETNL (proxy_user), 0, 0,
-     sizeof prefs.proxy_user}
+    {   ST_ENTRY, N_("Username:"), P_OFFSETNL (proxy_user), 0, 0,
+        sizeof prefs.proxy_user
+    }
     ,
-    {ST_ENTRY, N_("Password:"), P_OFFSETNL (proxy_pass), 0,
-     GINT_TO_POINTER (1), sizeof prefs.proxy_pass}
+    {   ST_ENTRY, N_("Password:"), P_OFFSETNL (proxy_pass), 0,
+        GINT_TO_POINTER (1), sizeof prefs.proxy_pass
+    }
     ,
 
     {ST_END, 0, 0, 0, 0, 0}
@@ -657,11 +728,11 @@ setup_toggle_cb (GtkToggleButton * but, const setting * set)
     /* does this toggle also enable/disable another widget? */
     disable_wid = g_object_get_data (G_OBJECT (but), "nxt");
     if (disable_wid)
-      {
-          gtk_widget_set_sensitive (disable_wid, but->active);
-          label = g_object_get_data (G_OBJECT (disable_wid), "lbl");
-          gtk_widget_set_sensitive (label, but->active);
-      }
+    {
+        gtk_widget_set_sensitive (disable_wid, but->active);
+        label = g_object_get_data (G_OBJECT (disable_wid), "lbl");
+        gtk_widget_set_sensitive (label, but->active);
+    }
 }
 
 static void
@@ -769,14 +840,14 @@ setup_create_spin (GtkWidget * table, int row, const setting * set)
     gtk_box_pack_start (GTK_BOX (rbox), wid, 0, 0, 0);
 
     if (set->list)
-      {
-          text = _((char *) set->list);
-          if (text[0] == '!')
-              label = setup_create_italic_label (text + 1);
-          else
-              label = gtk_label_new (text);
-          gtk_box_pack_start (GTK_BOX (rbox), label, 0, 0, 6);
-      }
+    {
+        text = _((char *) set->list);
+        if (text[0] == '!')
+            label = setup_create_italic_label (text + 1);
+        else
+            label = gtk_label_new (text);
+        gtk_box_pack_start (GTK_BOX (rbox), label, 0, 0, 6);
+    }
 
     return wid;
 }
@@ -835,22 +906,22 @@ setup_menu_cb (GtkWidget * cbox, const setting * set)
     setup_set_int (&setup_prefs, set, n + set->extra);
 
     if (set->list == proxytypes)
-      {
-          /* only HTTP and Socks5 can use a username/pass */
-          gtk_widget_set_sensitive (proxy_user, (n == 3 || n == 4 || n == 5));
-          gtk_widget_set_sensitive (proxy_pass, (n == 3 || n == 4 || n == 5));
-      }
+    {
+        /* only HTTP and Socks5 can use a username/pass */
+        gtk_widget_set_sensitive (proxy_user, (n == 3 || n == 4 || n == 5));
+        gtk_widget_set_sensitive (proxy_pass, (n == 3 || n == 4 || n == 5));
+    }
 }
 
 static void
 setup_radio_cb (GtkWidget * item, const setting * set)
 {
     if (GTK_TOGGLE_BUTTON (item)->active)
-      {
-          int n = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n"));
-          /* set the prefs.<field> */
-          setup_set_int (&setup_prefs, set, n);
-      }
+    {
+        int n = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n"));
+        /* set the prefs.<field> */
+        setup_set_int (&setup_prefs, set, n);
+    }
 }
 
 static int
@@ -874,25 +945,25 @@ setup_create_radio (GtkWidget * table, int row, const setting * set)
     i = 0;
     group = NULL;
     while (text[i])
-      {
-          if (text[i][0] != 0)
-            {
-                wid = gtk_radio_button_new_with_mnemonic (group, _(text[i]));
-                /*if (set->tooltip)
-                   add_tip (wid, _(set->tooltip)); */
-                group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (wid));
-                gtk_container_add (GTK_CONTAINER (hbox), wid);
-                if (i == setup_get_int (&setup_prefs, set))
-                    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
-                                                  TRUE);
-                g_object_set_data (G_OBJECT (wid), "n", GINT_TO_POINTER (i));
-                g_signal_connect (G_OBJECT (wid), "toggled",
-                                  G_CALLBACK (setup_radio_cb),
-                                  (gpointer) set);
-            }
-          i++;
-          row++;
-      }
+    {
+        if (text[i][0] != 0)
+        {
+            wid = gtk_radio_button_new_with_mnemonic (group, _(text[i]));
+            /*if (set->tooltip)
+               add_tip (wid, _(set->tooltip)); */
+            group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (wid));
+            gtk_container_add (GTK_CONTAINER (hbox), wid);
+            if (i == setup_get_int (&setup_prefs, set))
+                gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
+                                              TRUE);
+            g_object_set_data (G_OBJECT (wid), "n", GINT_TO_POINTER (i));
+            g_signal_connect (G_OBJECT (wid), "toggled",
+                              G_CALLBACK (setup_radio_cb),
+                              (gpointer) set);
+        }
+        i++;
+        row++;
+    }
 
     return i;
 }
@@ -999,10 +1070,10 @@ static void
 setup_filereq_cb (GtkWidget * entry, char *file)
 {
     if (file)
-      {
-          if (file[0])
-              gtk_entry_set_text (GTK_ENTRY (entry), file);
-      }
+    {
+        if (file[0])
+            gtk_entry_set_text (GTK_ENTRY (entry), file);
+    }
 }
 
 static void
@@ -1086,27 +1157,27 @@ setup_entry_cb (GtkEntry * entry, setting * set)
 
     /* need to truncate? */
     if (len >= set->extra)
-      {
-          len = pos = 0;
-          while (1)
+    {
+        len = pos = 0;
+        while (1)
+        {
+            size = g_utf8_skip[*p];
+            len += size;
+            p += size;
+            /* truncate to "set->extra" BYTES */
+            if (len >= set->extra)
             {
-                size = g_utf8_skip[*p];
-                len += size;
-                p += size;
-                /* truncate to "set->extra" BYTES */
-                if (len >= set->extra)
-                  {
-                      gtk_editable_delete_text (GTK_EDITABLE (entry), pos,
-                                                -1);
-                      break;
-                  }
-                pos++;
+                gtk_editable_delete_text (GTK_EDITABLE (entry), pos,
+                                          -1);
+                break;
             }
-      }
+            pos++;
+        }
+    }
     else
-      {
-          setup_set_str (&setup_prefs, set, entry->text);
-      }
+    {
+        setup_set_str (&setup_prefs, set, entry->text);
+    }
 }
 
 static void
@@ -1148,31 +1219,31 @@ setup_create_entry (GtkWidget * table, int row, const setting * set)
 
     /* only http and Socks5 can auth */
     if ((set->offset == P_OFFSETNL (proxy_pass) ||
-         set->offset == P_OFFSETNL (proxy_user)) &&
-        (setup_prefs.proxy_type != 4 && setup_prefs.proxy_type != 3
-         && setup_prefs.proxy_type != 5))
+            set->offset == P_OFFSETNL (proxy_user)) &&
+            (setup_prefs.proxy_type != 4 && setup_prefs.proxy_type != 3
+             && setup_prefs.proxy_type != 5))
         gtk_widget_set_sensitive (wid, FALSE);
 
     if (set->type == ST_ENTRY)
         gtk_table_attach (GTK_TABLE (table), wid, 3, 6, row, row + 1,
                           GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
     else
-      {
-          gtk_table_attach (GTK_TABLE (table), wid, 3, 5, row, row + 1,
-                            GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
-          bwid = gtk_button_new_with_label (_("Browse..."));
-          gtk_table_attach (GTK_TABLE (table), bwid, 5, 6, row, row + 1,
-                            GTK_SHRINK | GTK_FILL, GTK_FILL, 0, 0);
-          if (set->type == ST_EFILE)
-              g_signal_connect (G_OBJECT (bwid), "clicked",
-                                G_CALLBACK (setup_browsefile_cb), wid);
-          if (set->type == ST_EFONT)
-              g_signal_connect (G_OBJECT (bwid), "clicked",
-                                G_CALLBACK (setup_browsefont_cb), wid);
-          if (set->type == ST_EFOLDER)
-              g_signal_connect (G_OBJECT (bwid), "clicked",
-                                G_CALLBACK (setup_browsefolder_cb), wid);
-      }
+    {
+        gtk_table_attach (GTK_TABLE (table), wid, 3, 5, row, row + 1,
+                          GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+        bwid = gtk_button_new_with_label (_("Browse..."));
+        gtk_table_attach (GTK_TABLE (table), bwid, 5, 6, row, row + 1,
+                          GTK_SHRINK | GTK_FILL, GTK_FILL, 0, 0);
+        if (set->type == ST_EFILE)
+            g_signal_connect (G_OBJECT (bwid), "clicked",
+                              G_CALLBACK (setup_browsefile_cb), wid);
+        if (set->type == ST_EFONT)
+            g_signal_connect (G_OBJECT (bwid), "clicked",
+                              G_CALLBACK (setup_browsefont_cb), wid);
+        if (set->type == ST_EFOLDER)
+            g_signal_connect (G_OBJECT (bwid), "clicked",
+                              G_CALLBACK (setup_browsefolder_cb), wid);
+    }
 
     return wid;
 }
@@ -1235,85 +1306,85 @@ setup_create_page (const setting * set)
 
     i = row = do_disable = 0;
     while (set[i].type != ST_END)
-      {
-          prev = wid;
+    {
+        prev = wid;
 
-          switch (set[i].type)
-            {
-            case ST_HEADER:
-                setup_create_header (tab, row, set[i].label);
-                break;
-            case ST_EFONT:
-            case ST_ENTRY:
-            case ST_EFILE:
-            case ST_EFOLDER:
-                wid = setup_create_entry (tab, row, &set[i]);
-                break;
-            case ST_TOGGLR:
-                row--;
-                setup_create_toggleR (tab, row, &set[i]);
-                break;
-            case ST_TOGGLE:
-                wid = setup_create_toggleL (tab, row, &set[i]);
-                do_disable = set[i].extra;
-                break;
-            case ST_3OGGLE:
-                setup_create_3oggle (tab, row, &set[i]);
-                break;
-            case ST_MENU:
-                setup_create_menu (tab, row, &set[i]);
-                break;
-            case ST_RADIO:
-                row += setup_create_radio (tab, row, &set[i]);
-                break;
-            case ST_NUMBER:
-                wid = setup_create_spin (tab, row, &set[i]);
-                break;
-            case ST_HSCALE:
-                setup_create_hscale (tab, row, &set[i]);
-                break;
-            case ST_LABEL:
-                setup_create_label (tab, row, &set[i]);
-                break;
-            case ST_ALERTHEAD:
-                setup_create_alert_header (tab, row, &set[i]);
-            }
+        switch (set[i].type)
+        {
+        case ST_HEADER:
+            setup_create_header (tab, row, set[i].label);
+            break;
+        case ST_EFONT:
+        case ST_ENTRY:
+        case ST_EFILE:
+        case ST_EFOLDER:
+            wid = setup_create_entry (tab, row, &set[i]);
+            break;
+        case ST_TOGGLR:
+            row--;
+            setup_create_toggleR (tab, row, &set[i]);
+            break;
+        case ST_TOGGLE:
+            wid = setup_create_toggleL (tab, row, &set[i]);
+            do_disable = set[i].extra;
+            break;
+        case ST_3OGGLE:
+            setup_create_3oggle (tab, row, &set[i]);
+            break;
+        case ST_MENU:
+            setup_create_menu (tab, row, &set[i]);
+            break;
+        case ST_RADIO:
+            row += setup_create_radio (tab, row, &set[i]);
+            break;
+        case ST_NUMBER:
+            wid = setup_create_spin (tab, row, &set[i]);
+            break;
+        case ST_HSCALE:
+            setup_create_hscale (tab, row, &set[i]);
+            break;
+        case ST_LABEL:
+            setup_create_label (tab, row, &set[i]);
+            break;
+        case ST_ALERTHEAD:
+            setup_create_alert_header (tab, row, &set[i]);
+        }
 
-          /* will this toggle disable the "next" widget? */
-          do_disable--;
-          if (do_disable == 0)
-            {
-                /* setup_toggle_cb uses this data */
-                g_object_set_data (G_OBJECT (prev), "nxt", wid);
-                /* force initial sensitive state */
-                gtk_widget_set_sensitive (wid,
-                                          GTK_TOGGLE_BUTTON (prev)->active);
-                gtk_widget_set_sensitive (g_object_get_data
-                                          (G_OBJECT (wid), "lbl"),
-                                          GTK_TOGGLE_BUTTON (prev)->active);
-            }
+        /* will this toggle disable the "next" widget? */
+        do_disable--;
+        if (do_disable == 0)
+        {
+            /* setup_toggle_cb uses this data */
+            g_object_set_data (G_OBJECT (prev), "nxt", wid);
+            /* force initial sensitive state */
+            gtk_widget_set_sensitive (wid,
+                                      GTK_TOGGLE_BUTTON (prev)->active);
+            gtk_widget_set_sensitive (g_object_get_data
+                                      (G_OBJECT (wid), "lbl"),
+                                      GTK_TOGGLE_BUTTON (prev)->active);
+        }
 
-          i++;
-          row++;
-      }
+        i++;
+        row++;
+    }
 
 #if 0
     if (set == general_settings)
-      {
-          setup_create_id_menu (tab, _("Mark identified users with:"),
-                                row, setup_prefs.irc_id_ytext);
-          setup_create_id_menu (tab, _("Mark not-identified users with:"),
-                                row + 1, setup_prefs.irc_id_ntext);
-      }
+    {
+        setup_create_id_menu (tab, _("Mark identified users with:"),
+                              row, setup_prefs.irc_id_ytext);
+        setup_create_id_menu (tab, _("Mark not-identified users with:"),
+                              row + 1, setup_prefs.irc_id_ntext);
+    }
 #endif
 
     if (set == logging_settings)
-      {
-          GtkWidget *but = gtk_button_new_with_label (_("Open Data Folder"));
-          gtk_box_pack_start (GTK_BOX (left), but, 0, 0, 0);
-          g_signal_connect (G_OBJECT (but), "clicked",
-                            G_CALLBACK (open_data_cb), 0);
-      }
+    {
+        GtkWidget *but = gtk_button_new_with_label (_("Open Data Folder"));
+        gtk_box_pack_start (GTK_BOX (left), but, 0, 0, 0);
+        g_signal_connect (G_OBJECT (but), "clicked",
+                          G_CALLBACK (open_data_cb), 0);
+    }
 
     return box;
 }
@@ -1332,10 +1403,10 @@ setup_color_ok_cb (GtkWidget * button, GtkWidget * dialog)
     button = g_object_get_data (G_OBJECT (button), "b");
 
     if (!GTK_IS_WIDGET (button))
-      {
-          gtk_widget_destroy (dialog);
-          return;
-      }
+    {
+        gtk_widget_destroy (dialog);
+        return;
+    }
 
     color_change = TRUE;
 
@@ -1518,28 +1589,28 @@ setup_snd_populate (GtkTreeView * treeview)
     store = (GtkListStore *) gtk_tree_view_get_model (treeview);
 
     for (i = NUM_XP - 1; i >= 0; i--)
-      {
-          gtk_list_store_prepend (store, &iter);
-          if (sound_files[i])
-              gtk_list_store_set (store, &iter, 0, te[i].name, 1,
-                                  sound_files[i], 2, i, -1);
-          else
-              gtk_list_store_set (store, &iter, 0, te[i].name, 1, "", 2, i,
-                                  -1);
-          if (i == last_selected_row)
+    {
+        gtk_list_store_prepend (store, &iter);
+        if (sound_files[i])
+            gtk_list_store_set (store, &iter, 0, te[i].name, 1,
+                                sound_files[i], 2, i, -1);
+        else
+            gtk_list_store_set (store, &iter, 0, te[i].name, 1, "", 2, i,
+                                -1);
+        if (i == last_selected_row)
+        {
+            gtk_tree_selection_select_iter (sel, &iter);
+            path =
+                gtk_tree_model_get_path (GTK_TREE_MODEL (store), &iter);
+            if (path)
             {
-                gtk_tree_selection_select_iter (sel, &iter);
-                path =
-                    gtk_tree_model_get_path (GTK_TREE_MODEL (store), &iter);
-                if (path)
-                  {
-                      gtk_tree_view_scroll_to_cell (treeview, path, NULL,
-                                                    TRUE, 0.5, 0.5);
-                      gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
-                      gtk_tree_path_free (path);
-                  }
+                gtk_tree_view_scroll_to_cell (treeview, path, NULL,
+                                              TRUE, 0.5, 0.5);
+                gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
+                gtk_tree_path_free (path);
             }
-      }
+        }
+    }
 }
 
 static int
@@ -1583,14 +1654,14 @@ setup_snd_add_columns (GtkTreeView * treeview)
     /* event column */
     renderer = gtk_cell_renderer_text_new ();
     gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
-                                                 -1, _("Event"), renderer,
-                                                 "text", 0, NULL);
+            -1, _("Event"), renderer,
+            "text", 0, NULL);
 
     /* file column */
     renderer = gtk_cell_renderer_text_new ();
     gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
-                                                 -1, _("Sound file"),
-                                                 renderer, "text", 1, NULL);
+            -1, _("Sound file"),
+            renderer, "text", 1, NULL);
 
     model =
         GTK_TREE_MODEL (gtk_list_store_new
@@ -1603,25 +1674,25 @@ static void
 setup_autotoggle_cb (GtkToggleButton * but, GtkToggleButton * ext)
 {
     if (but->active)
-      {
-          setup_prefs.soundcmd[0] = 0;
-          gtk_entry_set_text (GTK_ENTRY (sndprog_entry), "");
-          gtk_widget_set_sensitive (sndprog_entry, FALSE);
-      }
+    {
+        setup_prefs.soundcmd[0] = 0;
+        gtk_entry_set_text (GTK_ENTRY (sndprog_entry), "");
+        gtk_widget_set_sensitive (sndprog_entry, FALSE);
+    }
     else
-      {
-          gtk_widget_set_sensitive (sndprog_entry, TRUE);
-      }
+    {
+        gtk_widget_set_sensitive (sndprog_entry, TRUE);
+    }
 }
 
 static void
 setup_snd_filereq_cb (GtkWidget * entry, char *file)
 {
     if (file)
-      {
-          if (file[0])
-              gtk_entry_set_text (GTK_ENTRY (entry), file);
-      }
+    {
+        if (file[0])
+            gtk_entry_set_text (GTK_ENTRY (entry), file);
+    }
 }
 
 static void
@@ -1829,6 +1900,13 @@ setup_create_sound_page (void)
     return vbox1;
 }
 
+static GtkWidget *
+setup_create_replace_page (void)
+{
+
+}
+
+
 static void
 setup_add_page (const char *title, GtkWidget * book, GtkWidget * tab)
 {
@@ -1873,7 +1951,7 @@ static const char *const cata[] = {
     N_("General"),
     N_("Logging"),
     N_("Sound"),
-/*		N_("Advanced"),*/
+    /*		N_("Advanced"),*/
     NULL,
     N_("Network"),
     N_("Network setup"),
@@ -1918,14 +1996,14 @@ setup_tree_cb (GtkTreeView * treeview, GtkWidget * book)
     int page;
 
     if (gtk_tree_selection_get_selected (selection, &model, &iter))
-      {
-          gtk_tree_model_get (model, &iter, 1, &page, -1);
-          if (page != -1)
-            {
-                gtk_notebook_set_current_page (GTK_NOTEBOOK (book), page);
-                last_selected_page = page;
-            }
-      }
+    {
+        gtk_tree_model_get (model, &iter, 1, &page, -1);
+        if (page != -1)
+        {
+            gtk_notebook_set_current_page (GTK_NOTEBOOK (book), page);
+            last_selected_page = page;
+        }
+    }
 }
 
 static gboolean
@@ -1956,26 +2034,26 @@ setup_create_tree (GtkWidget * box, GtkWidget * book)
     i = 0;
     page = 0;
     do
-      {
-          gtk_tree_store_append (model, &iter, NULL);
-          gtk_tree_store_set (model, &iter, 0, _(cata[i]), 1, -1, -1);
-          i++;
+    {
+        gtk_tree_store_append (model, &iter, NULL);
+        gtk_tree_store_set (model, &iter, 0, _(cata[i]), 1, -1, -1);
+        i++;
 
-          do
-            {
-                gtk_tree_store_append (model, &child_iter, &iter);
-                gtk_tree_store_set (model, &child_iter, 0, _(cata[i]), 1,
-                                    page, -1);
-                if (page == last_selected_page)
-                    sel_iter = gtk_tree_iter_copy (&child_iter);
-                page++;
-                i++;
-            }
-          while (cata[i]);
+        do
+        {
+            gtk_tree_store_append (model, &child_iter, &iter);
+            gtk_tree_store_set (model, &child_iter, 0, _(cata[i]), 1,
+                                page, -1);
+            if (page == last_selected_page)
+                sel_iter = gtk_tree_iter_copy (&child_iter);
+            page++;
+            i++;
+        }
+        while (cata[i]);
 
-          i++;
+        i++;
 
-      }
+    }
     while (cata[i]);
 
     tree = gtk_tree_view_new_with_model (GTK_TREE_MODEL (model));
@@ -1989,8 +2067,8 @@ setup_create_tree (GtkWidget * box, GtkWidget * book)
 
     renderer = gtk_cell_renderer_text_new ();
     gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tree),
-                                                 -1, _("Categories"),
-                                                 renderer, "text", 0, NULL);
+            -1, _("Categories"),
+            renderer, "text", 0, NULL);
     gtk_tree_view_expand_all (GTK_TREE_VIEW (tree));
 
     frame = gtk_frame_new (NULL);
@@ -1999,10 +2077,10 @@ setup_create_tree (GtkWidget * box, GtkWidget * book)
     gtk_box_reorder_child (GTK_BOX (box), frame, 0);
 
     if (sel_iter)
-      {
-          gtk_tree_selection_select_iter (sel, sel_iter);
-          gtk_tree_iter_free (sel_iter);
-      }
+    {
+        gtk_tree_selection_select_iter (sel, sel_iter);
+        gtk_tree_iter_free (sel_iter);
+    }
 }
 
 static void
@@ -2026,19 +2104,19 @@ setup_apply_to_sess (session_gui * gui)
         gtk_widget_set_style (gui->user_tree, input_style);
 
     if (prefs.style_inputbox)
-      {
-          extern char cursor_color_rc[];
-          char buf[256];
-          sprintf (buf, cursor_color_rc,
-                   (colors[COL_FG].red >> 8),
-                   (colors[COL_FG].green >> 8), (colors[COL_FG].blue >> 8));
-          gtk_rc_parse_string (buf);
+    {
+        extern char cursor_color_rc[];
+        char buf[256];
+        sprintf (buf, cursor_color_rc,
+                 (colors[COL_FG].red >> 8),
+                 (colors[COL_FG].green >> 8), (colors[COL_FG].blue >> 8));
+        gtk_rc_parse_string (buf);
 
-          setup_apply_entry_style (gui->input_box);
-          setup_apply_entry_style (gui->limit_entry);
-          setup_apply_entry_style (gui->key_entry);
-          setup_apply_entry_style (gui->topic_entry);
-      }
+        setup_apply_entry_style (gui->input_box);
+        setup_apply_entry_style (gui->limit_entry);
+        setup_apply_entry_style (gui->key_entry);
+        setup_apply_entry_style (gui->topic_entry);
+    }
 
     if (prefs.userlistbuttons)
         gtk_widget_show (gui->button_box);
@@ -2048,16 +2126,16 @@ setup_apply_to_sess (session_gui * gui)
 #ifdef USE_GTKSPELL
     spell = gtkspell_get_from_text_view (GTK_TEXT_VIEW (gui->input_box));
     if (prefs.gui_input_spell)
-      {
-          if (!spell)
-              gtkspell_new_attach (GTK_TEXT_VIEW (gui->input_box), NULL,
-                                   NULL);
-      }
+    {
+        if (!spell)
+            gtkspell_new_attach (GTK_TEXT_VIEW (gui->input_box), NULL,
+                                 NULL);
+    }
     else
-      {
-          if (spell)
-              gtkspell_detach (spell);
-      }
+    {
+        if (spell)
+            gtkspell_detach (spell);
+    }
 #endif
 
 #ifdef USE_LIBSEXY
@@ -2070,15 +2148,15 @@ static void
 unslash (char *dir)
 {
     if (dir[0])
-      {
-          int len = strlen (dir) - 1;
+    {
+        int len = strlen (dir) - 1;
 #ifdef WIN32
-          if (dir[len] == '/' || dir[len] == '\\')
+        if (dir[len] == '/' || dir[len] == '\\')
 #else
-          if (dir[len] == '/')
+        if (dir[len] == '/')
 #endif
-              dir[len] = 0;
-      }
+            dir[len] = 0;
+    }
 }
 
 void
@@ -2096,39 +2174,39 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
     mkdir_utf8 (prefs.dcc_completed_dir);
 
     if (new_pix)
-      {
-          if (channelwin_pix)
-              g_object_unref (channelwin_pix);
-          channelwin_pix = pixmap_load_from_file (prefs.background);
-      }
+    {
+        if (channelwin_pix)
+            g_object_unref (channelwin_pix);
+        channelwin_pix = pixmap_load_from_file (prefs.background);
+    }
 
     input_style = create_input_style (input_style);
 
     list = sess_list;
     while (list)
-      {
-          sess = list->data;
-          if (sess->gui->is_tab)
+    {
+        sess = list->data;
+        if (sess->gui->is_tab)
+        {
+            /* only apply to main tabwindow once */
+            if (!done_main)
             {
-                /* only apply to main tabwindow once */
-                if (!done_main)
-                  {
-                      done_main = TRUE;
-                      setup_apply_to_sess (sess->gui);
-                  }
-            }
-          else
-            {
+                done_main = TRUE;
                 setup_apply_to_sess (sess->gui);
             }
+        }
+        else
+        {
+            setup_apply_to_sess (sess->gui);
+        }
 
-          log_open_or_close (sess);
+        log_open_or_close (sess);
 
-          if (do_ulist)
-              userlist_rehash (sess);
+        if (do_ulist)
+            userlist_rehash (sess);
 
-          list = list->next;
-      }
+        list = list->next;
+    }
 
     mg_apply_setup ();
     tray_apply_setup ();
@@ -2173,7 +2251,7 @@ setup_apply (struct xchatprefs *pr)
         do_ulist = TRUE;
 
     if ((pr->tab_pos == 5 || pr->tab_pos == 6) &&
-        pr->tab_layout == 2 && pr->tab_pos != prefs.tab_pos)
+            pr->tab_layout == 2 && pr->tab_pos != prefs.tab_pos)
         fe_message (_("You cannot place the tree on the top or bottom!\n"
                       "Please change to the <b>Tabs</b> layout in the <b>View</b>"
                       " menu first."), FE_MSG_WARN | FE_MSG_MARKUP);
@@ -2188,16 +2266,16 @@ setup_apply (struct xchatprefs *pr)
 
 #ifndef WIN32
     if (prefs.autodccsend == 1)
-      {
-          if (!strcmp ((char *) g_get_home_dir (), prefs.dccdir))
-            {
-                fe_message (_("*WARNING*\n"
-                              "Auto accepting DCC to your home directory\n"
-                              "can be dangerous and is exploitable. Eg:\n"
-                              "Someone could send you a .bash_profile"),
-                            FE_MSG_WARN);
-            }
-      }
+    {
+        if (!strcmp ((char *) g_get_home_dir (), prefs.dccdir))
+        {
+            fe_message (_("*WARNING*\n"
+                          "Auto accepting DCC to your home directory\n"
+                          "can be dangerous and is exploitable. Eg:\n"
+                          "Someone could send you a .bash_profile"),
+                        FE_MSG_WARN);
+        }
+    }
 #endif
 }
 
@@ -2277,10 +2355,10 @@ setup_close_cb (GtkWidget * win, GtkWidget ** swin)
     *swin = NULL;
 
     if (font_dialog)
-      {
-          gtk_widget_destroy (font_dialog);
-          font_dialog = NULL;
-      }
+    {
+        gtk_widget_destroy (font_dialog);
+        font_dialog = NULL;
+    }
 }
 
 void
@@ -2289,10 +2367,10 @@ setup_open (void)
     static GtkWidget *setup_window = NULL;
 
     if (setup_window)
-      {
-          gtk_window_present (GTK_WINDOW (setup_window));
-          return;
-      }
+    {
+        gtk_window_present (GTK_WINDOW (setup_window));
+        return;
+    }
 
     memcpy (&setup_prefs, &prefs, sizeof (prefs));
 

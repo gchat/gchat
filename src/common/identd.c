@@ -15,10 +15,10 @@ identd (char *username)
 
     sok = socket (AF_INET, SOCK_STREAM, 0);
     if (sok == INVALID_SOCKET)
-      {
-          free (username);
-          return 0;
-      }
+    {
+        free (username);
+        return 0;
+    }
 
     len = 1;
     setsockopt (sok, SOL_SOCKET, SO_REUSEADDR, (char *) &len, sizeof (len));
@@ -28,27 +28,27 @@ identd (char *username)
     addr.sin_port = htons (113);
 
     if (bind (sok, (struct sockaddr *) &addr, sizeof (addr)) == SOCKET_ERROR)
-      {
-          closesocket (sok);
-          free (username);
-          return 0;
-      }
+    {
+        closesocket (sok);
+        free (username);
+        return 0;
+    }
 
     if (listen (sok, 1) == SOCKET_ERROR)
-      {
-          closesocket (sok);
-          free (username);
-          return 0;
-      }
+    {
+        closesocket (sok);
+        free (username);
+        return 0;
+    }
 
     len = sizeof (addr);
     read_sok = accept (sok, (struct sockaddr *) &addr, &len);
     closesocket (sok);
     if (read_sok == INVALID_SOCKET)
-      {
-          free (username);
-          return 0;
-      }
+    {
+        free (username);
+        return 0;
+    }
 
     identd_is_running = FALSE;
 
@@ -62,13 +62,13 @@ identd (char *username)
 
     p = strchr (buf, ',');
     if (p)
-      {
-          snprintf (outbuf, sizeof (outbuf) - 1,
-                    "%d, %d : USERID : UNIX : %s\r\n", atoi (buf),
-                    atoi (p + 1), username);
-          outbuf[sizeof (outbuf) - 1] = 0;      /* ensure null termination */
-          send (read_sok, outbuf, strlen (outbuf), 0);
-      }
+    {
+        snprintf (outbuf, sizeof (outbuf) - 1,
+                  "%d, %d : USERID : UNIX : %s\r\n", atoi (buf),
+                  atoi (p + 1), username);
+        outbuf[sizeof (outbuf) - 1] = 0;      /* ensure null termination */
+        send (read_sok, outbuf, strlen (outbuf), 0);
+    }
 
     sleep (1);
     closesocket (read_sok);
@@ -83,9 +83,9 @@ identd_start (char *username)
     DWORD tid;
 
     if (identd_is_running == FALSE)
-      {
-          identd_is_running = TRUE;
-          CloseHandle (CreateThread (NULL, 0, (LPTHREAD_START_ROUTINE) identd,
-                                     strdup (username), 0, &tid));
-      }
+    {
+        identd_is_running = TRUE;
+        CloseHandle (CreateThread (NULL, 0, (LPTHREAD_START_ROUTINE) identd,
+                                   strdup (username), 0, &tid));
+    }
 }

@@ -127,30 +127,30 @@ servlist_connect (session * sess, ircnet * net, gboolean join)
     server_fill_her_up (sess->server);
 
     if (join)
-      {
-          sess->willjoinchannel[0] = 0;
+    {
+        sess->willjoinchannel[0] = 0;
 
-          if (net->autojoin)
-            {
-                if (serv->autojoin)
-                    free (serv->autojoin);
-                serv->autojoin = strdup (net->autojoin);
-            }
-      }
+        if (net->autojoin)
+        {
+            if (serv->autojoin)
+                free (serv->autojoin);
+            serv->autojoin = strdup (net->autojoin);
+        }
+    }
 
     serv->password[0] = 0;
     if (net->pass)
         safe_strcpy (serv->password, net->pass, sizeof (serv->password));
 
     if (net->flags & FLAG_USE_GLOBAL)
-      {
-          strcpy (serv->nick, prefs.nick1);
-      }
+    {
+        strcpy (serv->nick, prefs.nick1);
+    }
     else
-      {
-          if (net->nick)
-              strcpy (serv->nick, net->nick);
-      }
+    {
+        if (net->nick)
+            strcpy (serv->nick, net->nick);
+    }
 
     serv->dont_use_proxy = (net->flags & FLAG_USE_PROXY) ? FALSE : TRUE;
 
@@ -164,26 +164,26 @@ servlist_connect (session * sess, ircnet * net, gboolean join)
 
     port = strrchr (ircserv->hostname, '/');
     if (port)
-      {
-          *port = 0;
+    {
+        *port = 0;
 
-          /* support "+port" to indicate SSL (like mIRC does) */
-          if (port[1] == '+')
-            {
+        /* support "+port" to indicate SSL (like mIRC does) */
+        if (port[1] == '+')
+        {
 #ifdef USE_OPENSSL
-                serv->use_ssl = TRUE;
+            serv->use_ssl = TRUE;
 #endif
-                serv->connect (serv, ircserv->hostname, atoi (port + 2),
-                               FALSE);
-            }
-          else
-            {
-                serv->connect (serv, ircserv->hostname, atoi (port + 1),
-                               FALSE);
-            }
+            serv->connect (serv, ircserv->hostname, atoi (port + 2),
+                           FALSE);
+        }
+        else
+        {
+            serv->connect (serv, ircserv->hostname, atoi (port + 1),
+                           FALSE);
+        }
 
-          *port = '/';
-      }
+        *port = '/';
+    }
     else
         serv->connect (serv, ircserv->hostname, -1, FALSE);
 
@@ -197,17 +197,17 @@ servlist_connect_by_netname (session * sess, char *network, gboolean join)
     GSList *list = network_list;
 
     while (list)
-      {
-          net = list->data;
+    {
+        net = list->data;
 
-          if (strcasecmp (net->name, network) == 0)
-            {
-                servlist_connect (sess, net, join);
-                return 1;
-            }
+        if (strcasecmp (net->name, network) == 0)
+        {
+            servlist_connect (sess, net, join);
+            return 1;
+        }
 
-          list = list->next;
-      }
+        list = list->next;
+    }
 
     return 0;
 }
@@ -219,14 +219,14 @@ servlist_have_auto (void)
     ircnet *net;
 
     while (list)
-      {
-          net = list->data;
+    {
+        net = list->data;
 
-          if (net->flags & FLAG_AUTO_CONNECT)
-              return 1;
+        if (net->flags & FLAG_AUTO_CONNECT)
+            return 1;
 
-          list = list->next;
-      }
+        list = list->next;
+    }
 
     return 0;
 }
@@ -239,17 +239,17 @@ servlist_auto_connect (session * sess)
     int ret = 0;
 
     while (list)
-      {
-          net = list->data;
+    {
+        net = list->data;
 
-          if (net->flags & FLAG_AUTO_CONNECT)
-            {
-                servlist_connect (sess, net, TRUE);
-                ret = 1;
-            }
+        if (net->flags & FLAG_AUTO_CONNECT)
+        {
+            servlist_connect (sess, net, TRUE);
+            ret = 1;
+        }
 
-          list = list->next;
-      }
+        list = list->next;
+    }
 
     return ret;
 }
@@ -258,12 +258,12 @@ static gint
 servlist_cycle_cb (server * serv)
 {
     if (serv->network)
-      {
-          PrintTextf (serv->server_session,
-                      _("Cycling to next server in %s...\n"),
-                      ((ircnet *) serv->network)->name);
-          servlist_connect (serv->server_session, serv->network, TRUE);
-      }
+    {
+        PrintTextf (serv->server_session,
+                    _("Cycling to next server in %s...\n"),
+                    ((ircnet *) serv->network)->name);
+        servlist_connect (serv->server_session, serv->network, TRUE);
+    }
 
     return 0;
 }
@@ -276,31 +276,31 @@ servlist_cycle (server * serv)
 
     net = serv->network;
     if (net)
-      {
-          max = g_slist_length (net->servlist);
-          if (max > 0)
+    {
+        max = g_slist_length (net->servlist);
+        if (max > 0)
+        {
+            /* try the next server, if that option is on */
+            if (net->flags & FLAG_CYCLE)
             {
-                /* try the next server, if that option is on */
-                if (net->flags & FLAG_CYCLE)
-                  {
-                      net->selected++;
-                      if (net->selected >= max)
-                          net->selected = 0;
-                  }
-
-                del = prefs.recon_delay * 1000;
-                if (del < 1000)
-                    del = 500;  /* so it doesn't block the gui */
-
-                if (del)
-                    serv->recondelay_tag =
-                        fe_timeout_add (del, servlist_cycle_cb, serv);
-                else
-                    servlist_connect (serv->server_session, net, TRUE);
-
-                return TRUE;
+                net->selected++;
+                if (net->selected >= max)
+                    net->selected = 0;
             }
-      }
+
+            del = prefs.recon_delay * 1000;
+            if (del < 1000)
+                del = 500;  /* so it doesn't block the gui */
+
+            if (del)
+                serv->recondelay_tag =
+                    fe_timeout_add (del, servlist_cycle_cb, serv);
+            else
+                servlist_connect (serv->server_session, net, TRUE);
+
+            return TRUE;
+        }
+    }
 
     return FALSE;
 }
@@ -313,17 +313,17 @@ servlist_server_find (ircnet * net, char *name, int *pos)
     int i = 0;
 
     while (list)
-      {
-          serv = list->data;
-          if (strcmp (serv->hostname, name) == 0)
-            {
-                if (pos)
-                    *pos = i;
-                return serv;
-            }
-          i++;
-          list = list->next;
-      }
+    {
+        serv = list->data;
+        if (strcmp (serv->hostname, name) == 0)
+        {
+            if (pos)
+                *pos = i;
+            return serv;
+        }
+        i++;
+        list = list->next;
+    }
 
     return NULL;
 }
@@ -340,20 +340,20 @@ servlist_net_find_from_server (char *server_name)
     ircserver *serv;
 
     while (list)
-      {
-          net = list->data;
+    {
+        net = list->data;
 
-          slist = net->servlist;
-          while (slist)
-            {
-                serv = slist->data;
-                if (strcasecmp (serv->hostname, server_name) == 0)
-                    return net;
-                slist = slist->next;
-            }
+        slist = net->servlist;
+        while (slist)
+        {
+            serv = slist->data;
+            if (strcasecmp (serv->hostname, server_name) == 0)
+                return net;
+            slist = slist->next;
+        }
 
-          list = list->next;
-      }
+        list = list->next;
+    }
 
     return NULL;
 }
@@ -367,17 +367,17 @@ servlist_net_find (char *name, int *pos,
     int i = 0;
 
     while (list)
-      {
-          net = list->data;
-          if (cmpfunc (net->name, name) == 0)
-            {
-                if (pos)
-                    *pos = i;
-                return net;
-            }
-          i++;
-          list = list->next;
-      }
+    {
+        net = list->data;
+        if (cmpfunc (net->name, name) == 0)
+        {
+            if (pos)
+                *pos = i;
+            return net;
+        }
+        i++;
+        list = list->next;
+    }
 
     return NULL;
 }
@@ -410,22 +410,22 @@ servlist_server_remove_all (ircnet * net)
     ircserver *serv;
 
     while (net->servlist)
-      {
-          serv = net->servlist->data;
-          servlist_server_remove (net, serv);
-      }
+    {
+        serv = net->servlist->data;
+        servlist_server_remove (net, serv);
+    }
 }
 
 static void
 free_and_clear (char *str)
 {
     if (str)
-      {
-          char *orig = str;
-          while (*str)
-              *str++ = 0;
-          free (orig);
-      }
+    {
+        char *orig = str;
+        while (*str)
+            *str++ = 0;
+        free (orig);
+    }
 }
 
 /* executed on exit: Clear any password strings */
@@ -437,11 +437,11 @@ servlist_cleanup (void)
     ircnet *net;
 
     for (list = network_list; list; list = list->next)
-      {
-          net = list->data;
-          free_and_clear (net->pass);
-          free_and_clear (net->nickserv);
-      }
+    {
+        net = list->data;
+        free_and_clear (net->pass);
+        free_and_clear (net->nickserv);
+    }
 }
 
 void
@@ -477,12 +477,12 @@ servlist_net_remove (ircnet * net)
     /* for safety */
     list = serv_list;
     while (list)
-      {
-          serv = list->data;
-          if (serv->network == net)
-              serv->network = NULL;
-          list = list->next;
-      }
+    {
+        serv = list->data;
+        if (serv->network == net)
+            serv->network = NULL;
+        list = list->next;
+    }
 }
 
 ircnet *
@@ -493,7 +493,7 @@ servlist_net_add (char *name, char *comment, int prepend)
     net = malloc (sizeof (ircnet));
     memset (net, 0, sizeof (ircnet));
     net->name = strdup (name);
-/*	net->comment = strdup (comment);*/
+    /*	net->comment = strdup (comment);*/
     net->flags = FLAG_CYCLE | FLAG_USE_GLOBAL | FLAG_USE_PROXY;
 
     if (prepend)
@@ -511,33 +511,33 @@ servlist_load_defaults (void)
     ircnet *net = NULL;
 
     while (1)
-      {
-          if (def[i].network)
+    {
+        if (def[i].network)
+        {
+            net = servlist_net_add (def[i].network, def[i].host, FALSE);
+            net->encoding = strdup ("IRC (Latin/Unicode Hybrid)");
+            net->flags =
+                FLAG_ALLOW_INVALID | FLAG_USE_GLOBAL | FLAG_USE_PROXY |
+                FLAG_CYCLE;
+            if (def[i].channel)
+                net->autojoin = strdup (def[i].channel);
+            if (def[i].charset)
             {
-                net = servlist_net_add (def[i].network, def[i].host, FALSE);
-                net->encoding = strdup ("IRC (Latin/Unicode Hybrid)");
-                net->flags =
-                    FLAG_ALLOW_INVALID | FLAG_USE_GLOBAL | FLAG_USE_PROXY |
-                    FLAG_CYCLE;
-                if (def[i].channel)
-                    net->autojoin = strdup (def[i].channel);
-                if (def[i].charset)
-                  {
-                      free (net->encoding);
-                      net->encoding = strdup (def[i].charset);
-                  }
-                if (g_str_hash (def[i].network) == 0x8e1b96f7)
-                    prefs.slist_select = j;
-                j++;
+                free (net->encoding);
+                net->encoding = strdup (def[i].charset);
             }
-          else
-            {
-                servlist_server_add (net, def[i].host);
-                if (!def[i + 1].host && !def[i + 1].network)
-                    break;
-            }
-          i++;
-      }
+            if (g_str_hash (def[i].network) == 0x8e1b96f7)
+                prefs.slist_select = j;
+            j++;
+        }
+        else
+        {
+            servlist_server_add (net, def[i].host);
+            if (!def[i + 1].host && !def[i + 1].network)
+                break;
+        }
+        i++;
+    }
 }
 
 static int
@@ -554,67 +554,67 @@ servlist_load (void)
         return FALSE;
 
     while (fgets (buf, sizeof (buf) - 2, fp))
-      {
-          len = strlen (buf);
-          buf[len] = 0;
-          buf[len - 1] = 0;     /* remove the trailing \n */
-          if (net)
+    {
+        len = strlen (buf);
+        buf[len] = 0;
+        buf[len - 1] = 0;     /* remove the trailing \n */
+        if (net)
+        {
+            switch (buf[0])
             {
-                switch (buf[0])
-                  {
-                  case 'I':
-                      net->nick = strdup (buf + 2);
-                      break;
-                  case 'i':
-                      net->nick2 = strdup (buf + 2);
-                      break;
-                  case 'U':
-                      net->user = strdup (buf + 2);
-                      break;
-                  case 'R':
-                      net->real = strdup (buf + 2);
-                      break;
-                  case 'P':
-                      net->pass = strdup (buf + 2);
-                      break;
-                  case 'J':
-                      net->autojoin = strdup (buf + 2);
-                      break;
-                  case 'C':
-                      if (net->command)
-                        {
-                            /* concat extra commands with a \n separator */
-                            tmp = net->command;
-                            net->command =
-                                malloc (strlen (tmp) + strlen (buf + 2) + 2);
-                            strcpy (net->command, tmp);
-                            strcat (net->command, "\n");
-                            strcat (net->command, buf + 2);
-                            free (tmp);
-                        }
-                      else
-                          net->command = strdup (buf + 2);
-                      break;
-                  case 'F':
-                      net->flags = atoi (buf + 2);
-                      break;
-                  case 'D':
-                      net->selected = atoi (buf + 2);
-                      break;
-                  case 'E':
-                      net->encoding = strdup (buf + 2);
-                      break;
-                  case 'S':    /* new server/hostname for this network */
-                      servlist_server_add (net, buf + 2);
-                      break;
-                  case 'B':
-                      net->nickserv = strdup (buf + 2);
-                      break;
-                  }
+            case 'I':
+                net->nick = strdup (buf + 2);
+                break;
+            case 'i':
+                net->nick2 = strdup (buf + 2);
+                break;
+            case 'U':
+                net->user = strdup (buf + 2);
+                break;
+            case 'R':
+                net->real = strdup (buf + 2);
+                break;
+            case 'P':
+                net->pass = strdup (buf + 2);
+                break;
+            case 'J':
+                net->autojoin = strdup (buf + 2);
+                break;
+            case 'C':
+                if (net->command)
+                {
+                    /* concat extra commands with a \n separator */
+                    tmp = net->command;
+                    net->command =
+                        malloc (strlen (tmp) + strlen (buf + 2) + 2);
+                    strcpy (net->command, tmp);
+                    strcat (net->command, "\n");
+                    strcat (net->command, buf + 2);
+                    free (tmp);
+                }
+                else
+                    net->command = strdup (buf + 2);
+                break;
+            case 'F':
+                net->flags = atoi (buf + 2);
+                break;
+            case 'D':
+                net->selected = atoi (buf + 2);
+                break;
+            case 'E':
+                net->encoding = strdup (buf + 2);
+                break;
+            case 'S':    /* new server/hostname for this network */
+                servlist_server_add (net, buf + 2);
+                break;
+            case 'B':
+                net->nickserv = strdup (buf + 2);
+                break;
             }
-          if (buf[0] == 'N')
-              net = servlist_net_add (buf + 2, /* comment */ NULL, FALSE);
-      }
+        }
+        if (buf[0] == 'N')
+            net = servlist_net_add (buf + 2, /* comment */ NULL, FALSE);
+    }
     fclose (fp);
 
     return TRUE;
@@ -640,11 +640,11 @@ servlist_check_encoding (char *charset)
         c[0] = 0;
 
     if (!strcasecmp (charset, "IRC"))   /* special case */
-      {
-          if (c)
-              c[0] = ' ';
-          return TRUE;
-      }
+    {
+        if (c)
+            c[0] = ' ';
+        return TRUE;
+    }
 
     gic = g_iconv_open (charset, "UTF-8");
 
@@ -652,10 +652,10 @@ servlist_check_encoding (char *charset)
         c[0] = ' ';
 
     if (gic != (GIConv) - 1)
-      {
-          g_iconv_close (gic);
-          return TRUE;
-      }
+    {
+        g_iconv_close (gic);
+        return TRUE;
+    }
 
     return FALSE;
 }
@@ -696,59 +696,59 @@ servlist_save (void)
 
     list = network_list;
     while (list)
-      {
-          net = list->data;
+    {
+        net = list->data;
 
-          fprintf (fp, "N=%s\n", net->name);
-          if (net->nick)
-              fprintf (fp, "I=%s\n", net->nick);
-          if (net->nick2)
-              fprintf (fp, "i=%s\n", net->nick2);
-          if (net->user)
-              fprintf (fp, "U=%s\n", net->user);
-          if (net->real)
-              fprintf (fp, "R=%s\n", net->real);
-          if (net->pass)
-              fprintf (fp, "P=%s\n", net->pass);
-          if (net->autojoin)
-              fprintf (fp, "J=%s\n", net->autojoin);
-          if (net->nickserv)
-              fprintf (fp, "B=%s\n", net->nickserv);
-          if (net->encoding && strcasecmp (net->encoding, "System") &&
-              strcasecmp (net->encoding, "System default"))
+        fprintf (fp, "N=%s\n", net->name);
+        if (net->nick)
+            fprintf (fp, "I=%s\n", net->nick);
+        if (net->nick2)
+            fprintf (fp, "i=%s\n", net->nick2);
+        if (net->user)
+            fprintf (fp, "U=%s\n", net->user);
+        if (net->real)
+            fprintf (fp, "R=%s\n", net->real);
+        if (net->pass)
+            fprintf (fp, "P=%s\n", net->pass);
+        if (net->autojoin)
+            fprintf (fp, "J=%s\n", net->autojoin);
+        if (net->nickserv)
+            fprintf (fp, "B=%s\n", net->nickserv);
+        if (net->encoding && strcasecmp (net->encoding, "System") &&
+                strcasecmp (net->encoding, "System default"))
+        {
+            fprintf (fp, "E=%s\n", net->encoding);
+            if (!servlist_check_encoding (net->encoding))
             {
-                fprintf (fp, "E=%s\n", net->encoding);
-                if (!servlist_check_encoding (net->encoding))
-                  {
-                      snprintf (buf, sizeof (buf),
-                                _
-                                ("Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."),
-                                net->encoding, net->name);
-                      fe_message (buf, FE_MSG_WARN);
-                  }
+                snprintf (buf, sizeof (buf),
+                          _
+                          ("Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."),
+                          net->encoding, net->name);
+                fe_message (buf, FE_MSG_WARN);
             }
+        }
 
-          if (net->command)
-              token_foreach (net->command, '\n', servlist_write_ccmd, fp);
+        if (net->command)
+            token_foreach (net->command, '\n', servlist_write_ccmd, fp);
 
-          fprintf (fp, "F=%d\nD=%d\n", net->flags, net->selected);
+        fprintf (fp, "F=%d\nD=%d\n", net->flags, net->selected);
 
-          hlist = net->servlist;
-          while (hlist)
-            {
-                serv = hlist->data;
-                fprintf (fp, "S=%s\n", serv->hostname);
-                hlist = hlist->next;
-            }
+        hlist = net->servlist;
+        while (hlist)
+        {
+            serv = hlist->data;
+            fprintf (fp, "S=%s\n", serv->hostname);
+            hlist = hlist->next;
+        }
 
-          if (fprintf (fp, "\n") < 1)
-            {
-                fclose (fp);
-                return FALSE;
-            }
+        if (fprintf (fp, "\n") < 1)
+        {
+            fclose (fp);
+            return FALSE;
+        }
 
-          list = list->next;
-      }
+        list = list->next;
+    }
 
     fclose (fp);
     return TRUE;
@@ -783,10 +783,10 @@ joinlist_is_in_list (server * serv, char *channel)
     joinlist_split (((ircnet *) serv->network)->autojoin, &channels, &keys);
 
     for (list = channels; list; list = list->next)
-      {
-          if (serv->p_cmp (list->data, channel) == 0)
-              return TRUE;
-      }
+    {
+        if (serv->p_cmp (list->data, channel) == 0)
+            return TRUE;
+    }
 
     joinlist_free (channels, keys);
 
@@ -801,12 +801,12 @@ joinlist_merge (GSList * channels, GSList * keys)
     int i, j;
 
     for (; channels; channels = channels->next)
-      {
-          g_string_append (out, channels->data);
+    {
+        g_string_append (out, channels->data);
 
-          if (channels->next)
-              g_string_append_c (out, ',');
-      }
+        if (channels->next)
+            g_string_append_c (out, ',');
+    }
 
     /* count number of REAL keys */
     for (i = 0, list = keys; list; list = list->next)
@@ -814,23 +814,23 @@ joinlist_merge (GSList * channels, GSList * keys)
             i++;
 
     if (i > 0)
-      {
-          g_string_append_c (out, ' ');
+    {
+        g_string_append_c (out, ' ');
 
-          for (j = 0; keys; keys = keys->next)
+        for (j = 0; keys; keys = keys->next)
+        {
+            if (keys->data)
             {
-                if (keys->data)
-                  {
-                      g_string_append (out, keys->data);
-                      j++;
-                      if (j == i)
-                          break;
-                  }
-
-                if (keys->next)
-                    g_string_append_c (out, ',');
+                g_string_append (out, keys->data);
+                j++;
+                if (j == i)
+                    break;
             }
-      }
+
+            if (keys->next)
+                g_string_append_c (out, ',');
+        }
+    }
 
     return g_string_free (out, FALSE);
 }
@@ -852,46 +852,46 @@ joinlist_split (char *autojoin, GSList ** channels, GSList ** keys)
         partb++;
 
     while (1)
-      {
-          chan = parta;
-          key = partb;
+    {
+        chan = parta;
+        key = partb;
 
-          if (1)
+        if (1)
+        {
+            while (parta[0] != 0 && parta[0] != ',' && parta[0] != ' ')
             {
-                while (parta[0] != 0 && parta[0] != ',' && parta[0] != ' ')
-                  {
-                      parta++;
-                  }
+                parta++;
             }
+        }
 
-          if (partb)
+        if (partb)
+        {
+            while (partb[0] != 0 && partb[0] != ',' && partb[0] != ' ')
             {
-                while (partb[0] != 0 && partb[0] != ',' && partb[0] != ' ')
-                  {
-                      partb++;
-                  }
+                partb++;
             }
+        }
 
-          len = parta - chan;
-          if (len < 1)
-              break;
-          *channels = g_slist_append (*channels, g_strndup (chan, len));
+        len = parta - chan;
+        if (len < 1)
+            break;
+        *channels = g_slist_append (*channels, g_strndup (chan, len));
 
-          len = partb - key;
-          *keys = g_slist_append (*keys, len ? g_strndup (key, len) : NULL);
+        len = partb - key;
+        *keys = g_slist_append (*keys, len ? g_strndup (key, len) : NULL);
 
-          if (parta[0] == ' ' || parta[0] == 0)
-              break;
-          parta++;
+        if (parta[0] == ' ' || parta[0] == 0)
+            break;
+        parta++;
 
-          if (partb)
-            {
-                if (partb[0] == 0 || partb[0] == ' ')
-                    partb = NULL;       /* no more keys, but maybe more channels? */
-                else
-                    partb++;
-            }
-      }
+        if (partb)
+        {
+            if (partb[0] == 0 || partb[0] == ' ')
+                partb = NULL;       /* no more keys, but maybe more channels? */
+            else
+                partb++;
+        }
+    }
 
 #if 0
     GSList *lista, *listb;
@@ -902,12 +902,12 @@ joinlist_split (char *autojoin, GSList ** channels, GSList ** keys)
     lista = *channels;
     listb = *keys;
     while (lista)
-      {
-          printf ("%d. |%s| |%s|\n", i, lista->data, listb->data);
-          i++;
-          lista = lista->next;
-          listb = listb->next;
-      }
+    {
+        printf ("%d. |%s| |%s|\n", i, lista->data, listb->data);
+        i++;
+        lista = lista->next;
+        listb = listb->next;
+    }
     printf ("-----\n\n");
 #endif
 }

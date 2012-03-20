@@ -52,11 +52,11 @@ static void
 search_search (session * sess, const gchar * text)
 {
     if (!is_session (sess))
-      {
-          fe_message (_("The window you opened this Search "
-                        "for doesn't exist anymore."), FE_MSG_ERROR);
-          return;
-      }
+    {
+        fe_message (_("The window you opened this Search "
+                      "for doesn't exist anymore."), FE_MSG_ERROR);
+        return;
+    }
 
     last = gtk_xtext_search (GTK_XTEXT (sess->gui->xtext), text,
                              last, case_match, search_backward);

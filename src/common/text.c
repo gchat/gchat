@@ -114,10 +114,10 @@ void
 scrollback_close (session * sess)
 {
     if (sess->scrollfd != -1)
-      {
-          close (sess->scrollfd);
-          sess->scrollfd = -1;
-      }
+    {
+        close (sess->scrollfd);
+        sess->scrollfd = -1;
+    }
 }
 
 static char *
@@ -135,17 +135,17 @@ file_to_buffer (char *file, int *len)
 
     buf = malloc (st.st_size);
     if (!buf)
-      {
-          close (fh);
-          return NULL;
-      }
+    {
+        close (fh);
+        return NULL;
+    }
 
     if (read (fh, buf, st.st_size) != st.st_size)
-      {
-          free (buf);
-          close (fh);
-          return NULL;
-      }
+    {
+        free (buf);
+        close (fh);
+        return NULL;
+    }
 
     *len = st.st_size;
     close (fh);
@@ -179,35 +179,35 @@ scrollback_shrink (session * sess)
     /* count all lines */
     p = buf;
     while (p != buf + len)
-      {
-          if (*p == '\n')
-              lines++;
-          p++;
-      }
+    {
+        if (*p == '\n')
+            lines++;
+        p++;
+    }
 
     fh = open (file, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY, 0644);
     if (fh == -1)
-      {
-          free (buf);
-          return;
-      }
+    {
+        free (buf);
+        return;
+    }
 
     line = 0;
     p = buf;
     while (p != buf + len)
-      {
-          if (*p == '\n')
+    {
+        if (*p == '\n')
+        {
+            line++;
+            if (line >= lines - prefs.max_lines && p + 1 != buf + len)
             {
-                line++;
-                if (line >= lines - prefs.max_lines && p + 1 != buf + len)
-                  {
-                      p++;
-                      write (fh, p, len - (p - buf));
-                      break;
-                  }
+                p++;
+                write (fh, p, len - (p - buf));
+                break;
             }
-          p++;
-      }
+        }
+        p++;
+    }
 
     close (fh);
     free (buf);
@@ -224,25 +224,25 @@ scrollback_save (session * sess, char *text)
         return;
 
     if (sess->text_scrollback == SET_DEFAULT)
-      {
-          if (!prefs.text_replay)
-              return;
-      }
+    {
+        if (!prefs.text_replay)
+            return;
+    }
     else
-      {
-          if (sess->text_scrollback != SET_ON)
-              return;
-      }
+    {
+        if (sess->text_scrollback != SET_ON)
+            return;
+    }
 
     if (sess->scrollfd == -1)
-      {
-          if (scrollback_get_filename (sess, buf, sizeof (buf)) == NULL)
-              return;
+    {
+        if (scrollback_get_filename (sess, buf, sizeof (buf)) == NULL)
+            return;
 
-          sess->scrollfd = open (buf, O_CREAT | O_APPEND | O_WRONLY, 0644);
-          if (sess->scrollfd == -1)
-              return;
-      }
+        sess->scrollfd = open (buf, O_CREAT | O_APPEND | O_WRONLY, 0644);
+        if (sess->scrollfd == -1)
+            return;
+    }
 
     stamp = time (0);
     if (sizeof (stamp) == 4)    /* gcc will optimize one of these out */
@@ -261,7 +261,7 @@ scrollback_save (session * sess, char *text)
     sess->scrollwritten++;
 
     if ((sess->scrollwritten * 2 > prefs.max_lines && prefs.max_lines > 0) ||
-        sess->scrollwritten > 32000)
+            sess->scrollwritten > 32000)
         scrollback_shrink (sess);
 }
 
@@ -278,15 +278,15 @@ scrollback_load (session * sess)
     const char *begin, *eol;
 
     if (sess->text_scrollback == SET_DEFAULT)
-      {
-          if (!prefs.text_replay)
-              return;
-      }
+    {
+        if (!prefs.text_replay)
+            return;
+    }
     else
-      {
-          if (sess->text_scrollback != SET_ON)
-              return;
-      }
+    {
+        if (sess->text_scrollback != SET_ON)
+            return;
+    }
 
     if (scrollback_get_filename (sess, buf, sizeof (buf)) == NULL)
         return;
@@ -307,50 +307,50 @@ scrollback_load (session * sess)
     lines = 0;
     begin = map;
     while (begin < end_map)
-      {
-          int n_bytes;
+    {
+        int n_bytes;
 
-          eol = memchr (begin, '\n', end_map - begin);
+        eol = memchr (begin, '\n', end_map - begin);
 
-          if (!eol)
-              eol = end_map;
+        if (!eol)
+            eol = end_map;
 
-          n_bytes = MIN (eol - begin, sizeof (buf) - 1);
+        n_bytes = MIN (eol - begin, sizeof (buf) - 1);
 
-          strncpy (buf, begin, n_bytes);
+        strncpy (buf, begin, n_bytes);
 
-          buf[n_bytes] = 0;
+        buf[n_bytes] = 0;
 
-          if (buf[0] == 'T')
+        if (buf[0] == 'T')
+        {
+            if (sizeof (time_t) == 4)
+                stamp = strtoul (buf + 2, NULL, 10);
+            else
+                stamp = strtoull (buf + 2, NULL, 10);       /* just incase time_t is 64 bits */
+            text = strchr (buf + 3, ' ');
+            if (text)
             {
-                if (sizeof (time_t) == 4)
-                    stamp = strtoul (buf + 2, NULL, 10);
-                else
-                    stamp = strtoull (buf + 2, NULL, 10);       /* just incase time_t is 64 bits */
-                text = strchr (buf + 3, ' ');
-                if (text)
-                  {
-                      text = strip_color (text + 1, -1, STRIP_COLOR);
-                      fe_print_text (sess, text, stamp);
-                      g_free (text);
-                  }
-                lines++;
+                text = strip_color (text + 1, -1, STRIP_COLOR);
+                fe_print_text (sess, text, stamp);
+                g_free (text);
             }
+            lines++;
+        }
 
-          begin = eol + 1;
-      }
+        begin = eol + 1;
+    }
 
     sess->scrollwritten = lines;
 
     if (lines)
-      {
-          text = ctime (&stamp);
-          text[24] = 0;         /* get rid of the \n */
-          snprintf (buf, sizeof (buf), "\n*\t%s %s\n\n", _("Loaded log from"),
-                    text);
-          fe_print_text (sess, buf, 0);
-          /*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0); */
-      }
+    {
+        text = ctime (&stamp);
+        text[24] = 0;         /* get rid of the \n */
+        snprintf (buf, sizeof (buf), "\n*\t%s %s\n\n", _("Loaded log from"),
+                  text);
+        fe_print_text (sess, buf, 0);
+        /*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0); */
+    }
 
     munmap (map, statbuf.st_size);
     close (fh);
@@ -363,15 +363,15 @@ log_close (session * sess)
     time_t currenttime;
 
     if (sess->logfd != -1)
-      {
-          currenttime = time (NULL);
-          write (sess->logfd, obuf,
-                 snprintf (obuf, sizeof (obuf) - 1,
-                           _("**** ENDING LOGGING AT %s\n"),
-                           ctime (&currenttime)));
-          close (sess->logfd);
-          sess->logfd = -1;
-      }
+    {
+        currenttime = time (NULL);
+        write (sess->logfd, obuf,
+               snprintf (obuf, sizeof (obuf) - 1,
+                         _("**** ENDING LOGGING AT %s\n"),
+                         ctime (&currenttime)));
+        close (sess->logfd);
+        sess->logfd = -1;
+    }
 }
 
 static void
@@ -384,23 +384,23 @@ mkdir_p (char *dir)             /* like "mkdir -p" from a shell, FS encoding */
         return;
 
     while (*dir)
-      {
+    {
 #ifdef WIN32
-          if (dir != start && (*dir == '/' || *dir == '\\'))
+        if (dir != start && (*dir == '/' || *dir == '\\'))
 #else
-          if (dir != start && *dir == '/')
+        if (dir != start && *dir == '/')
 #endif
-            {
-                *dir = 0;
+        {
+            *dir = 0;
 #ifdef WIN32
-                mkdir (start);
+            mkdir (start);
 #else
-                mkdir (start, S_IRUSR | S_IWUSR | S_IXUSR);
+            mkdir (start, S_IRUSR | S_IWUSR | S_IXUSR);
 #endif
-                *dir = '/';
-            }
-          dir++;
-      }
+            *dir = '/';
+        }
+        dir++;
+    }
 }
 
 static char *
@@ -411,23 +411,23 @@ log_create_filename (char *channame)
 
     ret = tmp = strdup (channame);
     while (*tmp)
-      {
-          mbl = g_utf8_skip[((unsigned char *) tmp)[0]];
-          if (mbl == 1)
-            {
+    {
+        mbl = g_utf8_skip[((unsigned char *) tmp)[0]];
+        if (mbl == 1)
+        {
 #ifndef WIN32
-                *tmp = rfc_tolower (*tmp);
-                if (*tmp == '/')
+            *tmp = rfc_tolower (*tmp);
+            if (*tmp == '/')
 #else
-                /* win32 can't handle filenames with \|/><:"*? characters */
-                if (*tmp == '\\' || *tmp == '|' || *tmp == '/' ||
+            /* win32 can't handle filenames with \|/><:"*? characters */
+            if (*tmp == '\\' || *tmp == '|' || *tmp == '/' ||
                     *tmp == '>' || *tmp == '<' || *tmp == ':' ||
                     *tmp == '\"' || *tmp == '*' || *tmp == '?')
 #endif
-                    *tmp = '_';
-            }
-          tmp += mbl;
-      }
+                *tmp = '_';
+        }
+        tmp += mbl;
+    }
 
     return ret;
 }
@@ -438,21 +438,21 @@ static char *
 log_escape_strcpy (char *dest, char *src, char *end)
 {
     while (*src)
-      {
-          *dest = *src;
-          if (dest + 1 == end)
-              break;
-          dest++;
-          src++;
+    {
+        *dest = *src;
+        if (dest + 1 == end)
+            break;
+        dest++;
+        src++;
 
-          if (*src == '%')
-            {
-                if (dest + 1 == end)
-                    break;
-                dest[0] = '%';
-                dest++;
-            }
-      }
+        if (*src == '%')
+        {
+            if (dest + 1 == end)
+                break;
+            dest[0] = '%';
+            dest++;
+        }
+    }
 
     dest[0] = 0;
     return dest - 1;
@@ -466,46 +466,46 @@ log_insert_vars (char *buf, int bufsize, char *fmt, char *c, char *n, char *s)
     char *end = buf + bufsize;
 
     while (1)
-      {
-          switch (fmt[0])
-            {
-            case 0:
-                buf[0] = 0;
-                return;
+    {
+        switch (fmt[0])
+        {
+        case 0:
+            buf[0] = 0;
+            return;
 
-            case '%':
-                fmt++;
-                switch (fmt[0])
-                  {
-                  case 'c':
-                      buf = log_escape_strcpy (buf, c, end);
-                      break;
-                  case 'n':
-                      buf = log_escape_strcpy (buf, n, end);
-                      break;
-                  case 's':
-                      buf = log_escape_strcpy (buf, s, end);
-                      break;
-                  default:
-                      buf[0] = '%';
-                      buf++;
-                      buf[0] = fmt[0];
-                      break;
-                  }
+        case '%':
+            fmt++;
+            switch (fmt[0])
+            {
+            case 'c':
+                buf = log_escape_strcpy (buf, c, end);
                 break;
-
+            case 'n':
+                buf = log_escape_strcpy (buf, n, end);
+                break;
+            case 's':
+                buf = log_escape_strcpy (buf, s, end);
+                break;
             default:
+                buf[0] = '%';
+                buf++;
                 buf[0] = fmt[0];
+                break;
             }
-          fmt++;
-          buf++;
-          /* doesn't fit? */
-          if (buf == end)
-            {
-                buf[-1] = 0;
-                return;
-            }
-      }
+            break;
+
+        default:
+            buf[0] = fmt[0];
+        }
+        fmt++;
+        buf++;
+        /* doesn't fit? */
+        if (buf == end)
+        {
+            buf[-1] = 0;
+            return;
+        }
+    }
 }
 
 static char *
@@ -594,34 +594,34 @@ log_open (session * sess)
                                  server_get_network (sess->server, FALSE));
 
     if (!log_error && sess->logfd == -1)
-      {
-          char message[512];
-          snprintf (message, sizeof (message),
-                    _("* Can't open log file(s) for writing. Check the\n"
-                      "  permissions on %s/xchatlogs"), get_xdir_utf8 ());
-          fe_message (message, FE_MSG_WAIT | FE_MSG_ERROR);
+    {
+        char message[512];
+        snprintf (message, sizeof (message),
+                  _("* Can't open log file(s) for writing. Check the\n"
+                    "  permissions on %s/xchatlogs"), get_xdir_utf8 ());
+        fe_message (message, FE_MSG_WAIT | FE_MSG_ERROR);
 
-          log_error = TRUE;
-      }
+        log_error = TRUE;
+    }
 }
 
 void
 log_open_or_close (session * sess)
 {
     if (sess->text_logging == SET_DEFAULT)
-      {
-          if (prefs.logging)
-              log_open (sess);
-          else
-              log_close (sess);
-      }
+    {
+        if (prefs.logging)
+            log_open (sess);
+        else
+            log_close (sess);
+    }
     else
-      {
-          if (sess->text_logging)
-              log_open (sess);
-          else
-              log_close (sess);
-      }
+    {
+        if (sess->text_logging)
+            log_open (sess);
+        else
+            log_close (sess);
+    }
 }
 
 int
@@ -633,25 +633,25 @@ get_stamp_str (char *fmt, time_t tim, char **ret)
 
     /* strftime wants the format string in LOCALE! */
     if (!prefs.utf8_locale)
-      {
-          const gchar *charset;
+    {
+        const gchar *charset;
 
-          g_get_charset (&charset);
-          loc =
-              g_convert_with_fallback (fmt, -1, charset, "UTF-8", "?", 0, 0,
-                                       0);
-          if (loc)
-              fmt = loc;
-      }
+        g_get_charset (&charset);
+        loc =
+            g_convert_with_fallback (fmt, -1, charset, "UTF-8", "?", 0, 0,
+                                     0);
+        if (loc)
+            fmt = loc;
+    }
 
     len = strftime (dest, sizeof (dest), fmt, localtime (&tim));
     if (len)
-      {
-          if (prefs.utf8_locale)
-              *ret = g_strdup (dest);
-          else
-              *ret = g_locale_to_utf8 (dest, len, 0, &len, 0);
-      }
+    {
+        if (prefs.utf8_locale)
+            *ret = g_strdup (dest);
+        else
+            *ret = g_locale_to_utf8 (dest, len, 0, &len, 0);
+    }
 
     if (loc)
         g_free (loc);
@@ -668,15 +668,15 @@ log_write (session * sess, char *text)
     int len;
 
     if (sess->text_logging == SET_DEFAULT)
-      {
-          if (!prefs.logging)
-              return;
-      }
+    {
+        if (!prefs.logging)
+            return;
+    }
     else
-      {
-          if (sess->text_logging != SET_ON)
-              return;
-      }
+    {
+        if (sess->text_logging != SET_ON)
+            return;
+    }
 
     if (sess->logfd == -1)
         log_open (sess);
@@ -685,26 +685,26 @@ log_write (session * sess, char *text)
     file = log_create_pathname (sess->server->servername, sess->channel,
                                 server_get_network (sess->server, FALSE));
     if (file)
-      {
-          if (access (file, F_OK) != 0)
-            {
-                close (sess->logfd);
-                sess->logfd =
-                    log_open_file (sess->server->servername, sess->channel,
-                                   server_get_network (sess->server, FALSE));
-            }
-          g_free (file);
-      }
+    {
+        if (access (file, F_OK) != 0)
+        {
+            close (sess->logfd);
+            sess->logfd =
+                log_open_file (sess->server->servername, sess->channel,
+                               server_get_network (sess->server, FALSE));
+        }
+        g_free (file);
+    }
 
     if (prefs.timestamp_logs)
-      {
-          len = get_stamp_str (prefs.timestamp_log_format, time (0), &stamp);
-          if (len)
-            {
-                write (sess->logfd, stamp, len);
-                g_free (stamp);
-            }
-      }
+    {
+        len = get_stamp_str (prefs.timestamp_log_format, time (0), &stamp);
+        if (len)
+        {
+            write (sess->logfd, stamp, len);
+            g_free (stamp);
+        }
+    }
     temp = strip_color (text, -1, STRIP_ALL);
     len = strlen (temp);
     write (sess->logfd, temp, len);
@@ -781,40 +781,40 @@ iso_8859_1_to_utf8 (unsigned char *text, int len, gsize * bytes_written)
         return NULL;
 
     while (len)
-      {
-          if (G_LIKELY (*text < 0x80))
+    {
+        if (G_LIKELY (*text < 0x80))
+        {
+            *output = *text;        /* ascii maps directly */
+        }
+        else if (*text <= 0xa4)       /* 80-a4 use a lookup table */
+        {
+            idx = *text - 0x80;
+            if (lowtable[idx] & 0x2000)
             {
-                *output = *text;        /* ascii maps directly */
+                *output++ = (lowtable[idx] >> 8) & 0xdf;  /* 2 byte utf-8 */
+                *output = lowtable[idx] & 0xff;
             }
-          else if (*text <= 0xa4)       /* 80-a4 use a lookup table */
+            else
             {
-                idx = *text - 0x80;
-                if (lowtable[idx] & 0x2000)
-                  {
-                      *output++ = (lowtable[idx] >> 8) & 0xdf;  /* 2 byte utf-8 */
-                      *output = lowtable[idx] & 0xff;
-                  }
-                else
-                  {
-                      *output++ = 0xe2; /* 3 byte utf-8 */
-                      *output++ = (lowtable[idx] >> 8) & 0xff;
-                      *output = lowtable[idx] & 0xff;
-                  }
+                *output++ = 0xe2; /* 3 byte utf-8 */
+                *output++ = (lowtable[idx] >> 8) & 0xff;
+                *output = lowtable[idx] & 0xff;
             }
-          else if (*text < 0xc0)
-            {
-                *output++ = 0xc2;
-                *output = *text;
-            }
-          else
-            {
-                *output++ = 0xc3;
-                *output = *text - 0x40;
-            }
-          output++;
-          text++;
-          len--;
-      }
+        }
+        else if (*text < 0xc0)
+        {
+            *output++ = 0xc2;
+            *output = *text;
+        }
+        else
+        {
+            *output++ = 0xc3;
+            *output = *text - 0x40;
+        }
+        output++;
+        text++;
+        len--;
+    }
     *output = 0;                /* terminate */
     *bytes_written = output - res;
 
@@ -839,23 +839,23 @@ text_validate (char **text, int *len)
         /* fallback to iso-8859-1 */
         utf = iso_8859_1_to_utf8 (*text, *len, &utf_len);
     else
-      {
-          /* fallback to locale */
-          utf = g_locale_to_utf8 (*text, *len, 0, &utf_len, NULL);
-          if (!utf)
-              utf = iso_8859_1_to_utf8 (*text, *len, &utf_len);
-      }
+    {
+        /* fallback to locale */
+        utf = g_locale_to_utf8 (*text, *len, 0, &utf_len, NULL);
+        if (!utf)
+            utf = iso_8859_1_to_utf8 (*text, *len, &utf_len);
+    }
 
     if (!utf)
-      {
-          *text = g_strdup ("%INVALID%");
-          *len = 9;
-      }
+    {
+        *text = g_strdup ("%INVALID%");
+        *len = 9;
+    }
     else
-      {
-          *text = utf;
-          *len = utf_len;
-      }
+    {
+        *text = utf;
+        *len = utf_len;
+    }
 
     return utf;
 }
@@ -866,23 +866,23 @@ PrintText (session * sess, char *text)
     char *conv;
 
     if (!sess)
-      {
-          if (!sess_list)
-              return;
-          sess = (session *) sess_list->data;
-      }
+    {
+        if (!sess_list)
+            return;
+        sess = (session *) sess_list->data;
+    }
 
     /* make sure it's valid utf8 */
     if (text[0] == 0)
-      {
-          text = "\n";
-          conv = NULL;
-      }
+    {
+        text = "\n";
+        conv = NULL;
+    }
     else
-      {
-          int len = -1;
-          conv = text_validate ((char **) &text, &len);
-      }
+    {
+        int len = -1;
+        conv = text_validate ((char **) &text, &len);
+    }
 
     log_write (sess, text);
     scrollback_save (sess, text);
@@ -1467,16 +1467,16 @@ pevent_load_defaults ()
     int i;
 
     for (i = 0; i < NUM_XP; i++)
-      {
-          if (pntevts_text[i])
-              free (pntevts_text[i]);
+    {
+        if (pntevts_text[i])
+            free (pntevts_text[i]);
 
-          /* make-te.c sets this 128 flag (DON'T call gettext() flag) */
-          if (te[i].num_args & 128)
-              pntevts_text[i] = strdup (te[i].def);
-          else
-              pntevts_text[i] = strdup (_(te[i].def));
-      }
+        /* make-te.c sets this 128 flag (DON'T call gettext() flag) */
+        if (te[i].num_args & 128)
+            pntevts_text[i] = strdup (te[i].def);
+        else
+            pntevts_text[i] = strdup (_(te[i].def));
+    }
 }
 
 void
@@ -1486,30 +1486,30 @@ pevent_make_pntevts ()
     char out[1024];
 
     for (i = 0; i < NUM_XP; i++)
-      {
-          if (pntevts[i] != NULL)
-              free (pntevts[i]);
-          if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
-            {
-                snprintf (out, sizeof (out),
-                          _("Error parsing event %s.\nLoading default."),
-                          te[i].name);
-                fe_message (out, FE_MSG_WARN);
-                free (pntevts_text[i]);
-                /* make-te.c sets this 128 flag (DON'T call gettext() flag) */
-                if (te[i].num_args & 128)
-                    pntevts_text[i] = strdup (te[i].def);
-                else
-                    pntevts_text[i] = strdup (_(te[i].def));
-                if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) !=
+    {
+        if (pntevts[i] != NULL)
+            free (pntevts[i]);
+        if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
+        {
+            snprintf (out, sizeof (out),
+                      _("Error parsing event %s.\nLoading default."),
+                      te[i].name);
+            fe_message (out, FE_MSG_WARN);
+            free (pntevts_text[i]);
+            /* make-te.c sets this 128 flag (DON'T call gettext() flag) */
+            if (te[i].num_args & 128)
+                pntevts_text[i] = strdup (te[i].def);
+            else
+                pntevts_text[i] = strdup (_(te[i].def));
+            if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) !=
                     0)
-                  {
-                      fprintf (stderr,
-                               "XChat CRITICAL *** default event text failed to build!\n");
-                      abort ();
-                  }
+            {
+                fprintf (stderr,
+                         "XChat CRITICAL *** default event text failed to build!\n");
+                abort ();
             }
-      }
+        }
+    }
 }
 
 /* Loading happens at 2 levels:
@@ -1527,13 +1527,13 @@ pevent_trigger_load (int *i_penum, char **i_text, char **i_snd)
     char *text = *i_text, *snd = *i_snd;
 
     if (penum != -1 && text != NULL)
-      {
-          len = strlen (text) + 1;
-          if (pntevts_text[penum])
-              free (pntevts_text[penum]);
-          pntevts_text[penum] = malloc (len);
-          memcpy (pntevts_text[penum], text, len);
-      }
+    {
+        len = strlen (text) + 1;
+        if (pntevts_text[penum])
+            free (pntevts_text[penum]);
+        pntevts_text[penum] = malloc (len);
+        memcpy (pntevts_text[penum], text, len);
+    }
 
     if (text)
         free (text);
@@ -1551,18 +1551,18 @@ pevent_find (char *name, int *i_i)
 
     j = i + 1;
     while (1)
-      {
-          if (j == NUM_XP)
-              j = 0;
-          if (strcmp (te[j].name, name) == 0)
-            {
-                *i_i = j;
-                return j;
-            }
-          if (j == i)
-              return -1;
-          j++;
-      }
+    {
+        if (j == NUM_XP)
+            j = 0;
+        if (strcmp (te[j].name, name) == 0)
+        {
+            *i_i = j;
+            return j;
+        }
+        if (j == i)
+            return -1;
+        j++;
+    }
 }
 
 int
@@ -1593,64 +1593,64 @@ pevent_load (char *filename)
     close (fd);
 
     while (buf_get_line (ibuf, &buf, &pnt, st.st_size))
-      {
-          if (buf[0] == '#')
-              continue;
-          if (strlen (buf) == 0)
-              continue;
+    {
+        if (buf[0] == '#')
+            continue;
+        if (strlen (buf) == 0)
+            continue;
 
-          ofs = strchr (buf, '=');
-          if (!ofs)
-              continue;
-          *ofs = 0;
-          ofs++;
-          /*if (*ofs == 0)
-             continue; */
+        ofs = strchr (buf, '=');
+        if (!ofs)
+            continue;
+        *ofs = 0;
+        ofs++;
+        /*if (*ofs == 0)
+           continue; */
 
-          if (strcmp (buf, "event_name") == 0)
-            {
-                if (penum >= 0)
-                    pevent_trigger_load (&penum, &text, &snd);
-                penum = pevent_find (ofs, &i);
-                continue;
-            }
-          else if (strcmp (buf, "event_text") == 0)
-            {
-                if (text)
-                    free (text);
+        if (strcmp (buf, "event_name") == 0)
+        {
+            if (penum >= 0)
+                pevent_trigger_load (&penum, &text, &snd);
+            penum = pevent_find (ofs, &i);
+            continue;
+        }
+        else if (strcmp (buf, "event_text") == 0)
+        {
+            if (text)
+                free (text);
 
 #if 0
-                /* This allows updating of old strings. We don't use new defaults
-                   if the user has customized the strings (.e.g a text theme).
-                   Hash of the old default is enough to identify and replace it.
-                   This only works in English. */
+            /* This allows updating of old strings. We don't use new defaults
+               if the user has customized the strings (.e.g a text theme).
+               Hash of the old default is enough to identify and replace it.
+               This only works in English. */
 
-                switch (g_str_hash (ofs))
-                  {
-                  case 0x526743a4:
-                      /* %C08,02 Hostmask                  PRIV NOTI CHAN CTCP INVI UNIG %O */
-                      text = strdup (te[XP_TE_IGNOREHEADER].def);
-                      break;
+            switch (g_str_hash (ofs))
+            {
+            case 0x526743a4:
+                /* %C08,02 Hostmask                  PRIV NOTI CHAN CTCP INVI UNIG %O */
+                text = strdup (te[XP_TE_IGNOREHEADER].def);
+                break;
 
-                  case 0xe91bc9c2:
-                      /* %C08,02                                                         %O */
-                      text = strdup (te[XP_TE_IGNOREFOOTER].def);
-                      break;
+            case 0xe91bc9c2:
+                /* %C08,02                                                         %O */
+                text = strdup (te[XP_TE_IGNOREFOOTER].def);
+                break;
 
-                  case 0x1fbfdf22:
-                      /* -%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing - aborting. */
-                      text = strdup (te[XP_TE_DCCFILEERR].def);
-                      break;
+            case 0x1fbfdf22:
+                /* -%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing - aborting. */
+                text = strdup (te[XP_TE_DCCFILEERR].def);
+                break;
 
-                  default:
-                      text = strdup (ofs);
-                  }
-#else
+            default:
                 text = strdup (ofs);
+            }
+#else
+            text = strdup (ofs);
 #endif
 
-                continue;
-            }                   /* else if (strcmp (buf, "event_sound") == 0)
+            continue;
+        }                   /* else if (strcmp (buf, "event_sound") == 0)
                                    {
                                    if (snd)
                                    free (snd);
@@ -1658,8 +1658,8 @@ pevent_load (char *filename)
                                    continue;
                                    } */
 
-          continue;
-      }
+        continue;
+    }
 
     pevent_trigger_load (&penum, &text, &snd);
     free (ibuf);
@@ -1672,19 +1672,19 @@ pevent_check_all_loaded ()
     int i;
 
     for (i = 0; i < NUM_XP; i++)
-      {
-          if (pntevts_text[i] == NULL)
-            {
-                /*printf ("%s\n", te[i].name);
-                   snprintf(out, sizeof(out), "The data for event %s failed to load. Reverting to defaults.\nThis may be because a new version of XChat is loading an old config file.\n\nCheck all print event texts are correct", evtnames[i]);
-                   gtkutil_simpledialog(out); */
-                /* make-te.c sets this 128 flag (DON'T call gettext() flag) */
-                if (te[i].num_args & 128)
-                    pntevts_text[i] = strdup (te[i].def);
-                else
-                    pntevts_text[i] = strdup (_(te[i].def));
-            }
-      }
+    {
+        if (pntevts_text[i] == NULL)
+        {
+            /*printf ("%s\n", te[i].name);
+               snprintf(out, sizeof(out), "The data for event %s failed to load. Reverting to defaults.\nThis may be because a new version of XChat is loading an old config file.\n\nCheck all print event texts are correct", evtnames[i]);
+               gtkutil_simpledialog(out); */
+            /* make-te.c sets this 128 flag (DON'T call gettext() flag) */
+            if (te[i].num_args & 128)
+                pntevts_text[i] = strdup (te[i].def);
+            else
+                pntevts_text[i] = strdup (_(te[i].def));
+        }
+    }
 }
 
 void
@@ -1723,68 +1723,68 @@ format_event (session * sess, int index, char **args, char *o, int sizeofo,
         return;
 
     while (done_all == FALSE)
-      {
-          d = i[ii++];
-          switch (d)
+    {
+        d = i[ii++];
+        switch (d)
+        {
+        case 0:
+            memcpy (&len, &(i[ii]), sizeof (int));
+            ii += sizeof (int);
+            if (oi + len > sizeofo)
             {
-            case 0:
-                memcpy (&len, &(i[ii]), sizeof (int));
-                ii += sizeof (int);
-                if (oi + len > sizeofo)
-                  {
-                      printf ("Overflow in display_event (%s)\n", i);
-                      o[0] = 0;
-                      return;
-                  }
-                memcpy (&(o[oi]), &(i[ii]), len);
-                oi += len;
-                ii += len;
-                break;
-            case 1:
-                a = i[ii++];
-                if (a > numargs)
-                  {
-                      fprintf (stderr,
-                               "XChat DEBUG: display_event: arg > numargs (%d %d %s)\n",
-                               a, numargs, i);
-                      break;
-                  }
-                ar = args[(int) a + 1];
-                if (ar == NULL)
-                  {
-                      printf ("arg[%d] is NULL in print event\n", a + 1);
-                  }
-                else
-                  {
-                      if (stripcolor_args & ARG_FLAG (a + 1))
-                          len = strip_color2 (ar, -1, &o[oi], STRIP_ALL);
-                      else
-                          len = strip_hidden_attribute (ar, &o[oi]);
-                      oi += len;
-                  }
-                break;
-            case 2:
-                o[oi++] = '\n';
-                o[oi++] = 0;
-                done_all = TRUE;
-                continue;
-            case 3:
-/*			if (sess->type == SESS_DIALOG)
-			{
-				if (prefs.dialog_indent_nicks)
-					o[oi++] = '\t';
-				else
-					o[oi++] = ' ';
-			} else
-			{*/
-                if (prefs.indent_nicks)
-                    o[oi++] = '\t';
-                else
-                    o[oi++] = ' ';
-                /*} */
+                printf ("Overflow in display_event (%s)\n", i);
+                o[0] = 0;
+                return;
+            }
+            memcpy (&(o[oi]), &(i[ii]), len);
+            oi += len;
+            ii += len;
+            break;
+        case 1:
+            a = i[ii++];
+            if (a > numargs)
+            {
+                fprintf (stderr,
+                         "XChat DEBUG: display_event: arg > numargs (%d %d %s)\n",
+                         a, numargs, i);
                 break;
             }
-      }
+            ar = args[(int) a + 1];
+            if (ar == NULL)
+            {
+                printf ("arg[%d] is NULL in print event\n", a + 1);
+            }
+            else
+            {
+                if (stripcolor_args & ARG_FLAG (a + 1))
+                    len = strip_color2 (ar, -1, &o[oi], STRIP_ALL);
+                else
+                    len = strip_hidden_attribute (ar, &o[oi]);
+                oi += len;
+            }
+            break;
+        case 2:
+            o[oi++] = '\n';
+            o[oi++] = 0;
+            done_all = TRUE;
+            continue;
+        case 3:
+            /*			if (sess->type == SESS_DIALOG)
+            			{
+            				if (prefs.dialog_indent_nicks)
+            					o[oi++] = '\t';
+            				else
+            					o[oi++] = ' ';
+            			} else
+            			{*/
+            if (prefs.indent_nicks)
+                o[oi++] = '\t';
+            else
+                o[oi++] = ' ';
+            /*} */
+            break;
+        }
+    }
     o[oi] = 0;
     if (*o == '\n')
         o[0] = 0;
@@ -1818,131 +1818,131 @@ pevt_build_string (const char *input, char **output, int *max_arg)
     clen = oi = ii = 0;
 
     for (;;)
-      {
-          if (ii == len)
-              break;
-          d = i[ii++];
-          if (d != '$')
-            {
-                o[oi++] = d;
-                continue;
-            }
-          if (i[ii] == '$')
-            {
-                o[oi++] = '$';
-                continue;
-            }
-          if (oi > 0)
-            {
-                s = (struct pevt_stage1 *)
-                    malloc (sizeof (struct pevt_stage1));
-                if (base == NULL)
-                    base = s;
-                if (last != NULL)
-                    last->next = s;
-                last = s;
-                s->next = NULL;
-                s->data = malloc (oi + sizeof (int) + 1);
-                s->len = oi + sizeof (int) + 1;
-                clen += oi + sizeof (int) + 1;
-                s->data[0] = 0;
-                memcpy (&(s->data[1]), &oi, sizeof (int));
-                memcpy (&(s->data[1 + sizeof (int)]), o, oi);
-                oi = 0;
-            }
-          if (ii == len)
-            {
-                fe_message ("String ends with a $", FE_MSG_WARN);
-                return 1;
-            }
-          d = i[ii++];
-          if (d == 'a')
-            {                   /* Hex value */
-                x = 0;
-                if (ii == len)
-                    goto a_len_error;
-                d = i[ii++];
-                d -= '0';
-                x = d * 100;
-                if (ii == len)
-                    goto a_len_error;
-                d = i[ii++];
-                d -= '0';
-                x += d * 10;
-                if (ii == len)
-                    goto a_len_error;
-                d = i[ii++];
-                d -= '0';
-                x += d;
-                if (x > 255)
-                    goto a_range_error;
-                o[oi++] = x;
-                continue;
+    {
+        if (ii == len)
+            break;
+        d = i[ii++];
+        if (d != '$')
+        {
+            o[oi++] = d;
+            continue;
+        }
+        if (i[ii] == '$')
+        {
+            o[oi++] = '$';
+            continue;
+        }
+        if (oi > 0)
+        {
+            s = (struct pevt_stage1 *)
+                malloc (sizeof (struct pevt_stage1));
+            if (base == NULL)
+                base = s;
+            if (last != NULL)
+                last->next = s;
+            last = s;
+            s->next = NULL;
+            s->data = malloc (oi + sizeof (int) + 1);
+            s->len = oi + sizeof (int) + 1;
+            clen += oi + sizeof (int) + 1;
+            s->data[0] = 0;
+            memcpy (&(s->data[1]), &oi, sizeof (int));
+            memcpy (&(s->data[1 + sizeof (int)]), o, oi);
+            oi = 0;
+        }
+        if (ii == len)
+        {
+            fe_message ("String ends with a $", FE_MSG_WARN);
+            return 1;
+        }
+        d = i[ii++];
+        if (d == 'a')
+        {   /* Hex value */
+            x = 0;
+            if (ii == len)
+                goto a_len_error;
+            d = i[ii++];
+            d -= '0';
+            x = d * 100;
+            if (ii == len)
+                goto a_len_error;
+            d = i[ii++];
+            d -= '0';
+            x += d * 10;
+            if (ii == len)
+                goto a_len_error;
+            d = i[ii++];
+            d -= '0';
+            x += d;
+            if (x > 255)
+                goto a_range_error;
+            o[oi++] = x;
+            continue;
 
-              a_len_error:
-                fe_message ("String ends in $a", FE_MSG_WARN);
-                return 1;
-              a_range_error:
-                fe_message ("$a value is greater than 255", FE_MSG_WARN);
-                return 1;
-            }
-          if (d == 't')
-            {
-                /* Tab - if tabnicks is set then write '\t' else ' ' */
-                s = (struct pevt_stage1 *)
-                    malloc (sizeof (struct pevt_stage1));
-                if (base == NULL)
-                    base = s;
-                if (last != NULL)
-                    last->next = s;
-                last = s;
-                s->next = NULL;
-                s->data = malloc (1);
-                s->len = 1;
-                clen += 1;
-                s->data[0] = 3;
+a_len_error:
+            fe_message ("String ends in $a", FE_MSG_WARN);
+            return 1;
+a_range_error:
+            fe_message ("$a value is greater than 255", FE_MSG_WARN);
+            return 1;
+        }
+        if (d == 't')
+        {
+            /* Tab - if tabnicks is set then write '\t' else ' ' */
+            s = (struct pevt_stage1 *)
+                malloc (sizeof (struct pevt_stage1));
+            if (base == NULL)
+                base = s;
+            if (last != NULL)
+                last->next = s;
+            last = s;
+            s->next = NULL;
+            s->data = malloc (1);
+            s->len = 1;
+            clen += 1;
+            s->data[0] = 3;
 
-                continue;
-            }
-          if (d < '1' || d > '9')
-            {
-                snprintf (o, sizeof (o), "Error, invalid argument $%c\n", d);
-                fe_message (o, FE_MSG_WARN);
-                return 1;
-            }
-          d -= '0';
-          if (max < d)
-              max = d;
-          s = (struct pevt_stage1 *) malloc (sizeof (struct pevt_stage1));
-          if (base == NULL)
-              base = s;
-          if (last != NULL)
-              last->next = s;
-          last = s;
-          s->next = NULL;
-          s->data = malloc (2);
-          s->len = 2;
-          clen += 2;
-          s->data[0] = 1;
-          s->data[1] = d - 1;
-      }
+            continue;
+        }
+        if (d < '1' || d > '9')
+        {
+            snprintf (o, sizeof (o), "Error, invalid argument $%c\n", d);
+            fe_message (o, FE_MSG_WARN);
+            return 1;
+        }
+        d -= '0';
+        if (max < d)
+            max = d;
+        s = (struct pevt_stage1 *) malloc (sizeof (struct pevt_stage1));
+        if (base == NULL)
+            base = s;
+        if (last != NULL)
+            last->next = s;
+        last = s;
+        s->next = NULL;
+        s->data = malloc (2);
+        s->len = 2;
+        clen += 2;
+        s->data[0] = 1;
+        s->data[1] = d - 1;
+    }
     if (oi > 0)
-      {
-          s = (struct pevt_stage1 *) malloc (sizeof (struct pevt_stage1));
-          if (base == NULL)
-              base = s;
-          if (last != NULL)
-              last->next = s;
-          last = s;
-          s->next = NULL;
-          s->data = malloc (oi + sizeof (int) + 1);
-          s->len = oi + sizeof (int) + 1;
-          clen += oi + sizeof (int) + 1;
-          s->data[0] = 0;
-          memcpy (&(s->data[1]), &oi, sizeof (int));
-          memcpy (&(s->data[1 + sizeof (int)]), o, oi);
-          oi = 0;
-      }
+    {
+        s = (struct pevt_stage1 *) malloc (sizeof (struct pevt_stage1));
+        if (base == NULL)
+            base = s;
+        if (last != NULL)
+            last->next = s;
+        last = s;
+        s->next = NULL;
+        s->data = malloc (oi + sizeof (int) + 1);
+        s->len = oi + sizeof (int) + 1;
+        clen += oi + sizeof (int) + 1;
+        s->data[0] = 0;
+        memcpy (&(s->data[1]), &oi, sizeof (int));
+        memcpy (&(s->data[1 + sizeof (int)]), o, oi);
+        oi = 0;
+    }
     s = (struct pevt_stage1 *) malloc (sizeof (struct pevt_stage1));
     if (base == NULL)
         base = s;
@@ -1959,14 +1959,14 @@ pevt_build_string (const char *input, char **output, int *max_arg)
     s = base;
     obuf = malloc (clen);
     while (s)
-      {
-          next = s->next;
-          memcpy (&obuf[oi], s->data, s->len);
-          oi += s->len;
-          free (s->data);
-          free (s);
-          s = next;
-      }
+    {
+        next = s->next;
+        memcpy (&obuf[oi], s->data, s->len);
+        oi += s->len;
+        free (s->data);
+        free (s);
+        s = next;
+    }
 
     free (i);
 
@@ -2008,12 +2008,12 @@ text_emit (int index, session * sess, char *a, char *b, char *c, char *d)
     char tbuf[NICKLEN + 4];
 
     if (prefs.colorednicks
-        && (index == XP_TE_CHANACTION || index == XP_TE_CHANMSG))
-      {
-          snprintf (tbuf, sizeof (tbuf), "\003%d%s", color_of (a), a);
-          a = tbuf;
-          stripcolor_args &= ~ARG_FLAG (1);     /* don't strip color from this argument */
-      }
+            && (index == XP_TE_CHANACTION || index == XP_TE_CHANMSG))
+    {
+        snprintf (tbuf, sizeof (tbuf), "\003%d%s", color_of (a), a);
+        a = tbuf;
+        stripcolor_args &= ~ARG_FLAG (1);     /* don't strip color from this argument */
+    }
 
     word[0] = te[index].name;
     word[1] = (a ? a : "\000");
@@ -2031,53 +2031,53 @@ text_emit (int index, session * sess, char *a, char *b, char *c, char *d)
         return;
 
     switch (index)
-      {
-      case XP_TE_JOIN:
-      case XP_TE_PART:
-      case XP_TE_PARTREASON:
-      case XP_TE_QUIT:
-          /* implement ConfMode / Hide Join and Part Messages */
-          if (chanopt_is_set (prefs.confmode, sess->text_hidejoinpart))
-              return;
-          break;
+    {
+    case XP_TE_JOIN:
+    case XP_TE_PART:
+    case XP_TE_PARTREASON:
+    case XP_TE_QUIT:
+        /* implement ConfMode / Hide Join and Part Messages */
+        if (chanopt_is_set (prefs.confmode, sess->text_hidejoinpart))
+            return;
+        break;
 
-          /* ===Private message=== */
-      case XP_TE_PRIVMSG:
-      case XP_TE_DPRIVMSG:
-      case XP_TE_PRIVACTION:
-      case XP_TE_DPRIVACTION:
-          if (chanopt_is_set_a (prefs.input_beep_priv, sess->alert_beep))
-              sound_beep (sess);
-          if (chanopt_is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
-              fe_flash_window (sess);
-          /* why is this one different? because of plugin-tray.c's hooks! ugly */
-          if (sess->alert_tray == SET_ON)
-              fe_tray_set_icon (FE_ICON_MESSAGE);
-          break;
+        /* ===Private message=== */
+    case XP_TE_PRIVMSG:
+    case XP_TE_DPRIVMSG:
+    case XP_TE_PRIVACTION:
+    case XP_TE_DPRIVACTION:
+        if (chanopt_is_set_a (prefs.input_beep_priv, sess->alert_beep))
+            sound_beep (sess);
+        if (chanopt_is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
+            fe_flash_window (sess);
+        /* why is this one different? because of plugin-tray.c's hooks! ugly */
+        if (sess->alert_tray == SET_ON)
+            fe_tray_set_icon (FE_ICON_MESSAGE);
+        break;
 
-          /* ===Highlighted message=== */
-      case XP_TE_HCHANACTION:
-      case XP_TE_HCHANMSG:
-          if (chanopt_is_set_a (prefs.input_beep_hilight, sess->alert_beep))
-              sound_beep (sess);
-          if (chanopt_is_set_a
-              (prefs.input_flash_hilight, sess->alert_taskbar))
-              fe_flash_window (sess);
-          if (sess->alert_tray == SET_ON)
-              fe_tray_set_icon (FE_ICON_MESSAGE);
-          break;
+        /* ===Highlighted message=== */
+    case XP_TE_HCHANACTION:
+    case XP_TE_HCHANMSG:
+        if (chanopt_is_set_a (prefs.input_beep_hilight, sess->alert_beep))
+            sound_beep (sess);
+        if (chanopt_is_set_a
+                (prefs.input_flash_hilight, sess->alert_taskbar))
+            fe_flash_window (sess);
+        if (sess->alert_tray == SET_ON)
+            fe_tray_set_icon (FE_ICON_MESSAGE);
+        break;
 
-          /* ===Channel message=== */
-      case XP_TE_CHANACTION:
-      case XP_TE_CHANMSG:
-          if (chanopt_is_set_a (prefs.input_beep_chans, sess->alert_beep))
-              sound_beep (sess);
-          if (chanopt_is_set_a (prefs.input_flash_chans, sess->alert_taskbar))
-              fe_flash_window (sess);
-          if (sess->alert_tray == SET_ON)
-              fe_tray_set_icon (FE_ICON_MESSAGE);
-          break;
-      }
+        /* ===Channel message=== */
+    case XP_TE_CHANACTION:
+    case XP_TE_CHANMSG:
+        if (chanopt_is_set_a (prefs.input_beep_chans, sess->alert_beep))
+            sound_beep (sess);
+        if (chanopt_is_set_a (prefs.input_flash_chans, sess->alert_taskbar))
+            fe_flash_window (sess);
+        if (sess->alert_tray == SET_ON)
+            fe_tray_set_icon (FE_ICON_MESSAGE);
+        break;
+    }
 
     sound_play_event (index);
     display_event (sess, index, word, stripcolor_args);
@@ -2103,10 +2103,10 @@ text_emit_by_name (char *name, session * sess, char *a, char *b, char *c,
 
     i = pevent_find (name, &i);
     if (i >= 0)
-      {
-          text_emit (i, sess, a, b, c, d);
-          return 1;
-      }
+    {
+        text_emit (i, sess, a, b, c, d);
+        return 1;
+    }
 
     return 0;
 }
@@ -2124,24 +2124,24 @@ pevent_save (char *fn)
         fd = xchat_open_file (fn, O_CREAT | O_TRUNC | O_WRONLY, 0x180,
                               XOF_FULLPATH | XOF_DOMODE);
     if (fd == -1)
-      {
-          /*
-             fe_message ("Error opening config file\n", FALSE); 
-             If we get here when X-Chat is closing the fe-message causes a nice & hard crash
-             so we have to use perror which doesn't rely on GTK
-           */
+    {
+        /*
+           fe_message ("Error opening config file\n", FALSE);
+           If we get here when X-Chat is closing the fe-message causes a nice & hard crash
+           so we have to use perror which doesn't rely on GTK
+         */
 
-          perror ("Error opening config file\n");
-          return;
-      }
+        perror ("Error opening config file\n");
+        return;
+    }
 
     for (i = 0; i < NUM_XP; i++)
-      {
-          write (fd, buf, snprintf (buf, sizeof (buf),
-                                    "event_name=%s\n", te[i].name));
-          write (fd, buf, snprintf (buf, sizeof (buf),
-                                    "event_text=%s\n\n", pntevts_text[i]));
-      }
+    {
+        write (fd, buf, snprintf (buf, sizeof (buf),
+                                  "event_name=%s\n", te[i].name));
+        write (fd, buf, snprintf (buf, sizeof (buf),
+                                  "event_text=%s\n\n", pntevts_text[i]));
+    }
 
     close (fd);
 }
@@ -2168,7 +2168,7 @@ sound_find_command (void)
 {
     /* some sensible unix players. You're bound to have one of them */
     static const char *const progs[] =
-        { "aplay", "esdplay", "soxplay", "artsplay", NULL };
+    { "aplay", "esdplay", "soxplay", "artsplay", NULL };
     char *cmd;
     int i = 0;
 
@@ -2176,12 +2176,12 @@ sound_find_command (void)
         return g_strdup (prefs.soundcmd);
 
     while (progs[i])
-      {
-          cmd = g_find_program_in_path (progs[i]);
-          if (cmd)
-              return cmd;
-          i++;
-      }
+    {
+        cmd = g_find_program_in_path (progs[i]);
+        if (cmd)
+            return cmd;
+        i++;
+    }
 
     return NULL;
 }
@@ -2201,20 +2201,20 @@ sound_play (const char *file, gboolean quiet)
 #ifdef WIN32
     /* check for fullpath, windows style */
     if (strlen (file) > 3 &&
-        file[1] == ':' && (file[2] == '\\' || file[2] == '/'))
-      {
-          strncpy (wavfile, file, sizeof (wavfile));
-      }
+            file[1] == ':' && (file[2] == '\\' || file[2] == '/'))
+    {
+        strncpy (wavfile, file, sizeof (wavfile));
+    }
     else
 #endif
-    if (file[0] != '/')
-      {
-          snprintf (wavfile, sizeof (wavfile), "%s/%s", prefs.sounddir, file);
-      }
-    else
-      {
-          strncpy (wavfile, file, sizeof (wavfile));
-      }
+        if (file[0] != '/')
+        {
+            snprintf (wavfile, sizeof (wavfile), "%s/%s", prefs.sounddir, file);
+        }
+        else
+        {
+            strncpy (wavfile, file, sizeof (wavfile));
+        }
     wavfile[sizeof (wavfile) - 1] = 0;  /* ensure termination */
 
     file_fs = xchat_filename_from_utf8 (wavfile, -1, 0, 0, 0);
@@ -2222,43 +2222,43 @@ sound_play (const char *file, gboolean quiet)
         return;
 
     if (access (file_fs, R_OK) == 0)
-      {
-          cmd = sound_find_command ();
+    {
+        cmd = sound_find_command ();
 
 #ifdef WIN32
-          if (cmd == NULL || strcmp (cmd, "esdplay") == 0)
-            {
-                PlaySound (file_fs, NULL,
-                           SND_NODEFAULT | SND_FILENAME | SND_ASYNC);
-            }
-          else
+        if (cmd == NULL || strcmp (cmd, "esdplay") == 0)
+        {
+            PlaySound (file_fs, NULL,
+                       SND_NODEFAULT | SND_FILENAME | SND_ASYNC);
+        }
+        else
 #endif
+        {
+            if (cmd)
             {
-                if (cmd)
-                  {
-                      if (strchr (file_fs, ' '))
-                          snprintf (buf, sizeof (buf), "%s \"%s\"", cmd,
-                                    file_fs);
-                      else
-                          snprintf (buf, sizeof (buf), "%s %s", cmd, file_fs);
-                      buf[sizeof (buf) - 1] = '\0';
-                      xchat_exec (buf);
-                  }
+                if (strchr (file_fs, ' '))
+                    snprintf (buf, sizeof (buf), "%s \"%s\"", cmd,
+                              file_fs);
+                else
+                    snprintf (buf, sizeof (buf), "%s %s", cmd, file_fs);
+                buf[sizeof (buf) - 1] = '\0';
+                xchat_exec (buf);
             }
+        }
 
-          if (cmd)
-              g_free (cmd);
+        if (cmd)
+            g_free (cmd);
 
-      }
+    }
     else
-      {
-          if (!quiet)
-            {
-                snprintf (buf, sizeof (buf), _("Cannot read sound file:\n%s"),
-                          wavfile);
-                fe_message (buf, FE_MSG_ERROR);
-            }
-      }
+    {
+        if (!quiet)
+        {
+            snprintf (buf, sizeof (buf), _("Cannot read sound file:\n%s"),
+                      wavfile);
+            fe_message (buf, FE_MSG_ERROR);
+        }
+    }
 
     g_free (file_fs);
 }
@@ -2276,11 +2276,11 @@ sound_load_event (char *evt, char *file)
     int i = 0;
 
     if (file[0] && pevent_find (evt, &i) != -1)
-      {
-          if (sound_files[i])
-              free (sound_files[i]);
-          sound_files[i] = strdup (file);
-      }
+    {
+        if (sound_files[i])
+            free (sound_files[i]);
+        sound_files[i] = strdup (file);
+    }
 }
 
 void
@@ -2298,20 +2298,20 @@ sound_load ()
 
     evt[0] = 0;
     while (waitline (fd, buf, sizeof buf, FALSE) != -1)
-      {
-          if (strncmp (buf, "event=", 6) == 0)
+    {
+        if (strncmp (buf, "event=", 6) == 0)
+        {
+            safe_strcpy (evt, buf + 6, sizeof (evt));
+        }
+        else if (strncmp (buf, "sound=", 6) == 0)
+        {
+            if (evt[0] != 0)
             {
-                safe_strcpy (evt, buf + 6, sizeof (evt));
+                sound_load_event (evt, buf + 6);
+                evt[0] = 0;
             }
-          else if (strncmp (buf, "sound=", 6) == 0)
-            {
-                if (evt[0] != 0)
-                  {
-                      sound_load_event (evt, buf + 6);
-                      evt[0] = 0;
-                  }
-            }
-      }
+        }
+    }
 
     close (fd);
 }
@@ -2328,15 +2328,15 @@ sound_save ()
         return;
 
     for (i = 0; i < NUM_XP; i++)
-      {
-          if (sound_files[i] && sound_files[i][0])
-            {
-                write (fd, buf, snprintf (buf, sizeof (buf),
-                                          "event=%s\n", te[i].name));
-                write (fd, buf, snprintf (buf, sizeof (buf),
-                                          "sound=%s\n\n", sound_files[i]));
-            }
-      }
+    {
+        if (sound_files[i] && sound_files[i][0])
+        {
+            write (fd, buf, snprintf (buf, sizeof (buf),
+                                      "event=%s\n", te[i].name));
+            write (fd, buf, snprintf (buf, sizeof (buf),
+                                      "sound=%s\n\n", sound_files[i]));
+        }
+    }
 
     close (fd);
 }

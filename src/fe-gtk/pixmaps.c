@@ -75,12 +75,12 @@ pixmap_load_from_file (char *filename)
 
     pix = pixmap_load_from_file_real (filename);
     if (pix == NULL)
-      {
-          strcpy (buf, "Cannot open:\n\n");
-          strncpy (buf + 14, filename, sizeof (buf) - 14);
-          buf[sizeof (buf) - 1] = 0;
-          fe_message (buf, FE_MSG_ERROR);
-      }
+    {
+        strcpy (buf, "Cannot open:\n\n");
+        strncpy (buf + 14, filename, sizeof (buf) - 14);
+        buf[sizeof (buf) - 1] = 0;
+        fe_message (buf, FE_MSG_ERROR);
+    }
 
     return pix;
 }

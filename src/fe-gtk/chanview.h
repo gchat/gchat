@@ -5,13 +5,13 @@ chanview *chanview_new (int type, int trunc_len, gboolean sort,
                         gboolean use_icons, GtkStyle * style);
 void chanview_set_callbacks (chanview * cv,
                              void (*cb_focus) (chanview *, chan *, int tag,
-                                               void *userdata),
+                                     void *userdata),
                              void (*cb_xbutton) (chanview *, chan *, int tag,
-                                                 void *userdata),
+                                     void *userdata),
                              gboolean (*cb_contextmenu) (chanview *, chan *,
-                                                         int tag,
-                                                         void *userdata,
-                                                         GdkEventButton *),
+                                     int tag,
+                                     void *userdata,
+                                     GdkEventButton *),
                              int (*cb_compare) (void *a, void *b));
 void chanview_set_impl (chanview * cv, int type);
 chan *chanview_add (chanview * cv, char *name, void *family, void *userdata,

@@ -113,7 +113,7 @@ list_loadconf (char *file, GSList ** list, char *defaultconf)
     if (fh == -1)
     {
         if (defaultconf)
-        list_load_from_data (list, defaultconf, strlen (defaultconf));
+            list_load_from_data (list, defaultconf, strlen (defaultconf));
         return;
     }
     if (fstat (fh, &st) != 0)
@@ -307,8 +307,8 @@ get_xdir_fs (void)
         char out[256];
 
         if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
-        "Explorer\\Shell Folders", "AppData", out,
-        sizeof (out)))
+                          "Explorer\\Shell Folders", "AppData", out,
+                          sizeof (out)))
             return "./config";
         xdir_fs = g_strdup_printf ("%s\\" XCHAT_DIR, out);
     }
@@ -639,7 +639,7 @@ load_config (void)
     prefs.tabchannels = 1;
     prefs.tab_layout = 2;       /* 0=Tabs 1=Reserved 2=Tree */
     prefs.tab_sort = 1;
-    prefs.data_timeout = 2000;
+    prefs.data_timeout = 10000;
     prefs.data_color = 2; /* 2 = blink once */
     prefs.paned_userlist = 1;
     prefs.newtabstofront = 2;
@@ -725,17 +725,17 @@ load_config (void)
         {
             switch (vars[i].type)
             {
-                case TYPE_STR:
-                    cfg_get_str (cfg, vars[i].name,
-                    (char *) &prefs + vars[i].offset,
-                    vars[i].len);
-                    break;
-                case TYPE_BOOL:
-                case TYPE_INT:
-                    val = cfg_get_int_with_result (cfg, vars[i].name, &res);
-                    if (res)
-                        *((int *) &prefs + vars[i].offset) = val;
-                    break;
+            case TYPE_STR:
+                cfg_get_str (cfg, vars[i].name,
+                             (char *) &prefs + vars[i].offset,
+                             vars[i].len);
+                break;
+            case TYPE_BOOL:
+            case TYPE_INT:
+                val = cfg_get_int_with_result (cfg, vars[i].name, &res);
+                if (res)
+                    *((int *) &prefs + vars[i].offset) = val;
+                break;
             }
             i++;
         }
@@ -748,7 +748,7 @@ load_config (void)
     {
 #ifndef WIN32
 #ifndef __EMX__
-/* OS/2 uses UID 0 all the time */
+        /* OS/2 uses UID 0 all the time */
         if (getuid () == 0)
             fe_message (_("* Running IRC as root is stupid! You should\n"
                           "  create a User Account and use that to login.\n"),
@@ -777,32 +777,32 @@ load_config (void)
 
         switch (prefs._tabs_position)
         {
-            case 0:
-                prefs.tab_pos = 6;      /* bottom */
-                break;
-            case 1:
-                prefs.tab_pos = 5;      /* top */
-                break;
-            case 2:
-                prefs.tab_pos = 1;      /* left */
-                break;
-            case 3:
-                prefs.tab_pos = 4;      /* right */
-                break;
-            case 4:
-                prefs.tab_pos = 1;      /* (hidden)left */
-                break;
-            case 5:
-                if (prefs._gui_ulist_left)
-                {
-                    prefs.tab_pos = 1;        /* above ulist left */
-                    prefs.gui_ulist_pos = 2;
-                }
-                else
-                {
-                    prefs.tab_pos = 3;        /* above ulist right */
-                    prefs.gui_ulist_pos = 4;
-                }
+        case 0:
+            prefs.tab_pos = 6;      /* bottom */
+            break;
+        case 1:
+            prefs.tab_pos = 5;      /* top */
+            break;
+        case 2:
+            prefs.tab_pos = 1;      /* left */
+            break;
+        case 3:
+            prefs.tab_pos = 4;      /* right */
+            break;
+        case 4:
+            prefs.tab_pos = 1;      /* (hidden)left */
+            break;
+        case 5:
+            if (prefs._gui_ulist_left)
+            {
+                prefs.tab_pos = 1;        /* above ulist left */
+                prefs.gui_ulist_pos = 2;
+            }
+            else
+            {
+                prefs.tab_pos = 3;        /* above ulist right */
+                prefs.gui_ulist_pos = 4;
+            }
             break;
         }
     }
@@ -839,20 +839,20 @@ save_config (void)
     {
         switch (vars[i].type)
         {
-            case TYPE_STR:
-                if (!cfg_put_str (fh, vars[i].name, (char *) &prefs + vars[i].offset))
-                {
-                    free (new_config);
-                    return 0;
-                }
-                break;
-            case TYPE_INT:
-            case TYPE_BOOL:
-                if (!cfg_put_int (fh, *((int *) &prefs + vars[i].offset), vars[i].name))
-                {
-                    free (new_config);
-                    return 0;
-                }
+        case TYPE_STR:
+            if (!cfg_put_str (fh, vars[i].name, (char *) &prefs + vars[i].offset))
+            {
+                free (new_config);
+                return 0;
+            }
+            break;
+        case TYPE_INT:
+        case TYPE_BOOL:
+            if (!cfg_put_int (fh, *((int *) &prefs + vars[i].offset), vars[i].name))
+            {
+                free (new_config);
+                return 0;
+            }
         }
         i++;
     }
@@ -894,20 +894,20 @@ set_showval (session * sess, const struct prefs *var, char *tbuf)
     len += j;
     switch (var->type)
     {
-        case TYPE_STR:
-            sprintf (tbuf + len, "\0033:\017 %s\n",
-            (char *) &prefs + var->offset);
-            break;
-        case TYPE_INT:
-            sprintf (tbuf + len, "\0033:\017 %d\n",
-            *((int *) &prefs + var->offset));
-            break;
-        case TYPE_BOOL:
-            if (*((int *) &prefs + var->offset))
-                sprintf (tbuf + len, "\0033:\017 %s\n", "ON");
-            else
-                sprintf (tbuf + len, "\0033:\017 %s\n", "OFF");
-            break;
+    case TYPE_STR:
+        sprintf (tbuf + len, "\0033:\017 %s\n",
+                 (char *) &prefs + var->offset);
+        break;
+    case TYPE_INT:
+        sprintf (tbuf + len, "\0033:\017 %d\n",
+                 *((int *) &prefs + var->offset));
+        break;
+    case TYPE_BOOL:
+        if (*((int *) &prefs + var->offset))
+            sprintf (tbuf + len, "\0033:\017 %s\n", "ON");
+        else
+            sprintf (tbuf + len, "\0033:\017 %s\n", "OFF");
+        break;
     }
     PrintText (sess, tbuf);
 }
@@ -1007,55 +1007,55 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
             finds++;
             switch (vars[i].type)
             {
-                case TYPE_STR:
-                    if (erase || *val)
+            case TYPE_STR:
+                if (erase || *val)
+                {
+                    strncpy ((char *) &prefs + vars[i].offset, val,
+                             vars[i].len);
+                    ((char *) &prefs)[vars[i].offset + vars[i].len -
+                                      1] = 0;
+                    if (!quiet)
+                        PrintTextf (sess, "%s set to: %s\n", var,
+                                    (char *) &prefs + vars[i].offset);
+                }
+                else
+                {
+                    set_showval (sess, &vars[i], tbuf);
+                }
+                break;
+            case TYPE_INT:
+            case TYPE_BOOL:
+                if (*val)
+                {
+                    if (vars[i].type == TYPE_BOOL)
                     {
-                        strncpy ((char *) &prefs + vars[i].offset, val,
-                        vars[i].len);
-                        ((char *) &prefs)[vars[i].offset + vars[i].len -
-                        1] = 0;
-                        if (!quiet)
-                            PrintTextf (sess, "%s set to: %s\n", var,
-                        (char *) &prefs + vars[i].offset);
-                    }
-                    else
-                    {
-                        set_showval (sess, &vars[i], tbuf);
-                    }
-                    break;
-                case TYPE_INT:
-                case TYPE_BOOL:
-                    if (*val)
-                    {
-                        if (vars[i].type == TYPE_BOOL)
-                        {
-                            if (atoi (val))
-                                *((int *) &prefs + vars[i].offset) = 1;
-                            else
-                                *((int *) &prefs + vars[i].offset) = 0;
-                            if (!strcasecmp (val, "YES") || !strcasecmp (val, "ON"))
-                                *((int *) &prefs + vars[i].offset) = 1;
-                            if (!strcasecmp (val, "NO") || !strcasecmp (val, "OFF"))
-                                *((int *) &prefs + vars[i].offset) = 0;
-                        }
+                        if (atoi (val))
+                            *((int *) &prefs + vars[i].offset) = 1;
                         else
-                        {
-                            if (or)
-                                *((int *) &prefs + vars[i].offset) |= atoi (val);
-                            else if (off)
-                                *((int *) &prefs + vars[i].offset) &= ~(atoi (val));
-                            else
-                                *((int *) &prefs + vars[i].offset) = atoi (val);
-                        }
-                        if (!quiet)
-                            PrintTextf (sess, "%s set to: %d\n", var,
-                        *((int *) &prefs + vars[i].offset));
+                            *((int *) &prefs + vars[i].offset) = 0;
+                        if (!strcasecmp (val, "YES") || !strcasecmp (val, "ON"))
+                            *((int *) &prefs + vars[i].offset) = 1;
+                        if (!strcasecmp (val, "NO") || !strcasecmp (val, "OFF"))
+                            *((int *) &prefs + vars[i].offset) = 0;
                     }
                     else
                     {
-                        set_showval (sess, &vars[i], tbuf);
+                        if (or)
+                            *((int *) &prefs + vars[i].offset) |= atoi (val);
+                        else if (off)
+                            *((int *) &prefs + vars[i].offset) &= ~(atoi (val));
+                        else
+                            *((int *) &prefs + vars[i].offset) = atoi (val);
                     }
-                    break;
+                    if (!quiet)
+                        PrintTextf (sess, "%s set to: %d\n", var,
+                                    *((int *) &prefs + vars[i].offset));
+                }
+                else
+                {
+                    set_showval (sess, &vars[i], tbuf);
+                }
+                break;
             }
         }
         i++;
@@ -1097,5 +1097,5 @@ xchat_fopen_file (const char *file, const char *mode, int xof_flags)
         return fopen (file, mode);
 
     snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), file);
-        return fopen (buf, mode);
+    return fopen (buf, mode);
 }

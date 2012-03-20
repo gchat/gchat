@@ -71,7 +71,7 @@ struct server_gui
     guint chanlist_users_found_count;   /* users total for all channels */
     guint chanlist_users_shown_count;   /* users total for displayed channels */
     guint chanlist_channels_found_count;        /* channel total for /LIST operation */
-    guint chanlist_channels_shown_count;        /* total number of displayed 
+    guint chanlist_channels_shown_count;        /* total number of displayed
                                                    channels */
 
     int chanlist_maxusers;
@@ -113,17 +113,17 @@ typedef struct restore_gui
 typedef struct session_gui
 {
     GtkWidget * xtext, *vscrollbar, *window,    /* toplevel */
-    *topic_entry, *note_book, *main_table, *user_tree,  /* GtkTreeView */
-    *user_box,                  /* userlist box */
-    *button_box_parent, *button_box,    /* userlist buttons' box */
-    *dialogbutton_box, *topicbutton_box, *meter_box,    /* all the meters inside this */
-    *lagometer, *laginfo, *throttlemeter, *throttleinfo, *topic_bar, *hpane_left, *hpane_right, *vpane_left, *vpane_right, *menu, *bar, /* connecting progress bar */
-    *nick_box,                  /* contains label to the left of input_box */
-    *nick_label, *op_xpm,       /* icon to the left of nickname */
-    *namelistinfo,              /* label above userlist */
-    *input_box, *flag_wid[NUM_FLAG_WIDS],       /* channelmode buttons */
-    *limit_entry,               /* +l */
-    *key_entry;                 /* +k */
+              *topic_entry, *note_book, *main_table, *user_tree,  /* GtkTreeView */
+              *user_box,                  /* userlist box */
+              *button_box_parent, *button_box,    /* userlist buttons' box */
+              *dialogbutton_box, *topicbutton_box, *meter_box,    /* all the meters inside this */
+              *lagometer, *laginfo, *throttlemeter, *throttleinfo, *topic_bar, *hpane_left, *hpane_right, *vpane_left, *vpane_right, *menu, *bar, /* connecting progress bar */
+              *nick_box,                  /* contains label to the left of input_box */
+              *nick_label, *op_xpm,       /* icon to the left of nickname */
+              *namelistinfo,              /* label above userlist */
+              *input_box, *flag_wid[NUM_FLAG_WIDS],       /* channelmode buttons */
+              *limit_entry,               /* +l */
+              *key_entry;                 /* +k */
 
 #define MENU_ID_NUM 12
     GtkWidget *menu_item[MENU_ID_NUM + 1];      /* some items we may change state of */

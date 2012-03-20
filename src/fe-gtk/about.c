@@ -90,10 +90,10 @@ menu_about (GtkWidget * wid, gpointer sess)
     extern GtkWindow *parent_window;    /* maingui.c */
 
     if (about)
-      {
-          gtk_window_present (GTK_WINDOW (about));
-          return;
-      }
+    {
+        gtk_window_present (GTK_WINDOW (about));
+        return;
+    }
 
     about = gtk_dialog_new ();
     gtk_window_set_position (GTK_WINDOW (about), GTK_WIN_POS_CENTER);

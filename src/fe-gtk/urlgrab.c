@@ -60,24 +60,24 @@ url_treeview_url_clicked_cb (GtkWidget * view, GdkEventButton * event,
     gchar *url;
 
     if (!event ||
-        !gtkutil_treeview_get_selected (GTK_TREE_VIEW (view), &iter,
-                                        URL_COLUMN, &url, -1))
-      {
-          return FALSE;
-      }
+            !gtkutil_treeview_get_selected (GTK_TREE_VIEW (view), &iter,
+                                            URL_COLUMN, &url, -1))
+    {
+        return FALSE;
+    }
 
     switch (event->button)
-      {
-      case 1:
-          if (event->type == GDK_2BUTTON_PRESS)
-              fe_open_url (url);
-          break;
-      case 3:
-          menu_urlmenu (event, url);
-          break;
-      default:
-          break;
-      }
+    {
+    case 1:
+        if (event->type == GDK_2BUTTON_PRESS)
+            fe_open_url (url);
+        break;
+    case 3:
+        menu_urlmenu (event, url);
+        break;
+    default:
+        break;
+    }
     g_free (url);
 
     return FALSE;
@@ -115,7 +115,7 @@ url_button_clear (void)
 
     url_clear ();
     store = GTK_LIST_STORE (g_object_get_data (G_OBJECT (urlgrabberwindow),
-                                               "model"));
+                            "model"));
     gtk_list_store_clear (store);
 }
 
@@ -127,10 +127,10 @@ url_button_copy (GtkWidget * widget, gpointer data)
     gchar *url = NULL;
 
     if (gtkutil_treeview_get_selected (view, &iter, URL_COLUMN, &url, -1))
-      {
-          gtkutil_copy_to_clipboard (GTK_WIDGET (view), NULL, url);
-          g_free (url);
-      }
+    {
+        gtkutil_copy_to_clipboard (GTK_WIDGET (view), NULL, url);
+        g_free (url);
+    }
 }
 
 static void
@@ -154,13 +154,13 @@ fe_url_add (const char *urltext)
     GtkTreeIter iter;
 
     if (urlgrabberwindow)
-      {
-          store =
-              GTK_LIST_STORE (g_object_get_data
-                              (G_OBJECT (urlgrabberwindow), "model"));
-          gtk_list_store_prepend (store, &iter);
-          gtk_list_store_set (store, &iter, URL_COLUMN, urltext, -1);
-      }
+    {
+        store =
+            GTK_LIST_STORE (g_object_get_data
+                            (G_OBJECT (urlgrabberwindow), "model"));
+        gtk_list_store_prepend (store, &iter);
+        gtk_list_store_set (store, &iter, URL_COLUMN, urltext, -1);
+    }
 }
 
 static int
@@ -176,10 +176,10 @@ url_opengui ()
     GtkWidget *vbox, *hbox, *view;
 
     if (urlgrabberwindow)
-      {
-          mg_bring_tofront (urlgrabberwindow);
-          return;
-      }
+    {
+        mg_bring_tofront (urlgrabberwindow);
+        return;
+    }
 
     urlgrabberwindow =
         mg_create_generic_tab ("UrlGrabber", _("GChat: URL Grabber"), FALSE,

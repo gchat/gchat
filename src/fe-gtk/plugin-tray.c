@@ -87,12 +87,12 @@ tray_count_channels (void)
     session *sess;
 
     for (list = sess_list; list; list = list->next)
-      {
-          sess = list->data;
-          if (sess->server->connected && sess->channel[0] &&
-              sess->type == SESS_CHANNEL)
-              cons++;
-      }
+    {
+        sess = list->data;
+        if (sess->server->connected && sess->channel[0] &&
+                sess->type == SESS_CHANNEL)
+            cons++;
+    }
     return cons;
 }
 
@@ -103,10 +103,10 @@ tray_count_networks (void)
     GSList *list;
 
     for (list = serv_list; list; list = list->next)
-      {
-          if (((server *) list->data)->connected)
-              cons++;
-      }
+    {
+        if (((server *) list->data)->connected)
+            cons++;
+    }
     return cons;
 }
 
@@ -126,9 +126,9 @@ static void *nn_mod = NULL;
 static gboolean (*nn_init) (char *);
 static void (*nn_uninit) (void);
 static void *(*nn_new_with_status_icon) (const gchar * summary,
-                                         const gchar * message,
-                                         const gchar * icon,
-                                         GtkStatusIcon * status_icon);
+        const gchar * message,
+        const gchar * icon,
+        GtkStatusIcon * status_icon);
 static void *(*nn_new) (const gchar * summary, const gchar * message,
                         const gchar * icon, GtkWidget * attach);
 static gboolean (*nn_show) (void *noti, GError ** error);
@@ -138,11 +138,11 @@ static void
 libnotify_cleanup (void)
 {
     if (nn_mod)
-      {
-          nn_uninit ();
-          g_module_close (nn_mod);
-          nn_mod = NULL;
-      }
+    {
+        nn_uninit ();
+        g_module_close (nn_mod);
+        nn_mod = NULL;
+    }
 }
 
 static gboolean
@@ -152,37 +152,37 @@ libnotify_notify_new (const char *title, const char *text,
     void *noti;
 
     if (!nn_mod)
-      {
-          nn_mod = g_module_open ("libnotify", G_MODULE_BIND_LAZY);
-          if (!nn_mod)
-            {
-                nn_mod = g_module_open ("libnotify.so.1", G_MODULE_BIND_LAZY);
-                if (!nn_mod)
-                    return FALSE;
-            }
+    {
+        nn_mod = g_module_open ("libnotify", G_MODULE_BIND_LAZY);
+        if (!nn_mod)
+        {
+            nn_mod = g_module_open ("libnotify.so.1", G_MODULE_BIND_LAZY);
+            if (!nn_mod)
+                return FALSE;
+        }
 
-          if (!g_module_symbol (nn_mod, "notify_init", (gpointer) & nn_init))
-              goto bad;
-          if (!g_module_symbol
-              (nn_mod, "notify_uninit", (gpointer) & nn_uninit))
-              goto bad;
-          if (!g_module_symbol
-              (nn_mod, "notify_notification_new_with_status_icon",
-               (gpointer) & nn_new_with_status_icon))
-              goto bad;
-          if (!g_module_symbol
-              (nn_mod, "notify_notification_new", (gpointer) & nn_new))
-              goto bad;
-          if (!g_module_symbol
-              (nn_mod, "notify_notification_show", (gpointer) & nn_show))
-              goto bad;
-          if (!g_module_symbol
-              (nn_mod, "notify_notification_set_timeout",
-               (gpointer) & nn_set_timeout))
-              goto bad;
-          if (!nn_init (PACKAGE_NAME))
-              goto bad;
-      }
+        if (!g_module_symbol (nn_mod, "notify_init", (gpointer) & nn_init))
+            goto bad;
+        if (!g_module_symbol
+                (nn_mod, "notify_uninit", (gpointer) & nn_uninit))
+            goto bad;
+        if (!g_module_symbol
+                (nn_mod, "notify_notification_new_with_status_icon",
+                 (gpointer) & nn_new_with_status_icon))
+            goto bad;
+        if (!g_module_symbol
+                (nn_mod, "notify_notification_new", (gpointer) & nn_new))
+            goto bad;
+        if (!g_module_symbol
+                (nn_mod, "notify_notification_show", (gpointer) & nn_show))
+            goto bad;
+        if (!g_module_symbol
+                (nn_mod, "notify_notification_set_timeout",
+                 (gpointer) & nn_set_timeout))
+            goto bad;
+        if (!nn_init (PACKAGE_NAME))
+            goto bad;
+    }
 
     text = strip_color (text, -1, STRIP_ALL | STRIP_ESCMARKUP);
     title = strip_color (title, -1, STRIP_ALL);
@@ -196,7 +196,7 @@ libnotify_notify_new (const char *title, const char *text,
 
     return TRUE;
 
-  bad:
+bad:
     g_module_close (nn_mod);
     nn_mod = NULL;
     return FALSE;
@@ -235,35 +235,35 @@ fe_tray_set_balloon (const char *title, const char *text)
     /* try it the crude way */
     path = g_find_program_in_path ("notify-send");
     if (path)
-      {
-          sprintf (time, "%d000", prefs.input_balloon_time);
-          argv[0] = path;
-          argv[1] = "-i";
-          argv[2] = "gtk-dialog-info";
-          if (access (XCHATSHAREDIR "/pixmaps/xchat.png", R_OK) == 0)
-              argv[2] = XCHATSHAREDIR "/pixmaps/xchat.png";
-          argv[3] = "-t";
-          argv[4] = time;
-          argv[5] = title;
-          text = strip_color (text, -1, STRIP_ALL | STRIP_ESCMARKUP);
-          argv[6] = text;
-          argv[7] = NULL;
-          xchat_execv (argv);
-          g_free ((char *) path);
-          g_free ((char *) text);
-      }
+    {
+        sprintf (time, "%d000", prefs.input_balloon_time);
+        argv[0] = path;
+        argv[1] = "-i";
+        argv[2] = "gtk-dialog-info";
+        if (access (XCHATSHAREDIR "/pixmaps/xchat.png", R_OK) == 0)
+            argv[2] = XCHATSHAREDIR "/pixmaps/xchat.png";
+        argv[3] = "-t";
+        argv[4] = time;
+        argv[5] = title;
+        text = strip_color (text, -1, STRIP_ALL | STRIP_ESCMARKUP);
+        argv[6] = text;
+        argv[7] = NULL;
+        xchat_execv (argv);
+        g_free ((char *) path);
+        g_free ((char *) text);
+    }
     else
-      {
-          /* show this error only once */
-          static unsigned char said_it = FALSE;
-          if (!said_it)
-            {
-                said_it = TRUE;
-                fe_message (_
-                            ("Cannot find 'notify-send' to open balloon alerts.\nPlease install libnotify."),
-                            FE_MSG_ERROR);
-            }
-      }
+    {
+        /* show this error only once */
+        static unsigned char said_it = FALSE;
+        if (!said_it)
+        {
+            said_it = TRUE;
+            fe_message (_
+                        ("Cannot find 'notify-send' to open balloon alerts.\nPlease install libnotify."),
+                        FE_MSG_ERROR);
+        }
+    }
 #endif
 }
 
@@ -301,35 +301,35 @@ tray_stop_flash (void)
     int nets, chans;
 
     if (flash_tag)
-      {
-          g_source_remove (flash_tag);
-          flash_tag = 0;
-      }
+    {
+        g_source_remove (flash_tag);
+        flash_tag = 0;
+    }
 
     if (sticon)
-      {
-          gtk_status_icon_set_from_pixbuf (sticon, ICON_NORMAL);
-          nets = tray_count_networks ();
-          chans = tray_count_channels ();
-          if (nets)
-              tray_set_tipf (_
-                             ("GChat: Connected to %u networks and %u channels"),
-                             nets, chans);
-          else
-              tray_set_tipf ("GChat: %s", _("Not connected."));
-      }
+    {
+        gtk_status_icon_set_from_pixbuf (sticon, ICON_NORMAL);
+        nets = tray_count_networks ();
+        chans = tray_count_channels ();
+        if (nets)
+            tray_set_tipf (_
+                           ("GChat: Connected to %u networks and %u channels"),
+                           nets, chans);
+        else
+            tray_set_tipf ("GChat: %s", _("Not connected."));
+    }
 
     if (custom_icon1)
-      {
-          tray_icon_free (custom_icon1);
-          custom_icon1 = NULL;
-      }
+    {
+        tray_icon_free (custom_icon1);
+        custom_icon1 = NULL;
+    }
 
     if (custom_icon2)
-      {
-          tray_icon_free (custom_icon2);
-          custom_icon2 = NULL;
-      }
+    {
+        tray_icon_free (custom_icon2);
+        custom_icon2 = NULL;
+    }
 
     tray_status = TS_NONE;
 }
@@ -347,26 +347,26 @@ static int
 tray_timeout_cb (TrayIcon icon)
 {
     if (custom_icon1)
-      {
-          if (gtk_status_icon_get_pixbuf (sticon) == custom_icon1)
-            {
-                if (custom_icon2)
-                    gtk_status_icon_set_from_pixbuf (sticon, custom_icon2);
-                else
-                    gtk_status_icon_set_from_pixbuf (sticon, ICON_NORMAL);
-            }
-          else
-            {
-                gtk_status_icon_set_from_pixbuf (sticon, custom_icon1);
-            }
-      }
+    {
+        if (gtk_status_icon_get_pixbuf (sticon) == custom_icon1)
+        {
+            if (custom_icon2)
+                gtk_status_icon_set_from_pixbuf (sticon, custom_icon2);
+            else
+                gtk_status_icon_set_from_pixbuf (sticon, ICON_NORMAL);
+        }
+        else
+        {
+            gtk_status_icon_set_from_pixbuf (sticon, custom_icon1);
+        }
+    }
     else
-      {
-          if (gtk_status_icon_get_pixbuf (sticon) == ICON_NORMAL)
-              gtk_status_icon_set_from_pixbuf (sticon, icon);
-          else
-              gtk_status_icon_set_from_pixbuf (sticon, ICON_NORMAL);
-      }
+    {
+        if (gtk_status_icon_get_pixbuf (sticon) == ICON_NORMAL)
+            gtk_status_icon_set_from_pixbuf (sticon, icon);
+        else
+            gtk_status_icon_set_from_pixbuf (sticon, ICON_NORMAL);
+    }
     return 1;
 }
 
@@ -421,19 +421,19 @@ fe_tray_set_icon (feicon icon)
     tray_stop_flash ();
 
     switch (icon)
-      {
-      case FE_ICON_NORMAL:
-          break;
-      case FE_ICON_MESSAGE:
-          tray_set_flash (ICON_MSG);
-          break;
-      case FE_ICON_HIGHLIGHT:
-      case FE_ICON_PRIVMSG:
-          tray_set_flash (ICON_HILIGHT);
-          break;
-      case FE_ICON_FILEOFFER:
-          tray_set_flash (ICON_FILE);
-      }
+    {
+    case FE_ICON_NORMAL:
+        break;
+    case FE_ICON_MESSAGE:
+        tray_set_flash (ICON_MSG);
+        break;
+    case FE_ICON_HIGHLIGHT:
+    case FE_ICON_PRIVMSG:
+        tray_set_flash (ICON_HILIGHT);
+        break;
+    case FE_ICON_FILEOFFER:
+        tray_set_flash (ICON_FILE);
+    }
 }
 
 void
@@ -446,11 +446,11 @@ fe_tray_set_file (const char *filename)
     tray_stop_flash ();
 
     if (filename)
-      {
-          custom_icon1 = tray_icon_from_file (filename);
-          gtk_status_icon_set_from_pixbuf (sticon, custom_icon1);
-          tray_status = TS_CUSTOM;
-      }
+    {
+        custom_icon1 = tray_icon_from_file (filename);
+        gtk_status_icon_set_from_pixbuf (sticon, custom_icon1);
+        tray_status = TS_CUSTOM;
+    }
 }
 
 gboolean
@@ -479,18 +479,18 @@ tray_toggle_visibility (gboolean force_hide)
 #else
     if (force_hide || GTK_WIDGET_VISIBLE (win))
 #endif
-      {
-          gtk_window_get_position (win, &x, &y);
-          screen = gtk_window_get_screen (win);
-          gtk_widget_hide (GTK_WIDGET (win));
-      }
+    {
+        gtk_window_get_position (win, &x, &y);
+        screen = gtk_window_get_screen (win);
+        gtk_widget_hide (GTK_WIDGET (win));
+    }
     else
-      {
-          gtk_window_set_screen (win, screen);
-          gtk_window_move (win, x, y);
-          gtk_widget_show (GTK_WIDGET (win));
-          gtk_window_present (win);
-      }
+    {
+        gtk_window_set_screen (win, screen);
+        gtk_window_move (win, x, y);
+        gtk_widget_show (GTK_WIDGET (win));
+        gtk_window_present (win);
+    }
 
     return TRUE;
 }
@@ -518,14 +518,14 @@ tray_find_away_status (void)
     int back = 0;
 
     for (list = serv_list; list; list = list->next)
-      {
-          serv = list->data;
+    {
+        serv = list->data;
 
-          if (serv->is_away || serv->reconnect_away)
-              away++;
-          else
-              back++;
-      }
+        if (serv->is_away || serv->reconnect_away)
+            away++;
+        else
+            back++;
+    }
 
     if (away && back)
         return 0;
@@ -543,11 +543,11 @@ tray_foreach_server (GtkWidget * item, char *cmd)
     server *serv;
 
     for (list = serv_list; list; list = list->next)
-      {
-          serv = list->data;
-          if (serv->connected)
-              handle_command (serv->server_session, cmd, FALSE);
-      }
+    {
+        serv = list->data;
+        if (serv->connected)
+            handle_command (serv->server_session, cmd, FALSE);
+    }
 }
 
 static GtkWidget *
@@ -661,20 +661,20 @@ tray_hilight_cb (char *word[], void *userdata)
        return XCHAT_EAT_NONE; */
 
     if (prefs.input_tray_hilight)
-      {
-          tray_set_flash (ICON_HILIGHT);
+    {
+        tray_set_flash (ICON_HILIGHT);
 
-          /* FIXME: hides any previous private messages */
-          tray_hilight_count++;
-          if (tray_hilight_count == 1)
-              tray_set_tipf (_("GChat: Highlighted message from: %s (%s)"),
-                             word[1], xchat_get_info (ph, "channel"));
-          else
-              tray_set_tipf (_
-                             ("GChat: %u highlighted messages, latest from: %s (%s)"),
-                             tray_hilight_count, word[1], xchat_get_info (ph,
-                                                                          "channel"));
-      }
+        /* FIXME: hides any previous private messages */
+        tray_hilight_count++;
+        if (tray_hilight_count == 1)
+            tray_set_tipf (_("GChat: Highlighted message from: %s (%s)"),
+                           word[1], xchat_get_info (ph, "channel"));
+        else
+            tray_set_tipf (_
+                           ("GChat: %u highlighted messages, latest from: %s (%s)"),
+                           tray_hilight_count, word[1], xchat_get_info (ph,
+                                   "channel"));
+    }
 
     if (prefs.input_balloon_hilight)
         tray_set_balloonf (word[2],
@@ -691,17 +691,17 @@ tray_message_cb (char *word[], void *userdata)
         return XCHAT_EAT_NONE;
 
     if (prefs.input_tray_chans)
-      {
-          tray_set_flash (ICON_MSG);
+    {
+        tray_set_flash (ICON_MSG);
 
-          tray_pub_count++;
-          if (tray_pub_count == 1)
-              tray_set_tipf (_("GChat: New public message from: %s (%s)"),
-                             word[1], xchat_get_info (ph, "channel"));
-          else
-              tray_set_tipf (_("GChat: %u new public messages."),
-                             tray_pub_count);
-      }
+        tray_pub_count++;
+        if (tray_pub_count == 1)
+            tray_set_tipf (_("GChat: New public message from: %s (%s)"),
+                           word[1], xchat_get_info (ph, "channel"));
+        else
+            tray_set_tipf (_("GChat: %u new public messages."),
+                           tray_pub_count);
+    }
 
     if (prefs.input_balloon_chans)
         tray_set_balloonf (word[2],
@@ -766,25 +766,25 @@ tray_dcc_cb (char *word[], void *userdata)
 {
     const char *network;
 
-/*	if (tray_status == TS_FILEOFFER)
-		return XCHAT_EAT_NONE;*/
+    /*	if (tray_status == TS_FILEOFFER)
+    		return XCHAT_EAT_NONE;*/
 
     network = xchat_get_info (ph, "network");
     if (!network)
         network = xchat_get_info (ph, "server");
 
     if (prefs.input_tray_priv)
-      {
-          tray_set_flash (ICON_FILE);
+    {
+        tray_set_flash (ICON_FILE);
 
-          tray_file_count++;
-          if (tray_file_count == 1)
-              tray_set_tipf (_("GChat: File offer from: %s (%s)"),
-                             word[1], network);
-          else
-              tray_set_tipf (_("GChat: %u file offers, latest from: %s (%s)"),
-                             tray_file_count, word[1], network);
-      }
+        tray_file_count++;
+        if (tray_file_count == 1)
+            tray_set_tipf (_("GChat: File offer from: %s (%s)"),
+                           word[1], network);
+        else
+            tray_set_tipf (_("GChat: %u file offers, latest from: %s (%s)"),
+                           tray_file_count, word[1], network);
+    }
 
     if (prefs.input_balloon_priv)
         tray_set_balloonf ("", _("GChat: File offer from: %s (%s)"),
@@ -807,25 +807,25 @@ tray_cleanup (void)
     tray_stop_flash ();
 
     if (sticon)
-      {
-          g_object_unref ((GObject *) sticon);
-          sticon = NULL;
-      }
+    {
+        g_object_unref ((GObject *) sticon);
+        sticon = NULL;
+    }
 }
 
 void
 tray_apply_setup (void)
 {
     if (sticon)
-      {
-          if (!prefs.gui_tray)
-              tray_cleanup ();
-      }
+    {
+        if (!prefs.gui_tray)
+            tray_cleanup ();
+    }
     else
-      {
-          if (prefs.gui_tray)
-              tray_init ();
-      }
+    {
+        if (prefs.gui_tray)
+            tray_init ();
+    }
 }
 
 int

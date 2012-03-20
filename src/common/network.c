@@ -195,8 +195,8 @@ net_resolve (netstore * ns, char *hostname, int port, char **real_host)
     char portstring[MAX_HOSTNAME];
     int ret;
 
-/*	if (ns->ip6_hostent)
-		freeaddrinfo (ns->ip6_hostent);*/
+    /*	if (ns->ip6_hostent)
+    		freeaddrinfo (ns->ip6_hostent);*/
 
     sprintf (portstring, "%d", port);
 
@@ -249,27 +249,27 @@ net_connect (netstore * ns, int sok4, int sok6, int *sok_return)
     res0 = ns->ip6_hostent;
 
     for (res = res0; res; res = res->ai_next)
-      {
-/*		sok = socket (res->ai_family, res->ai_socktype, res->ai_protocol);
-		if (sok < 0)
-			continue;*/
-          switch (res->ai_family)
-            {
-            case AF_INET:
-                error = connect (sok4, res->ai_addr, res->ai_addrlen);
-                *sok_return = sok4;
-                break;
-            case AF_INET6:
-                error = connect (sok6, res->ai_addr, res->ai_addrlen);
-                *sok_return = sok6;
-                break;
-            default:
-                error = 1;
-            }
+    {
+        /*		sok = socket (res->ai_family, res->ai_socktype, res->ai_protocol);
+        		if (sok < 0)
+        			continue;*/
+        switch (res->ai_family)
+        {
+        case AF_INET:
+            error = connect (sok4, res->ai_addr, res->ai_addrlen);
+            *sok_return = sok4;
+            break;
+        case AF_INET6:
+            error = connect (sok6, res->ai_addr, res->ai_addrlen);
+            *sok_return = sok6;
+            break;
+        default:
+            error = 1;
+        }
 
-          if (error == 0)
-              break;
-      }
+        if (error == 0)
+            break;
+    }
 
     return error;
 }
@@ -310,18 +310,18 @@ net_store_fill_any (netstore * ns)
 
     ai = ns->ip6_hostent;
     if (!ai)
-      {
-          ai = malloc (sizeof (struct addrinfo));
-          memset (ai, 0, sizeof (struct addrinfo));
-          ns->ip6_hostent = ai;
-      }
+    {
+        ai = malloc (sizeof (struct addrinfo));
+        memset (ai, 0, sizeof (struct addrinfo));
+        ns->ip6_hostent = ai;
+    }
     sin = (struct sockaddr_in *) ai->ai_addr;
     if (!sin)
-      {
-          sin = malloc (sizeof (struct sockaddr_in));
-          memset (sin, 0, sizeof (struct sockaddr_in));
-          ai->ai_addr = (struct sockaddr *) sin;
-      }
+    {
+        sin = malloc (sizeof (struct sockaddr_in));
+        memset (sin, 0, sizeof (struct sockaddr_in));
+        ai->ai_addr = (struct sockaddr *) sin;
+    }
     ai->ai_family = AF_INET;
     ai->ai_addrlen = sizeof (struct sockaddr_in);
     sin->sin_family = AF_INET;
@@ -338,18 +338,18 @@ net_store_fill_v4 (netstore * ns, guint32 addr, int port)
 
     ai = ns->ip6_hostent;
     if (!ai)
-      {
-          ai = malloc (sizeof (struct addrinfo));
-          memset (ai, 0, sizeof (struct addrinfo));
-          ns->ip6_hostent = ai;
-      }
+    {
+        ai = malloc (sizeof (struct addrinfo));
+        memset (ai, 0, sizeof (struct addrinfo));
+        ns->ip6_hostent = ai;
+    }
     sin = (struct sockaddr_in *) ai->ai_addr;
     if (!sin)
-      {
-          sin = malloc (sizeof (struct sockaddr_in));
-          memset (sin, 0, sizeof (struct sockaddr_in));
-          ai->ai_addr = (struct sockaddr *) sin;
-      }
+    {
+        sin = malloc (sizeof (struct sockaddr_in));
+        memset (sin, 0, sizeof (struct sockaddr_in));
+        ai->ai_addr = (struct sockaddr *) sin;
+    }
     ai->ai_family = AF_INET;
     ai->ai_addrlen = sizeof (struct sockaddr_in);
     sin->sin_family = AF_INET;
@@ -367,11 +367,11 @@ net_getsockaddr_v4 (netstore * ns)
     ai = ns->ip6_hostent;
 
     while (ai->ai_family != AF_INET)
-      {
-          ai = ai->ai_next;
-          if (!ai)
-              return 0;
-      }
+    {
+        ai = ai->ai_next;
+        if (!ai)
+            return 0;
+    }
     sin = (struct sockaddr_in *) ai->ai_addr;
     return sin->sin_addr.s_addr;
 }

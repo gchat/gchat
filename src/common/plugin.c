@@ -123,22 +123,22 @@ plugin_free (xchat_plugin * pl, int do_deinit, int allow_refuse)
 
     /* run the plugin's deinit routine, if any */
     if (do_deinit && pl->deinit_callback != NULL)
-      {
-          deinit_func = pl->deinit_callback;
-          if (!deinit_func (pl) && allow_refuse)
-              return FALSE;
-      }
+    {
+        deinit_func = pl->deinit_callback;
+        if (!deinit_func (pl) && allow_refuse)
+            return FALSE;
+    }
 
     /* remove all of this plugin's hooks */
     list = hook_list;
     while (list)
-      {
-          hook = list->data;
-          next = list->next;
-          if (hook->pl == pl)
-              xchat_unhook (NULL, hook);
-          list = next;
-      }
+    {
+        hook = list->data;
+        next = list->next;
+        if (hook->pl == pl)
+            xchat_unhook (NULL, hook);
+        list = next;
+    }
 
 #ifdef USE_PLUGIN
     if (pl->handle)
@@ -149,16 +149,16 @@ plugin_free (xchat_plugin * pl, int do_deinit, int allow_refuse)
 #endif
 #endif
 
-  xit:
+xit:
     if (pl->free_strings)
-      {
-          if (pl->name)
-              free (pl->name);
-          if (pl->desc)
-              free (pl->desc);
-          if (pl->version)
-              free (pl->version);
-      }
+    {
+        if (pl->name)
+            free (pl->name);
+        if (pl->desc)
+            free (pl->desc);
+        if (pl->version)
+            free (pl->version);
+    }
     if (pl->filename)
         free ((char *) pl->filename);
     free (pl);
@@ -226,58 +226,58 @@ plugin_add (session * sess, char *filename, void *handle, void *init_func,
                           fake, FALSE);
 
     if (!fake)
-      {
-          /* win32 uses these because it doesn't have --export-dynamic! */
-          pl->xchat_hook_command = xchat_hook_command;
-          pl->xchat_hook_server = xchat_hook_server;
-          pl->xchat_hook_print = xchat_hook_print;
-          pl->xchat_hook_timer = xchat_hook_timer;
-          pl->xchat_hook_fd = xchat_hook_fd;
-          pl->xchat_unhook = xchat_unhook;
-          pl->xchat_print = xchat_print;
-          pl->xchat_printf = xchat_printf;
-          pl->xchat_command = xchat_command;
-          pl->xchat_commandf = xchat_commandf;
-          pl->xchat_nickcmp = xchat_nickcmp;
-          pl->xchat_set_context = xchat_set_context;
-          pl->xchat_find_context = xchat_find_context;
-          pl->xchat_get_context = xchat_get_context;
-          pl->xchat_get_info = xchat_get_info;
-          pl->xchat_get_prefs = xchat_get_prefs;
-          pl->xchat_list_get = xchat_list_get;
-          pl->xchat_list_free = xchat_list_free;
-          pl->xchat_list_fields = xchat_list_fields;
-          pl->xchat_list_str = xchat_list_str;
-          pl->xchat_list_next = xchat_list_next;
-          pl->xchat_list_int = xchat_list_int;
-          pl->xchat_plugingui_add = xchat_plugingui_add;
-          pl->xchat_plugingui_remove = xchat_plugingui_remove;
-          pl->xchat_emit_print = xchat_emit_print;
+    {
+        /* win32 uses these because it doesn't have --export-dynamic! */
+        pl->xchat_hook_command = xchat_hook_command;
+        pl->xchat_hook_server = xchat_hook_server;
+        pl->xchat_hook_print = xchat_hook_print;
+        pl->xchat_hook_timer = xchat_hook_timer;
+        pl->xchat_hook_fd = xchat_hook_fd;
+        pl->xchat_unhook = xchat_unhook;
+        pl->xchat_print = xchat_print;
+        pl->xchat_printf = xchat_printf;
+        pl->xchat_command = xchat_command;
+        pl->xchat_commandf = xchat_commandf;
+        pl->xchat_nickcmp = xchat_nickcmp;
+        pl->xchat_set_context = xchat_set_context;
+        pl->xchat_find_context = xchat_find_context;
+        pl->xchat_get_context = xchat_get_context;
+        pl->xchat_get_info = xchat_get_info;
+        pl->xchat_get_prefs = xchat_get_prefs;
+        pl->xchat_list_get = xchat_list_get;
+        pl->xchat_list_free = xchat_list_free;
+        pl->xchat_list_fields = xchat_list_fields;
+        pl->xchat_list_str = xchat_list_str;
+        pl->xchat_list_next = xchat_list_next;
+        pl->xchat_list_int = xchat_list_int;
+        pl->xchat_plugingui_add = xchat_plugingui_add;
+        pl->xchat_plugingui_remove = xchat_plugingui_remove;
+        pl->xchat_emit_print = xchat_emit_print;
 #ifdef WIN32
-          pl->xchat_read_fd = (void *) xchat_read_fd;
+        pl->xchat_read_fd = (void *) xchat_read_fd;
 #else
-          pl->xchat_read_fd = xchat_dummy;
+        pl->xchat_read_fd = xchat_dummy;
 #endif
-          pl->xchat_list_time = xchat_list_time;
-          pl->xchat_gettext = xchat_gettext;
-          pl->xchat_send_modes = xchat_send_modes;
-          pl->xchat_strip = xchat_strip;
-          pl->xchat_free = xchat_free;
+        pl->xchat_list_time = xchat_list_time;
+        pl->xchat_gettext = xchat_gettext;
+        pl->xchat_send_modes = xchat_send_modes;
+        pl->xchat_strip = xchat_strip;
+        pl->xchat_free = xchat_free;
 
-          /* incase new plugins are loaded on older xchat */
-          pl->xchat_dummy4 = xchat_dummy;
-          pl->xchat_dummy3 = xchat_dummy;
-          pl->xchat_dummy2 = xchat_dummy;
-          pl->xchat_dummy1 = xchat_dummy;
+        /* incase new plugins are loaded on older xchat */
+        pl->xchat_dummy4 = xchat_dummy;
+        pl->xchat_dummy3 = xchat_dummy;
+        pl->xchat_dummy2 = xchat_dummy;
+        pl->xchat_dummy1 = xchat_dummy;
 
-          /* run xchat_plugin_init, if it returns 0, close the plugin */
-          if (((xchat_init_func *) init_func) (pl, &pl->name, &pl->desc,
-                                               &pl->version, arg) == 0)
-            {
-                plugin_free (pl, FALSE, FALSE);
-                return;
-            }
-      }
+        /* run xchat_plugin_init, if it returns 0, close the plugin */
+        if (((xchat_init_func *) init_func) (pl, &pl->name, &pl->desc,
+                                             &pl->version, arg) == 0)
+        {
+            plugin_free (pl, FALSE, FALSE);
+            return;
+        }
+    }
 
 #ifdef USE_PLUGIN
     fe_pluginlist_update ();
@@ -294,30 +294,30 @@ plugin_kill (char *name, int by_filename)
 
     list = plugin_list;
     while (list)
-      {
-          pl = list->data;
-          /* static-plugins (plugin-timer.c) have a NULL filename */
-          if ((by_filename && pl->filename
-               && strcasecmp (name, pl->filename) == 0) || (by_filename
-                                                            && pl->filename
-                                                            &&
-                                                            strcasecmp (name,
-                                                                        file_part
-                                                                        (pl->
-                                                                         filename))
-                                                            == 0)
-              || (!by_filename && strcasecmp (name, pl->name) == 0))
+    {
+        pl = list->data;
+        /* static-plugins (plugin-timer.c) have a NULL filename */
+        if ((by_filename && pl->filename
+                && strcasecmp (name, pl->filename) == 0) || (by_filename
+                        && pl->filename
+                        &&
+                        strcasecmp (name,
+                                    file_part
+                                    (pl->
+                                     filename))
+                        == 0)
+                || (!by_filename && strcasecmp (name, pl->name) == 0))
+        {
+            /* statically linked plugins have a NULL filename */
+            if (pl->filename != NULL && !pl->fake)
             {
-                /* statically linked plugins have a NULL filename */
-                if (pl->filename != NULL && !pl->fake)
-                  {
-                      if (plugin_free (pl, TRUE, TRUE))
-                          return 1;
-                      return 2;
-                  }
+                if (plugin_free (pl, TRUE, TRUE))
+                    return 1;
+                return 2;
             }
-          list = list->next;
-      }
+        }
+        list = list->next;
+    }
 
     return 0;
 }
@@ -332,13 +332,13 @@ plugin_kill_all (void)
 
     list = plugin_list;
     while (list)
-      {
-          pl = list->data;
-          next = list->next;
-          if (!pl->fake)
-              plugin_free (list->data, TRUE, FALSE);
-          list = next;
-      }
+    {
+        pl = list->data;
+        next = list->next;
+        if (!pl->fake)
+            plugin_free (list->data, TRUE, FALSE);
+        list = next;
+    }
 }
 
 #ifdef USE_PLUGIN
@@ -360,24 +360,24 @@ plugin_load (session * sess, char *filename, char *arg)
 
     /* find the init routine xchat_plugin_init */
     if (!g_module_symbol
-        (handle, "xchat_plugin_init", (gpointer *) & init_func))
-      {
-          g_module_close (handle);
-          return
-              _
-              ("No xchat_plugin_init symbol; is this really an xchat plugin?");
-      }
+            (handle, "xchat_plugin_init", (gpointer *) & init_func))
+    {
+        g_module_close (handle);
+        return
+            _
+            ("No xchat_plugin_init symbol; is this really an xchat plugin?");
+    }
 
     /* find the plugin's deinit routine, if any */
     if (!g_module_symbol
-        (handle, "xchat_plugin_deinit", (gpointer *) & deinit_func))
+            (handle, "xchat_plugin_deinit", (gpointer *) & deinit_func))
         deinit_func = NULL;
 
 #else
     char *error;
     char *filepart;
 
-/* OpenBSD lacks this! */
+    /* OpenBSD lacks this! */
 #ifndef RTLD_GLOBAL
 #define RTLD_GLOBAL 0
 #endif
@@ -391,9 +391,9 @@ plugin_load (session * sess, char *filename, char *arg)
 
     /* load the plugin */
     if (filepart &&
-        /* xsys draws in libgtk-1.2, causing crashes, so force RTLD_LOCAL */
-        (strstr (filepart, "local")
-         || strncmp (filepart, "libxsys-1", 9) == 0))
+            /* xsys draws in libgtk-1.2, causing crashes, so force RTLD_LOCAL */
+            (strstr (filepart, "local")
+             || strncmp (filepart, "libxsys-1", 9) == 0))
         handle = dlopen (filename, RTLD_NOW);
     else
         handle = dlopen (filename, RTLD_GLOBAL | RTLD_NOW);
@@ -405,12 +405,12 @@ plugin_load (session * sess, char *filename, char *arg)
     init_func = dlsym (handle, "xchat_plugin_init");
     error = (char *) dlerror ();
     if (error != NULL)
-      {
-          dlclose (handle);
-          return
-              _
-              ("No xchat_plugin_init symbol; is this really an xchat plugin?");
-      }
+    {
+        dlclose (handle);
+        return
+            _
+            ("No xchat_plugin_init symbol; is this really an xchat plugin?");
+    }
 
     /* find the plugin's deinit routine, if any */
     deinit_func = dlsym (handle, "xchat_plugin_deinit");
@@ -437,10 +437,10 @@ plugin_auto_load_cb (char *filename)
 
     pMsg = plugin_load (ps, filename, NULL);
     if (pMsg)
-      {
-          PrintTextf (ps, "AutoLoad failed for: %s\n", filename);
-          PrintText (ps, pMsg);
-      }
+    {
+        PrintTextf (ps, "AutoLoad failed for: %s\n", filename);
+        PrintText (ps, pMsg);
+    }
 }
 
 void
@@ -469,21 +469,21 @@ plugin_hook_find (GSList * list, int type, char *name)
     xchat_hook *hook;
 
     while (list)
-      {
-          hook = list->data;
-          if (hook->type == type)
-            {
-                if (strcasecmp (hook->name, name) == 0)
-                    return list;
+    {
+        hook = list->data;
+        if (hook->type == type)
+        {
+            if (strcasecmp (hook->name, name) == 0)
+                return list;
 
-                if (type == HOOK_SERVER)
-                  {
-                      if (strcasecmp (hook->name, "RAW LINE") == 0)
-                          return list;
-                  }
+            if (type == HOOK_SERVER)
+            {
+                if (strcasecmp (hook->name, "RAW LINE") == 0)
+                    return list;
             }
-          list = list->next;
-      }
+        }
+        list = list->next;
+    }
 
     return NULL;
 }
@@ -500,62 +500,62 @@ plugin_hook_run (session * sess, char *name, char *word[], char *word_eol[],
 
     list = hook_list;
     while (1)
-      {
-          list = plugin_hook_find (list, type, name);
-          if (!list)
-              goto xit;
+    {
+        list = plugin_hook_find (list, type, name);
+        if (!list)
+            goto xit;
 
-          hook = list->data;
-          next = list->next;
-          hook->pl->context = sess;
+        hook = list->data;
+        next = list->next;
+        hook->pl->context = sess;
 
-          /* run the plugin's callback function */
-          switch (type)
-            {
-            case HOOK_COMMAND:
-                ret =
-                    ((xchat_cmd_cb *) hook->callback) (word, word_eol,
-                                                       hook->userdata);
-                break;
-            case HOOK_SERVER:
-                ret =
-                    ((xchat_serv_cb *) hook->callback) (word, word_eol,
-                                                        hook->userdata);
-                break;
-            default:           /*case HOOK_PRINT: */
-                ret =
-                    ((xchat_print_cb *) hook->callback) (word,
-                                                         hook->userdata);
-                break;
-            }
+        /* run the plugin's callback function */
+        switch (type)
+        {
+        case HOOK_COMMAND:
+            ret =
+                ((xchat_cmd_cb *) hook->callback) (word, word_eol,
+                                                   hook->userdata);
+            break;
+        case HOOK_SERVER:
+            ret =
+                ((xchat_serv_cb *) hook->callback) (word, word_eol,
+                                                    hook->userdata);
+            break;
+        default:           /*case HOOK_PRINT: */
+            ret =
+                ((xchat_print_cb *) hook->callback) (word,
+                        hook->userdata);
+            break;
+        }
 
-          if ((ret & XCHAT_EAT_XCHAT) && (ret & XCHAT_EAT_PLUGIN))
-            {
-                eat = 1;
-                goto xit;
-            }
-          if (ret & XCHAT_EAT_PLUGIN)
-              goto xit;         /* stop running plugins */
-          if (ret & XCHAT_EAT_XCHAT)
-              eat = 1;          /* eventually we'll return 1, but continue running plugins */
+        if ((ret & XCHAT_EAT_XCHAT) && (ret & XCHAT_EAT_PLUGIN))
+        {
+            eat = 1;
+            goto xit;
+        }
+        if (ret & XCHAT_EAT_PLUGIN)
+            goto xit;         /* stop running plugins */
+        if (ret & XCHAT_EAT_XCHAT)
+            eat = 1;          /* eventually we'll return 1, but continue running plugins */
 
-          list = next;
-      }
+        list = next;
+    }
 
-  xit:
+xit:
     /* really remove deleted hooks now */
     list = hook_list;
     while (list)
-      {
-          hook = list->data;
-          next = list->next;
-          if (hook->type == HOOK_DELETED)
-            {
-                hook_list = g_slist_remove (hook_list, hook);
-                free (hook);
-            }
-          list = next;
-      }
+    {
+        hook = list->data;
+        next = list->next;
+        if (hook->type == HOOK_DELETED)
+        {
+            hook_list = g_slist_remove (hook_list, hook);
+            free (hook);
+        }
+        list = next;
+    }
 
     return eat;
 }
@@ -643,10 +643,10 @@ plugin_timeout_cb (xchat_hook * hook)
         return 0;
 
     if (ret == 0)
-      {
-          hook->tag = 0;        /* avoid fe_timeout_remove, returning 0 is enough! */
-          xchat_unhook (hook->pl, hook);
-      }
+    {
+        hook->tag = 0;        /* avoid fe_timeout_remove, returning 0 is enough! */
+        xchat_unhook (hook->pl, hook);
+    }
 
     return ret;
 }
@@ -661,15 +661,15 @@ plugin_insert_hook (xchat_hook * new_hook)
 
     list = hook_list;
     while (list)
-      {
-          hook = list->data;
-          if (hook->type == new_hook->type && hook->pri <= new_hook->pri)
-            {
-                hook_list = g_slist_insert_before (hook_list, list, new_hook);
-                return;
-            }
-          list = list->next;
-      }
+    {
+        hook = list->data;
+        if (hook->type == new_hook->type && hook->pri <= new_hook->pri)
+        {
+            hook_list = g_slist_insert_before (hook_list, list, new_hook);
+            return;
+        }
+        list = list->next;
+    }
 
     hook_list = g_slist_append (hook_list, new_hook);
 }
@@ -697,10 +697,10 @@ plugin_fd_cb (GIOChannel * source, GIOCondition condition, xchat_hook * hook)
         return 0;
 
     if (ret == 0)
-      {
-          hook->tag = 0;        /* avoid fe_input_remove, returning 0 is enough! */
-          xchat_unhook (hook->pl, hook);
-      }
+    {
+        hook->tag = 0;        /* avoid fe_input_remove, returning 0 is enough! */
+        xchat_unhook (hook->pl, hook);
+    }
 
     return ret;
 }
@@ -743,12 +743,12 @@ plugin_command_list (GList * tmp_list)
     GSList *list = hook_list;
 
     while (list)
-      {
-          hook = list->data;
-          if (hook->type == HOOK_COMMAND)
-              tmp_list = g_list_prepend (tmp_list, hook->name);
-          list = list->next;
-      }
+    {
+        hook = list->data;
+        if (hook->type == HOOK_COMMAND)
+            tmp_list = g_list_prepend (tmp_list, hook->name);
+        list = list->next;
+    }
     return tmp_list;
 }
 
@@ -762,14 +762,14 @@ plugin_command_foreach (session * sess, void *userdata,
 
     list = hook_list;
     while (list)
-      {
-          hook = list->data;
-          if (hook->type == HOOK_COMMAND && hook->name[0])
-            {
-                cb (sess, userdata, hook->name, hook->help_text);
-            }
-          list = list->next;
-      }
+    {
+        hook = list->data;
+        if (hook->type == HOOK_COMMAND && hook->name[0])
+        {
+            cb (sess, userdata, hook->name, hook->help_text);
+        }
+        list = list->next;
+    }
 }
 
 int
@@ -780,14 +780,14 @@ plugin_show_help (session * sess, char *cmd)
 
     list = plugin_hook_find (hook_list, HOOK_COMMAND, cmd);
     if (list)
-      {
-          hook = list->data;
-          if (hook->help_text)
-            {
-                PrintText (sess, hook->help_text);
-                return 1;
-            }
-      }
+    {
+        hook = list->data;
+        if (hook->help_text)
+        {
+            PrintText (sess, hook->help_text);
+            return 1;
+        }
+    }
 
     return 0;
 }
@@ -869,12 +869,12 @@ void
 xchat_print (xchat_plugin * ph, const char *text)
 {
     if (!is_session (ph->context))
-      {
-          DEBUG (PrintTextf
-                 (0, "%s\txchat_print called without a valid context.\n",
-                  ph->name));
-          return;
-      }
+    {
+        DEBUG (PrintTextf
+               (0, "%s\txchat_print called without a valid context.\n",
+                ph->name));
+        return;
+    }
 
     PrintText (ph->context, (char *) text);
 }
@@ -900,12 +900,12 @@ xchat_command (xchat_plugin * ph, const char *command)
     int len = -1;
 
     if (!is_session (ph->context))
-      {
-          DEBUG (PrintTextf
-                 (0, "%s\txchat_command called without a valid context.\n",
-                  ph->name));
-          return;
-      }
+    {
+        DEBUG (PrintTextf
+               (0, "%s\txchat_command called without a valid context.\n",
+                ph->name));
+        return;
+    }
 
     /* scripts/plugins continue to send non-UTF8... *sigh* */
     conv = text_validate ((char **) &command, &len);
@@ -943,10 +943,10 @@ int
 xchat_set_context (xchat_plugin * ph, xchat_context * context)
 {
     if (is_session (context))
-      {
-          ph->context = context;
-          return 1;
-      }
+    {
+        ph->context = context;
+        return 1;
+    }
     return 0;
 }
 
@@ -964,51 +964,51 @@ xchat_find_context (xchat_plugin * ph, const char *servname,
 
     slist = serv_list;
     while (slist)
-      {
-          serv = slist->data;
-          netname = server_get_network (serv, TRUE);
+    {
+        serv = slist->data;
+        netname = server_get_network (serv, TRUE);
 
-          if (servname == NULL ||
-              rfc_casecmp (servname, serv->servername) == 0 ||
-              strcasecmp (servname, serv->hostname) == 0 ||
-              strcasecmp (servname, netname) == 0)
+        if (servname == NULL ||
+                rfc_casecmp (servname, serv->servername) == 0 ||
+                strcasecmp (servname, serv->hostname) == 0 ||
+                strcasecmp (servname, netname) == 0)
+        {
+            if (channel == NULL)
+                return serv->front_session;
+
+            clist = sess_list;
+            while (clist)
             {
-                if (channel == NULL)
-                    return serv->front_session;
-
-                clist = sess_list;
-                while (clist)
-                  {
-                      sess = clist->data;
-                      if (sess->server == serv)
+                sess = clist->data;
+                if (sess->server == serv)
+                {
+                    if (rfc_casecmp (channel, sess->channel) == 0)
+                    {
+                        if (sess->server == ph->context->server)
                         {
-                            if (rfc_casecmp (channel, sess->channel) == 0)
-                              {
-                                  if (sess->server == ph->context->server)
-                                    {
-                                        g_slist_free (sessions);
-                                        return sess;
-                                    }
-                                  else
-                                    {
-                                        sessions =
-                                            g_slist_prepend (sessions, sess);
-                                    }
-                              }
+                            g_slist_free (sessions);
+                            return sess;
                         }
-                      clist = clist->next;
-                  }
+                        else
+                        {
+                            sessions =
+                                g_slist_prepend (sessions, sess);
+                        }
+                    }
+                }
+                clist = clist->next;
             }
-          slist = slist->next;
-      }
+        }
+        slist = slist->next;
+    }
 
     if (sessions)
-      {
-          sessions = g_slist_reverse (sessions);
-          sess = sessions->data;
-          g_slist_free (sessions);
-          return sess;
-      }
+    {
+        sessions = g_slist_reverse (sessions);
+        sess = sessions->data;
+        g_slist_free (sessions);
+        return sess;
+    }
 
     return NULL;
 }
@@ -1021,104 +1021,104 @@ xchat_get_info (xchat_plugin * ph, const char *id)
 
     /*                 1234567890 */
     if (!strncmp (id, "event_text", 10))
-      {
-          char *e = (char *) id + 10;
-          if (*e == ' ')
-              e++;              /* 2.8.0 only worked without a space */
-          return text_find_format_string (e);
-      }
+    {
+        char *e = (char *) id + 10;
+        if (*e == ' ')
+            e++;              /* 2.8.0 only worked without a space */
+        return text_find_format_string (e);
+    }
 
     hash = str_hash (id);
     /* do the session independant ones first */
     switch (hash)
-      {
-      case 0x325acab5:         /* libdirfs */
-          return XCHATLIBDIR;
+    {
+    case 0x325acab5:         /* libdirfs */
+        return XCHATLIBDIR;
 
-      case 0x14f51cd8:         /* version */
-          return PACKAGE_VERSION;
+    case 0x14f51cd8:         /* version */
+        return PACKAGE_VERSION;
 
-      case 0xdd9b1abd:         /* xchatdir */
-          return get_xdir_utf8 ();
+    case 0xdd9b1abd:         /* xchatdir */
+        return get_xdir_utf8 ();
 
-      case 0xe33f6c4a:         /* xchatdirfs */
-          return get_xdir_fs ();
-      }
+    case 0xe33f6c4a:         /* xchatdirfs */
+        return get_xdir_fs ();
+    }
 
     sess = ph->context;
     if (!is_session (sess))
-      {
-          DEBUG (PrintTextf
-                 (0, "%s\txchat_get_info called without a valid context.\n",
-                  ph->name));
-          return NULL;
-      }
+    {
+        DEBUG (PrintTextf
+               (0, "%s\txchat_get_info called without a valid context.\n",
+                ph->name));
+        return NULL;
+    }
 
     switch (hash)
-      {
-      case 0x2de2ee:           /* away */
-          if (sess->server->is_away)
-              return sess->server->last_away_reason;
-          return NULL;
+    {
+    case 0x2de2ee:           /* away */
+        if (sess->server->is_away)
+            return sess->server->last_away_reason;
+        return NULL;
 
-      case 0x2c0b7d03:         /* channel */
-          return sess->channel;
+    case 0x2c0b7d03:         /* channel */
+        return sess->channel;
 
-      case 0x2c0d614c:         /* charset */
-          {
-              const char *locale;
+    case 0x2c0d614c:         /* charset */
+    {
+        const char *locale;
 
-              if (sess->server->encoding)
-                  return sess->server->encoding;
+        if (sess->server->encoding)
+            return sess->server->encoding;
 
-              locale = NULL;
-              g_get_charset (&locale);
-              return locale;
-          }
+        locale = NULL;
+        g_get_charset (&locale);
+        return locale;
+    }
 
-      case 0x30f5a8:           /* host */
-          return sess->server->hostname;
+    case 0x30f5a8:           /* host */
+        return sess->server->hostname;
 
-      case 0x1c0e99c1:         /* inputbox */
-          return fe_get_inputbox_contents (sess);
+    case 0x1c0e99c1:         /* inputbox */
+        return fe_get_inputbox_contents (sess);
 
-      case 0x633fb30:          /* modes */
-          return sess->current_modes;
+    case 0x633fb30:          /* modes */
+        return sess->current_modes;
 
-      case 0x6de15a2e:         /* network */
-          return server_get_network (sess->server, FALSE);
+    case 0x6de15a2e:         /* network */
+        return server_get_network (sess->server, FALSE);
 
-      case 0x339763:           /* nick */
-          return sess->server->nick;
+    case 0x339763:           /* nick */
+        return sess->server->nick;
 
-      case 0x438fdf9:          /* nickserv */
-          if (sess->server->network)
-              return ((ircnet *) sess->server->network)->nickserv;
-          return NULL;
+    case 0x438fdf9:          /* nickserv */
+        if (sess->server->network)
+            return ((ircnet *) sess->server->network)->nickserv;
+        return NULL;
 
-      case 0xca022f43:         /* server */
-          if (!sess->server->connected)
-              return NULL;
-          return sess->server->servername;
+    case 0xca022f43:         /* server */
+        if (!sess->server->connected)
+            return NULL;
+        return sess->server->servername;
 
-      case 0x696cd2f:          /* topic */
-          return sess->topic;
+    case 0x696cd2f:          /* topic */
+        return sess->topic;
 
-      case 0x506d600b:         /* native win_ptr */
-          return fe_gui_info_ptr (sess, 0);
+    case 0x506d600b:         /* native win_ptr */
+        return fe_gui_info_ptr (sess, 0);
 
-      case 0x6d3431b5:         /* win_status */
-          switch (fe_gui_info (sess, 0))        /* check window status */
-            {
-            case 0:
-                return "normal";
-            case 1:
-                return "active";
-            case 2:
-                return "hidden";
-            }
-          return NULL;
-      }
+    case 0x6d3431b5:         /* win_status */
+        switch (fe_gui_info (sess, 0))        /* check window status */
+        {
+        case 0:
+            return "normal";
+        case 1:
+            return "active";
+        case 2:
+            return "hidden";
+        }
+        return NULL;
+    }
 
     return NULL;
 }
@@ -1131,41 +1131,41 @@ xchat_get_prefs (xchat_plugin * ph, const char *name, const char **string,
 
     /* some special run-time info (not really prefs, but may aswell throw it in here) */
     switch (str_hash (name))
-      {
-      case 0xf82136c4:         /* state_cursor */
-          *integer = fe_get_inputbox_cursor (ph->context);
-          return 2;
+    {
+    case 0xf82136c4:         /* state_cursor */
+        *integer = fe_get_inputbox_cursor (ph->context);
+        return 2;
 
-      case 0xd1b:              /* id */
-          *integer = ph->context->server->id;
-          return 2;
-      }
+    case 0xd1b:              /* id */
+        *integer = ph->context->server->id;
+        return 2;
+    }
 
     do
-      {
-          if (!strcasecmp (name, vars[i].name))
+    {
+        if (!strcasecmp (name, vars[i].name))
+        {
+            switch (vars[i].type)
             {
-                switch (vars[i].type)
-                  {
-                  case TYPE_STR:
-                      *string = ((char *) &prefs + vars[i].offset);
-                      return 1;
+            case TYPE_STR:
+                *string = ((char *) &prefs + vars[i].offset);
+                return 1;
 
-                  case TYPE_INT:
-                      *integer = *((int *) &prefs + vars[i].offset);
-                      return 2;
+            case TYPE_INT:
+                *integer = *((int *) &prefs + vars[i].offset);
+                return 2;
 
-                  default:
-                      /*case TYPE_BOOL: */
-                      if (*((int *) &prefs + vars[i].offset))
-                          *integer = 1;
-                      else
-                          *integer = 0;
-                      return 3;
-                  }
+            default:
+                /*case TYPE_BOOL: */
+                if (*((int *) &prefs + vars[i].offset))
+                    *integer = 1;
+                else
+                    *integer = 0;
+                return 3;
             }
-          i++;
-      }
+        }
+        i++;
+    }
     while (vars[i].name);
 
     return 0;
@@ -1180,41 +1180,41 @@ xchat_list_get (xchat_plugin * ph, const char *name)
     list->pos = NULL;
 
     switch (str_hash (name))
-      {
-      case 0x556423d0:         /* channels */
-          list->type = LIST_CHANNELS;
-          list->next = sess_list;
-          break;
+    {
+    case 0x556423d0:         /* channels */
+        list->type = LIST_CHANNELS;
+        list->next = sess_list;
+        break;
 
-      case 0x183c4:            /* dcc */
-          list->type = LIST_DCC;
-          list->next = dcc_list;
-          break;
+    case 0x183c4:            /* dcc */
+        list->type = LIST_DCC;
+        list->next = dcc_list;
+        break;
 
-      case 0xb90bfdd2:         /* ignore */
-          list->type = LIST_IGNORE;
-          list->next = ignore_list;
-          break;
+    case 0xb90bfdd2:         /* ignore */
+        list->type = LIST_IGNORE;
+        list->next = ignore_list;
+        break;
 
-      case 0xc2079749:         /* notify */
-          list->type = LIST_NOTIFY;
-          list->next = notify_list;
-          list->head = (void *) ph->context;    /* reuse this pointer */
-          break;
+    case 0xc2079749:         /* notify */
+        list->type = LIST_NOTIFY;
+        list->next = notify_list;
+        list->head = (void *) ph->context;    /* reuse this pointer */
+        break;
 
-      case 0x6a68e08:          /* users */
-          if (is_session (ph->context))
-            {
-                list->type = LIST_USERS;
-                list->head = list->next = userlist_flat_list (ph->context);
-                fe_userlist_set_selected (ph->context);
-                break;
-            }                   /* fall through */
+    case 0x6a68e08:          /* users */
+        if (is_session (ph->context))
+        {
+            list->type = LIST_USERS;
+            list->head = list->next = userlist_flat_list (ph->context);
+            fe_userlist_set_selected (ph->context);
+            break;
+        }                   /* fall through */
 
-      default:
-          free (list);
-          return NULL;
-      }
+    default:
+        free (list);
+        return NULL;
+    }
 
     return list;
 }
@@ -1239,13 +1239,13 @@ xchat_list_next (xchat_plugin * ph, xchat_list * xlist)
     /* NOTIFY LIST: Find the entry which matches the context
        of the plugin when list_get was originally called. */
     if (xlist->type == LIST_NOTIFY)
-      {
-          xlist->notifyps = notify_find_server_entry (xlist->pos->data,
-                                                      ((session *) xlist->
-                                                       head)->server);
-          if (!xlist->notifyps)
-              return 0;
-      }
+    {
+        xlist->notifyps = notify_find_server_entry (xlist->pos->data,
+                          ((session *) xlist->
+                           head)->server);
+        if (!xlist->notifyps)
+            return 0;
+    }
 
     return 1;
 }
@@ -1259,9 +1259,9 @@ xchat_list_fields (xchat_plugin * ph, const char *name)
     };
     static const char *const channels_fields[] = {
         "schannel", "schantypes", "pcontext", "iflags", "iid", "ilag",
-            "imaxmodes",
+        "imaxmodes",
         "snetwork", "snickmodes", "snickprefixes", "iqueue", "sserver",
-            "itype", "iusers",
+        "itype", "iusers",
         NULL
     };
     static const char *const ignore_fields[] = {
@@ -1272,27 +1272,27 @@ xchat_list_fields (xchat_plugin * ph, const char *name)
     };
     static const char *const users_fields[] = {
         "iaway", "shost", "tlasttalk", "snick", "sprefix", "srealname",
-            "iselected", NULL
+        "iselected", NULL
     };
     static const char *const list_of_lists[] = {
         "channels", "dcc", "ignore", "notify", "users", NULL
     };
 
     switch (str_hash (name))
-      {
-      case 0x556423d0:         /* channels */
-          return channels_fields;
-      case 0x183c4:            /* dcc */
-          return dcc_fields;
-      case 0xb90bfdd2:         /* ignore */
-          return ignore_fields;
-      case 0xc2079749:         /* notify */
-          return notify_fields;
-      case 0x6a68e08:          /* users */
-          return users_fields;
-      case 0x6236395:          /* lists */
-          return list_of_lists;
-      }
+    {
+    case 0x556423d0:         /* channels */
+        return channels_fields;
+    case 0x183c4:            /* dcc */
+        return dcc_fields;
+    case 0xb90bfdd2:         /* ignore */
+        return ignore_fields;
+    case 0xc2079749:         /* notify */
+        return notify_fields;
+    case 0x6a68e08:          /* users */
+        return users_fields;
+    case 0x6236395:          /* lists */
+        return list_of_lists;
+    }
 
     return NULL;
 }
@@ -1304,29 +1304,29 @@ xchat_list_time (xchat_plugin * ph, xchat_list * xlist, const char *name)
     gpointer data;
 
     switch (xlist->type)
-      {
-      case LIST_NOTIFY:
-          if (!xlist->notifyps)
-              return (time_t) - 1;
-          switch (hash)
-            {
-            case 0x1ad6f:      /* off */
-                return xlist->notifyps->lastoff;
-            case 0xddf:        /* on */
-                return xlist->notifyps->laston;
-            case 0x35ce7b:     /* seen */
-                return xlist->notifyps->lastseen;
-            }
-          break;
+    {
+    case LIST_NOTIFY:
+        if (!xlist->notifyps)
+            return (time_t) - 1;
+        switch (hash)
+        {
+        case 0x1ad6f:      /* off */
+            return xlist->notifyps->lastoff;
+        case 0xddf:        /* on */
+            return xlist->notifyps->laston;
+        case 0x35ce7b:     /* seen */
+            return xlist->notifyps->lastseen;
+        }
+        break;
 
-      case LIST_USERS:
-          data = xlist->pos->data;
-          switch (hash)
-            {
-            case 0xa9118c42:   /* lasttalk */
-                return ((struct User *) data)->lasttalk;
-            }
-      }
+    case LIST_USERS:
+        data = xlist->pos->data;
+        switch (hash)
+        {
+        case 0xa9118c42:   /* lasttalk */
+            return ((struct User *) data)->lasttalk;
+        }
+    }
 
     return (time_t) - 1;
 }
@@ -1340,77 +1340,77 @@ xchat_list_str (xchat_plugin * ph, xchat_list * xlist, const char *name)
 
     /* a NULL xlist is a shortcut to current "channels" context */
     if (xlist)
-      {
-          data = xlist->pos->data;
-          type = xlist->type;
-      }
+    {
+        data = xlist->pos->data;
+        type = xlist->type;
+    }
 
     switch (type)
-      {
-      case LIST_CHANNELS:
-          switch (hash)
-            {
-            case 0x2c0b7d03:   /* channel */
-                return ((session *) data)->channel;
-            case 0x577e0867:   /* chantypes */
-                return ((session *) data)->server->chantypes;
-            case 0x38b735af:   /* context */
-                return data;    /* this is a session * */
-            case 0x6de15a2e:   /* network */
-                return server_get_network (((session *) data)->server, FALSE);
-            case 0x8455e723:   /* nickprefixes */
-                return ((session *) data)->server->nick_prefixes;
-            case 0x829689ad:   /* nickmodes */
-                return ((session *) data)->server->nick_modes;
-            case 0xca022f43:   /* server */
-                return ((session *) data)->server->servername;
-            }
-          break;
+    {
+    case LIST_CHANNELS:
+        switch (hash)
+        {
+        case 0x2c0b7d03:   /* channel */
+            return ((session *) data)->channel;
+        case 0x577e0867:   /* chantypes */
+            return ((session *) data)->server->chantypes;
+        case 0x38b735af:   /* context */
+            return data;    /* this is a session * */
+        case 0x6de15a2e:   /* network */
+            return server_get_network (((session *) data)->server, FALSE);
+        case 0x8455e723:   /* nickprefixes */
+            return ((session *) data)->server->nick_prefixes;
+        case 0x829689ad:   /* nickmodes */
+            return ((session *) data)->server->nick_modes;
+        case 0xca022f43:   /* server */
+            return ((session *) data)->server->servername;
+        }
+        break;
 
-      case LIST_DCC:
-          switch (hash)
-            {
-            case 0x3d9ad31e:   /* destfile */
-                return ((struct DCC *) data)->destfile;
-            case 0x2ff57c:     /* file */
-                return ((struct DCC *) data)->file;
-            case 0x339763:     /* nick */
-                return ((struct DCC *) data)->nick;
-            }
-          break;
+    case LIST_DCC:
+        switch (hash)
+        {
+        case 0x3d9ad31e:   /* destfile */
+            return ((struct DCC *) data)->destfile;
+        case 0x2ff57c:     /* file */
+            return ((struct DCC *) data)->file;
+        case 0x339763:     /* nick */
+            return ((struct DCC *) data)->nick;
+        }
+        break;
 
-      case LIST_IGNORE:
-          switch (hash)
-            {
-            case 0x3306ec:     /* mask */
-                return ((struct ignore *) data)->mask;
-            }
-          break;
+    case LIST_IGNORE:
+        switch (hash)
+        {
+        case 0x3306ec:     /* mask */
+            return ((struct ignore *) data)->mask;
+        }
+        break;
 
-      case LIST_NOTIFY:
-          switch (hash)
-            {
-            case 0x4e49ec05:   /* networks */
-                return ((struct notify *) data)->networks;
-            case 0x339763:     /* nick */
-                return ((struct notify *) data)->name;
-            }
-          break;
+    case LIST_NOTIFY:
+        switch (hash)
+        {
+        case 0x4e49ec05:   /* networks */
+            return ((struct notify *) data)->networks;
+        case 0x339763:     /* nick */
+            return ((struct notify *) data)->name;
+        }
+        break;
 
-      case LIST_USERS:
-          switch (hash)
-            {
-            case 0x339763:     /* nick */
-                return ((struct User *) data)->nick;
-            case 0x30f5a8:     /* host */
-                return ((struct User *) data)->hostname;
-            case 0xc594b292:   /* prefix */
-                return ((struct User *) data)->prefix;
-            case 0xccc6d529:   /* realname */
-                return ((struct User *) data)->realname;
-            }
-          break;
-      }
+    case LIST_USERS:
+        switch (hash)
+        {
+        case 0x339763:     /* nick */
+            return ((struct User *) data)->nick;
+        case 0x30f5a8:     /* host */
+            return ((struct User *) data)->hostname;
+        case 0xc594b292:   /* prefix */
+            return ((struct User *) data)->prefix;
+        case 0xccc6d529:   /* realname */
+            return ((struct User *) data)->realname;
+        }
+        break;
+    }
 
     return NULL;
 }
@@ -1424,106 +1424,106 @@ xchat_list_int (xchat_plugin * ph, xchat_list * xlist, const char *name)
 
     /* a NULL xlist is a shortcut to current "channels" context */
     if (xlist)
-      {
-          data = xlist->pos->data;
-          type = xlist->type;
-      }
+    {
+        data = xlist->pos->data;
+        type = xlist->type;
+    }
 
     switch (type)
-      {
-      case LIST_DCC:
-          switch (hash)
-            {
-            case 0x34207553:   /* address32 */
-                return ((struct DCC *) data)->addr;
-            case 0x181a6:      /* cps */
-                return ((struct DCC *) data)->cps;
-            case 0x349881:     /* port */
-                return ((struct DCC *) data)->port;
-            case 0x1b254:      /* pos */
-                return ((struct DCC *) data)->pos;
-            case 0xc84dc82d:   /* resume */
-                return ((struct DCC *) data)->resumable;
-            case 0x35e001:     /* size */
-                return ((struct DCC *) data)->size & 0xffffffff;
-            case 0x3284d523:   /* sizehigh */
-                return (((struct DCC *) data)->size >> 32) & 0xffffffff;
-            case 0xcacdcff2:   /* status */
-                return ((struct DCC *) data)->dccstat;
-            case 0x368f3a:     /* type */
-                return ((struct DCC *) data)->type;
-            }
-          break;
+    {
+    case LIST_DCC:
+        switch (hash)
+        {
+        case 0x34207553:   /* address32 */
+            return ((struct DCC *) data)->addr;
+        case 0x181a6:      /* cps */
+            return ((struct DCC *) data)->cps;
+        case 0x349881:     /* port */
+            return ((struct DCC *) data)->port;
+        case 0x1b254:      /* pos */
+            return ((struct DCC *) data)->pos;
+        case 0xc84dc82d:   /* resume */
+            return ((struct DCC *) data)->resumable;
+        case 0x35e001:     /* size */
+            return ((struct DCC *) data)->size & 0xffffffff;
+        case 0x3284d523:   /* sizehigh */
+            return (((struct DCC *) data)->size >> 32) & 0xffffffff;
+        case 0xcacdcff2:   /* status */
+            return ((struct DCC *) data)->dccstat;
+        case 0x368f3a:     /* type */
+            return ((struct DCC *) data)->type;
+        }
+        break;
 
-      case LIST_IGNORE:
-          switch (hash)
-            {
-            case 0x5cfee87:    /* flags */
-                return ((struct ignore *) data)->type;
-            }
-          break;
+    case LIST_IGNORE:
+        switch (hash)
+        {
+        case 0x5cfee87:    /* flags */
+            return ((struct ignore *) data)->type;
+        }
+        break;
 
-      case LIST_CHANNELS:
-          switch (hash)
-            {
-            case 0xd1b:        /* id */
-                return ((struct session *) data)->server->id;
-            case 0x5cfee87:    /* flags */
-                tmp = ((struct session *) data)->alert_taskbar; /* bit 10 */
-                tmp <<= 1;
-                tmp |= ((struct session *) data)->alert_tray;   /* 9 */
-                tmp <<= 1;
-                tmp |= ((struct session *) data)->alert_beep;   /* 8 */
-                tmp <<= 1;
-                /*tmp |= ((struct session *)data)->color_paste; *//* 7 */
-                tmp <<= 1;
-                tmp |= ((struct session *) data)->text_hidejoinpart;    /* 6 */
-                tmp <<= 1;
-                tmp |= ((struct session *) data)->server->have_idmsg;   /* 5 */
-                tmp <<= 1;
-                tmp |= ((struct session *) data)->server->have_whox;    /* 4 */
-                tmp <<= 1;
-                tmp |= ((struct session *) data)->server->end_of_motd;  /* 3 */
-                tmp <<= 1;
-                tmp |= ((struct session *) data)->server->is_away;      /* 2 */
-                tmp <<= 1;
-                tmp |= ((struct session *) data)->server->connecting;   /* 1 */
-                tmp <<= 1;
-                tmp |= ((struct session *) data)->server->connected;    /* 0 */
-                return tmp;
-            case 0x1a192:      /* lag */
-                return ((struct session *) data)->server->lag;
-            case 0x1916144c:   /* maxmodes */
-                return ((struct session *) data)->server->modes_per_line;
-            case 0x66f1911:    /* queue */
-                return ((struct session *) data)->server->sendq_len;
-            case 0x368f3a:     /* type */
-                return ((struct session *) data)->type;
-            case 0x6a68e08:    /* users */
-                return ((struct session *) data)->total;
-            }
-          break;
+    case LIST_CHANNELS:
+        switch (hash)
+        {
+        case 0xd1b:        /* id */
+            return ((struct session *) data)->server->id;
+        case 0x5cfee87:    /* flags */
+            tmp = ((struct session *) data)->alert_taskbar; /* bit 10 */
+            tmp <<= 1;
+            tmp |= ((struct session *) data)->alert_tray;   /* 9 */
+            tmp <<= 1;
+            tmp |= ((struct session *) data)->alert_beep;   /* 8 */
+            tmp <<= 1;
+            /*tmp |= ((struct session *)data)->color_paste; *//* 7 */
+            tmp <<= 1;
+            tmp |= ((struct session *) data)->text_hidejoinpart;    /* 6 */
+            tmp <<= 1;
+            tmp |= ((struct session *) data)->server->have_idmsg;   /* 5 */
+            tmp <<= 1;
+            tmp |= ((struct session *) data)->server->have_whox;    /* 4 */
+            tmp <<= 1;
+            tmp |= ((struct session *) data)->server->end_of_motd;  /* 3 */
+            tmp <<= 1;
+            tmp |= ((struct session *) data)->server->is_away;      /* 2 */
+            tmp <<= 1;
+            tmp |= ((struct session *) data)->server->connecting;   /* 1 */
+            tmp <<= 1;
+            tmp |= ((struct session *) data)->server->connected;    /* 0 */
+            return tmp;
+        case 0x1a192:      /* lag */
+            return ((struct session *) data)->server->lag;
+        case 0x1916144c:   /* maxmodes */
+            return ((struct session *) data)->server->modes_per_line;
+        case 0x66f1911:    /* queue */
+            return ((struct session *) data)->server->sendq_len;
+        case 0x368f3a:     /* type */
+            return ((struct session *) data)->type;
+        case 0x6a68e08:    /* users */
+            return ((struct session *) data)->total;
+        }
+        break;
 
-      case LIST_NOTIFY:
-          if (!xlist->notifyps)
-              return -1;
-          switch (hash)
-            {
-            case 0x5cfee87:    /* flags */
-                return xlist->notifyps->ison;
-            }
+    case LIST_NOTIFY:
+        if (!xlist->notifyps)
+            return -1;
+        switch (hash)
+        {
+        case 0x5cfee87:    /* flags */
+            return xlist->notifyps->ison;
+        }
 
-      case LIST_USERS:
-          switch (hash)
-            {
-            case 0x2de2ee:     /* away */
-                return ((struct User *) data)->away;
-            case 0x4705f29b:   /* selected */
-                return ((struct User *) data)->selected;
-            }
-          break;
+    case LIST_USERS:
+        switch (hash)
+        {
+        case 0x2de2ee:     /* away */
+            return ((struct User *) data)->away;
+        case 0x4705f29b:   /* selected */
+            return ((struct User *) data)->selected;
+        }
+        break;
 
-      }
+    }
 
     return -1;
 }
@@ -1562,14 +1562,14 @@ xchat_emit_print (xchat_plugin * ph, const char *event_name, ...)
 
     va_start (args, event_name);
     while (1)
-      {
-          argv[i] = va_arg (args, char *);
-          if (!argv[i])
-              break;
-          i++;
-          if (i >= 4)
-              break;
-      }
+    {
+        argv[i] = va_arg (args, char *);
+        if (!argv[i])
+            break;
+        i++;
+        if (i >= 4)
+            break;
+    }
 
     i = text_emit_by_name ((char *) event_name, ph->context, argv[0], argv[1],
                            argv[2], argv[3]);

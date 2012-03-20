@@ -128,17 +128,17 @@ static void
 proper_unit (DCC_SIZE size, char *buf, int buf_len)
 {
     if (size <= KILOBYTE)
-      {
-          snprintf (buf, buf_len, "%" DCC_SFMT "B", size);
-      }
+    {
+        snprintf (buf, buf_len, "%" DCC_SFMT "B", size);
+    }
     else if (size > KILOBYTE && size <= MEGABYTE)
-      {
-          snprintf (buf, buf_len, "%" DCC_SFMT "kB", size / KILOBYTE);
-      }
+    {
+        snprintf (buf, buf_len, "%" DCC_SFMT "kB", size / KILOBYTE);
+    }
     else
-      {
-          snprintf (buf, buf_len, "%.2fMB", (float) size / MEGABYTE);
-      }
+    {
+        snprintf (buf, buf_len, "%.2fMB", (float) size / MEGABYTE);
+    }
 }
 
 static void
@@ -147,10 +147,10 @@ dcc_send_filereq_file (struct my_dcc_send *mdc, char *file)
     if (file)
         dcc_send (mdc->sess, mdc->nick, file, mdc->maxcps, mdc->passive);
     else
-      {
-          free (mdc->nick);
-          free (mdc);
-      }
+    {
+        free (mdc->nick);
+        free (mdc);
+    }
 }
 
 void
@@ -212,14 +212,14 @@ dcc_prepare_row_send (struct DCC *dcc, GtkListStore * store,
     proper_unit (dcc->size, size, sizeof (size));
     proper_unit (dcc->pos, pos, sizeof (pos));
     snprintf (kbs, sizeof (kbs), "%.1f", ((float) dcc->cps) / 1024);
-/*	proper_unit (dcc->ack, ack, sizeof (ack));*/
+    /*	proper_unit (dcc->ack, ack, sizeof (ack));*/
     snprintf (perc, sizeof (perc), "%.0f%%", per);
     if (dcc->cps != 0)
-      {
-          to_go = (dcc->size - dcc->ack) / dcc->cps;
-          snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
-                    to_go / 3600, (to_go / 60) % 60, to_go % 60);
-      }
+    {
+        to_go = (dcc->size - dcc->ack) / dcc->cps;
+        snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
+                  to_go / 3600, (to_go / 60) % 60, to_go % 60);
+    }
     else
         strcpy (eta, "--:--:--");
 
@@ -272,11 +272,11 @@ dcc_prepare_row_recv (struct DCC *dcc, GtkListStore * store,
     per = (float) ((dcc->pos * 100.00) / dcc->size);
     snprintf (perc, sizeof (perc), "%.0f%%", per);
     if (dcc->cps != 0)
-      {
-          to_go = (dcc->size - dcc->pos) / dcc->cps;
-          snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
-                    to_go / 3600, (to_go / 60) % 60, to_go % 60);
-      }
+    {
+        to_go = (dcc->size - dcc->pos) / dcc->cps;
+        snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
+                  to_go / 3600, (to_go / 60) % 60, to_go % 60);
+    }
     else
         strcpy (eta, "--:--:--");
 
@@ -314,15 +314,15 @@ dcc_find_row (struct DCC *find_dcc, GtkTreeModel * model, GtkTreeIter * iter,
     struct DCC *dcc;
 
     if (gtk_tree_model_get_iter_first (model, iter))
-      {
-          do
-            {
-                gtk_tree_model_get (model, iter, col, &dcc, -1);
-                if (dcc == find_dcc)
-                    return TRUE;
-            }
-          while (gtk_tree_model_iter_next (model, iter));
-      }
+    {
+        do
+        {
+            gtk_tree_model_get (model, iter, col, &dcc, -1);
+            if (dcc == find_dcc)
+                return TRUE;
+        }
+        while (gtk_tree_model_iter_next (model, iter));
+    }
 
     return FALSE;
 }
@@ -402,42 +402,42 @@ dcc_fill_window (int flags)
     gtk_list_store_clear (GTK_LIST_STORE (dccfwin.store));
 
     if (flags & VIEW_UPLOAD)
-      {
-          list = dcc_list;
-          while (list)
+    {
+        list = dcc_list;
+        while (list)
+        {
+            dcc = list->data;
+            if (dcc->type == TYPE_SEND)
             {
-                dcc = list->data;
-                if (dcc->type == TYPE_SEND)
-                  {
-                      dcc_append (dcc, dccfwin.store, FALSE);
-                      i++;
-                  }
-                list = list->next;
+                dcc_append (dcc, dccfwin.store, FALSE);
+                i++;
             }
-      }
+            list = list->next;
+        }
+    }
 
     if (flags & VIEW_DOWNLOAD)
-      {
-          list = dcc_list;
-          while (list)
+    {
+        list = dcc_list;
+        while (list)
+        {
+            dcc = list->data;
+            if (dcc->type == TYPE_RECV)
             {
-                dcc = list->data;
-                if (dcc->type == TYPE_RECV)
-                  {
-                      dcc_append (dcc, dccfwin.store, FALSE);
-                      i++;
-                  }
-                list = list->next;
+                dcc_append (dcc, dccfwin.store, FALSE);
+                i++;
             }
-      }
+            list = list->next;
+        }
+    }
 
     /* if only one entry, select it (so Accept button can work) */
     if (i == 1)
-      {
-          gtk_tree_model_get_iter_first (GTK_TREE_MODEL (dccfwin.store),
-                                         &iter);
-          gtk_tree_selection_select_iter (dccfwin.sel, &iter);
-      }
+    {
+        gtk_tree_model_get_iter_first (GTK_TREE_MODEL (dccfwin.store),
+                                       &iter);
+        gtk_tree_selection_select_iter (dccfwin.sel, &iter);
+    }
 }
 
 /* return list of selected DCCs */
@@ -451,17 +451,17 @@ treeview_get_selected (GtkTreeModel * model, GtkTreeSelection * sel,
     void *ptr;
 
     if (gtk_tree_model_get_iter_first (model, &iter))
-      {
-          do
+    {
+        do
+        {
+            if (gtk_tree_selection_iter_is_selected (sel, &iter))
             {
-                if (gtk_tree_selection_iter_is_selected (sel, &iter))
-                  {
-                      gtk_tree_model_get (model, &iter, column, &ptr, -1);
-                      list = g_slist_prepend (list, ptr);
-                  }
+                gtk_tree_model_get (model, &iter, column, &ptr, -1);
+                list = g_slist_prepend (list, ptr);
             }
-          while (gtk_tree_model_iter_next (model, &iter));
-      }
+        }
+        while (gtk_tree_model_iter_next (model, &iter));
+    }
 
     return g_slist_reverse (list);
 }
@@ -487,30 +487,30 @@ resume_clicked (GtkWidget * wid, gpointer none)
     g_slist_free (list);
 
     if (dcc->type == TYPE_RECV && !dcc_resume (dcc))
-      {
-          switch (dcc->resume_error)
-            {
-            case 0:            /* unknown error */
-                fe_message (_("That file is not resumable."), FE_MSG_ERROR);
-                break;
-            case 1:
-                snprintf (buf, sizeof (buf),
-                          _("Cannot access file: %s\n"
-                            "%s.\n"
-                            "Resuming not possible."), dcc->destfile,
-                          errorstring (dcc->resume_errno));
-                fe_message (buf, FE_MSG_ERROR);
-                break;
-            case 2:
-                fe_message (_("File in download directory is larger "
-                              "than file offered. Resuming not possible."),
-                            FE_MSG_ERROR);
-                break;
-            case 3:
-                fe_message (_("Cannot resume the same file from two people."),
-                            FE_MSG_ERROR);
-            }
-      }
+    {
+        switch (dcc->resume_error)
+        {
+        case 0:            /* unknown error */
+            fe_message (_("That file is not resumable."), FE_MSG_ERROR);
+            break;
+        case 1:
+            snprintf (buf, sizeof (buf),
+                      _("Cannot access file: %s\n"
+                        "%s.\n"
+                        "Resuming not possible."), dcc->destfile,
+                      errorstring (dcc->resume_errno));
+            fe_message (buf, FE_MSG_ERROR);
+            break;
+        case 2:
+            fe_message (_("File in download directory is larger "
+                          "than file offered. Resuming not possible."),
+                        FE_MSG_ERROR);
+            break;
+        case 3:
+            fe_message (_("Cannot resume the same file from two people."),
+                        FE_MSG_ERROR);
+        }
+    }
 }
 
 static void
@@ -521,10 +521,10 @@ abort_clicked (GtkWidget * wid, gpointer none)
 
     start = list = dcc_get_selected ();
     for (; list; list = list->next)
-      {
-          dcc = list->data;
-          dcc_abort (dcc->serv->front_session, dcc);
-      }
+    {
+        dcc = list->data;
+        dcc_abort (dcc->serv->front_session, dcc);
+    }
     g_slist_free (start);
 }
 
@@ -536,11 +536,11 @@ accept_clicked (GtkWidget * wid, gpointer none)
 
     start = list = dcc_get_selected ();
     for (; list; list = list->next)
-      {
-          dcc = list->data;
-          if (dcc->type != TYPE_SEND)
-              dcc_get (dcc);
-      }
+    {
+        dcc = list->data;
+        if (dcc->type != TYPE_SEND)
+            dcc_get (dcc);
+    }
     g_slist_free (start);
 }
 
@@ -573,11 +573,11 @@ dcc_details_populate (struct DCC *dcc)
     char buf[128];
 
     if (!dcc)
-      {
-          gtk_label_set_text (GTK_LABEL (dccfwin.file_label), NULL);
-          gtk_label_set_text (GTK_LABEL (dccfwin.address_label), NULL);
-          return;
-      }
+    {
+        gtk_label_set_text (GTK_LABEL (dccfwin.file_label), NULL);
+        gtk_label_set_text (GTK_LABEL (dccfwin.address_label), NULL);
+        return;
+    }
 
     /* full path */
     if (dcc->type == TYPE_RECV)
@@ -598,39 +598,39 @@ dcc_row_cb (GtkTreeSelection * sel, gpointer user_data)
 
     list = dcc_get_selected ();
     if (!list)
-      {
-          gtk_widget_set_sensitive (dccfwin.accept_button, FALSE);
-          gtk_widget_set_sensitive (dccfwin.resume_button, FALSE);
-          gtk_widget_set_sensitive (dccfwin.abort_button, FALSE);
-          dcc_details_populate (NULL);
-          return;
-      }
+    {
+        gtk_widget_set_sensitive (dccfwin.accept_button, FALSE);
+        gtk_widget_set_sensitive (dccfwin.resume_button, FALSE);
+        gtk_widget_set_sensitive (dccfwin.abort_button, FALSE);
+        dcc_details_populate (NULL);
+        return;
+    }
 
     gtk_widget_set_sensitive (dccfwin.abort_button, TRUE);
 
     if (list->next)             /* multi selection */
-      {
-          gtk_widget_set_sensitive (dccfwin.accept_button, TRUE);
-          gtk_widget_set_sensitive (dccfwin.resume_button, TRUE);
-          dcc_details_populate (list->data);
-      }
+    {
+        gtk_widget_set_sensitive (dccfwin.accept_button, TRUE);
+        gtk_widget_set_sensitive (dccfwin.resume_button, TRUE);
+        dcc_details_populate (list->data);
+    }
     else
-      {
-          /* turn OFF/ON appropriate buttons */
-          dcc = list->data;
-          if (dcc->dccstat == STAT_QUEUED && dcc->type == TYPE_RECV)
-            {
-                gtk_widget_set_sensitive (dccfwin.accept_button, TRUE);
-                gtk_widget_set_sensitive (dccfwin.resume_button, TRUE);
-            }
-          else
-            {
-                gtk_widget_set_sensitive (dccfwin.accept_button, FALSE);
-                gtk_widget_set_sensitive (dccfwin.resume_button, FALSE);
-            }
+    {
+        /* turn OFF/ON appropriate buttons */
+        dcc = list->data;
+        if (dcc->dccstat == STAT_QUEUED && dcc->type == TYPE_RECV)
+        {
+            gtk_widget_set_sensitive (dccfwin.accept_button, TRUE);
+            gtk_widget_set_sensitive (dccfwin.resume_button, TRUE);
+        }
+        else
+        {
+            gtk_widget_set_sensitive (dccfwin.accept_button, FALSE);
+            gtk_widget_set_sensitive (dccfwin.resume_button, FALSE);
+        }
 
-          dcc_details_populate (dcc);
-      }
+        dcc_details_populate (dcc);
+    }
 
     g_slist_free (list);
 }
@@ -649,18 +649,18 @@ dcc_dclick_cb (GtkTreeView * view, GtkTreePath * path,
     g_slist_free (list);
 
     if (dcc->type == TYPE_RECV)
-      {
-          accept_clicked (0, 0);
-          return;
-      }
+    {
+        accept_clicked (0, 0);
+        return;
+    }
 
     switch (dcc->dccstat)
-      {
-      case STAT_FAILED:
-      case STAT_ABORTED:
-      case STAT_DONE:
-          dcc_abort (dcc->serv->front_session, dcc);
-      }
+    {
+    case STAT_FAILED:
+    case STAT_ABORTED:
+    case STAT_DONE:
+        dcc_abort (dcc->serv->front_session, dcc);
+    }
 }
 
 static void
@@ -673,11 +673,11 @@ dcc_add_column (GtkWidget * tree, int textcol, int colorcol, char *title,
     if (right_justified)
         g_object_set (G_OBJECT (renderer), "xalign", (float) 1.0, NULL);
     gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tree), -1,
-                                                 title, renderer, "text",
-                                                 textcol, "foreground-gdk",
-                                                 colorcol, NULL);
+            title, renderer, "text",
+            textcol, "foreground-gdk",
+            colorcol, NULL);
     gtk_cell_renderer_text_set_fixed_height_from_font (GTK_CELL_RENDERER_TEXT
-                                                       (renderer), 1);
+            (renderer), 1);
 }
 
 static GtkWidget *
@@ -719,10 +719,10 @@ static void
 dcc_toggle (GtkWidget * item, gpointer data)
 {
     if (GTK_TOGGLE_BUTTON (item)->active)
-      {
-          view_mode = GPOINTER_TO_INT (data);
-          dcc_fill_window (GPOINTER_TO_INT (data));
-      }
+    {
+        view_mode = GPOINTER_TO_INT (data);
+        dcc_fill_window (GPOINTER_TO_INT (data));
+    }
 }
 
 static gboolean
@@ -741,11 +741,11 @@ fe_dcc_open_recv_win (int passive)
     GSList *group;
 
     if (dccfwin.window)
-      {
-          if (!passive)
-              mg_bring_tofront (dccfwin.window);
-          return TRUE;
-      }
+    {
+        if (!passive)
+            mg_bring_tofront (dccfwin.window);
+        return TRUE;
+    }
     dccfwin.window =
         mg_create_generic_tab ("Transfers", _("GChat: Uploads and Downloads"),
                                FALSE, TRUE, close_dcc_file_window, NULL,
@@ -762,10 +762,10 @@ fe_dcc_open_recv_win (int passive)
     gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
     /* Up/Down Icon column */
     gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view), -1,
-                                                 NULL,
-                                                 gtk_cell_renderer_pixbuf_new
-                                                 (), "pixbuf", COL_TYPE,
-                                                 NULL);
+            NULL,
+            gtk_cell_renderer_pixbuf_new
+            (), "pixbuf", COL_TYPE,
+            NULL);
     dcc_add_column (view, COL_STATUS, COL_COLOR, _("Status"), FALSE);
     dcc_add_column (view, COL_FILE, COL_COLOR, _("File"), FALSE);
     dcc_add_column (view, COL_SIZE, COL_COLOR, _("Size"), TRUE);
@@ -888,10 +888,10 @@ accept_chat_clicked (GtkWidget * wid, gpointer none)
 
     start = list = dcc_chat_get_selected ();
     for (; list; list = list->next)
-      {
-          dcc = list->data;
-          dcc_get (dcc);
-      }
+    {
+        dcc = list->data;
+        dcc_get (dcc);
+    }
     g_slist_free (start);
 }
 
@@ -903,10 +903,10 @@ abort_chat_clicked (GtkWidget * wid, gpointer none)
 
     start = list = dcc_chat_get_selected ();
     for (; list; list = list->next)
-      {
-          dcc = list->data;
-          dcc_abort (dcc->serv->front_session, dcc);
-      }
+    {
+        dcc = list->data;
+        dcc_abort (dcc->serv->front_session, dcc);
+    }
     g_slist_free (start);
 }
 
@@ -941,23 +941,23 @@ dcc_chat_fill_win (void)
 
     list = dcc_list;
     while (list)
-      {
-          dcc = list->data;
-          if (dcc->type == TYPE_CHATSEND || dcc->type == TYPE_CHATRECV)
-            {
-                dcc_chat_append (dcc, dcccwin.store, FALSE);
-                i++;
-            }
-          list = list->next;
-      }
+    {
+        dcc = list->data;
+        if (dcc->type == TYPE_CHATSEND || dcc->type == TYPE_CHATRECV)
+        {
+            dcc_chat_append (dcc, dcccwin.store, FALSE);
+            i++;
+        }
+        list = list->next;
+    }
 
     /* if only one entry, select it (so Accept button can work) */
     if (i == 1)
-      {
-          gtk_tree_model_get_iter_first (GTK_TREE_MODEL (dcccwin.store),
-                                         &iter);
-          gtk_tree_selection_select_iter (dcccwin.sel, &iter);
-      }
+    {
+        gtk_tree_model_get_iter_first (GTK_TREE_MODEL (dcccwin.store),
+                                       &iter);
+        gtk_tree_selection_select_iter (dcccwin.sel, &iter);
+    }
 }
 
 static void
@@ -968,25 +968,25 @@ dcc_chat_row_cb (GtkTreeSelection * sel, gpointer user_data)
 
     list = dcc_chat_get_selected ();
     if (!list)
-      {
-          gtk_widget_set_sensitive (dcccwin.accept_button, FALSE);
-          gtk_widget_set_sensitive (dcccwin.abort_button, FALSE);
-          return;
-      }
+    {
+        gtk_widget_set_sensitive (dcccwin.accept_button, FALSE);
+        gtk_widget_set_sensitive (dcccwin.abort_button, FALSE);
+        return;
+    }
 
     gtk_widget_set_sensitive (dcccwin.abort_button, TRUE);
 
     if (list->next)             /* multi selection */
         gtk_widget_set_sensitive (dcccwin.accept_button, TRUE);
     else
-      {
-          /* turn OFF/ON appropriate buttons */
-          dcc = list->data;
-          if (dcc->dccstat == STAT_QUEUED && dcc->type == TYPE_CHATRECV)
-              gtk_widget_set_sensitive (dcccwin.accept_button, TRUE);
-          else
-              gtk_widget_set_sensitive (dcccwin.accept_button, FALSE);
-      }
+    {
+        /* turn OFF/ON appropriate buttons */
+        dcc = list->data;
+        if (dcc->dccstat == STAT_QUEUED && dcc->type == TYPE_CHATRECV)
+            gtk_widget_set_sensitive (dcccwin.accept_button, TRUE);
+        else
+            gtk_widget_set_sensitive (dcccwin.accept_button, FALSE);
+    }
 
     g_slist_free (list);
 }
@@ -1005,11 +1005,11 @@ fe_dcc_open_chat_win (int passive)
     GtkListStore *store;
 
     if (dcccwin.window)
-      {
-          if (!passive)
-              mg_bring_tofront (dcccwin.window);
-          return TRUE;
-      }
+    {
+        if (!passive)
+            mg_bring_tofront (dcccwin.window);
+        return TRUE;
+    }
 
     dcccwin.window =
         mg_create_generic_tab ("DCCChat", _("GChat: DCC Chat List"),
@@ -1067,39 +1067,39 @@ void
 fe_dcc_add (struct DCC *dcc)
 {
     switch (dcc->type)
-      {
-      case TYPE_RECV:
-          if (dccfwin.window && (view_mode & VIEW_DOWNLOAD))
-              dcc_append (dcc, dccfwin.store, TRUE);
-          break;
+    {
+    case TYPE_RECV:
+        if (dccfwin.window && (view_mode & VIEW_DOWNLOAD))
+            dcc_append (dcc, dccfwin.store, TRUE);
+        break;
 
-      case TYPE_SEND:
-          if (dccfwin.window && (view_mode & VIEW_UPLOAD))
-              dcc_append (dcc, dccfwin.store, TRUE);
-          break;
+    case TYPE_SEND:
+        if (dccfwin.window && (view_mode & VIEW_UPLOAD))
+            dcc_append (dcc, dccfwin.store, TRUE);
+        break;
 
-      default:                 /* chat */
-          if (dcccwin.window)
-              dcc_chat_append (dcc, dcccwin.store, TRUE);
-      }
+    default:                 /* chat */
+        if (dcccwin.window)
+            dcc_chat_append (dcc, dcccwin.store, TRUE);
+    }
 }
 
 void
 fe_dcc_update (struct DCC *dcc)
 {
     switch (dcc->type)
-      {
-      case TYPE_SEND:
-          dcc_update_send (dcc);
-          break;
+    {
+    case TYPE_SEND:
+        dcc_update_send (dcc);
+        break;
 
-      case TYPE_RECV:
-          dcc_update_recv (dcc);
-          break;
+    case TYPE_RECV:
+        dcc_update_recv (dcc);
+        break;
 
-      default:
-          dcc_update_chat (dcc);
-      }
+    default:
+        dcc_update_chat (dcc);
+    }
 }
 
 void
@@ -1108,24 +1108,24 @@ fe_dcc_remove (struct DCC *dcc)
     GtkTreeIter iter;
 
     switch (dcc->type)
-      {
-      case TYPE_SEND:
-      case TYPE_RECV:
-          if (dccfwin.window)
-            {
-                if (dcc_find_row
+    {
+    case TYPE_SEND:
+    case TYPE_RECV:
+        if (dccfwin.window)
+        {
+            if (dcc_find_row
                     (dcc, GTK_TREE_MODEL (dccfwin.store), &iter, COL_DCC))
-                    gtk_list_store_remove (dccfwin.store, &iter);
-            }
-          break;
+                gtk_list_store_remove (dccfwin.store, &iter);
+        }
+        break;
 
-      default:                 /* chat */
-          if (dcccwin.window)
-            {
-                if (dcc_find_row
+    default:                 /* chat */
+        if (dcccwin.window)
+        {
+            if (dcc_find_row
                     (dcc, GTK_TREE_MODEL (dcccwin.store), &iter, CCOL_DCC))
-                    gtk_list_store_remove (dcccwin.store, &iter);
-            }
-          break;
-      }
+                gtk_list_store_remove (dcccwin.store, &iter);
+        }
+        break;
+    }
 }

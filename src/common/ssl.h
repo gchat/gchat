@@ -49,17 +49,17 @@ int _SSL_recv (SSL * ssl, char *buf, int len);
 /* misc */
 /*void broke_oneline (char *oneline, char *parray[]);*/
 
-                                                                                                /*char *_SSL_do_cipher_base64(char *buf, int buf_len, char *key, int operation);*//* must be freed */
+/*char *_SSL_do_cipher_base64(char *buf, int buf_len, char *key, int operation);*//* must be freed */
 
-                                                                /*void *_SSL_get_sess_obj(SSL *ssl, int type);*//* NOT must be freed */
+/*void *_SSL_get_sess_obj(SSL *ssl, int type);*//* NOT must be freed */
 #define	_SSL_get_sess_pkey(a)	_SSL_get_sess_obj(a, 0)
 #define	_SSL_get_sess_prkey(a)	_SSL_get_sess_obj(a, 1)
 #define	_SSL_get_sess_x509(a)	_SSL_get_sess_obj(a, 2)
-                                                                /*char *_SSL_get_obj_base64(void *s, int type);*//* must be freed */
+/*char *_SSL_get_obj_base64(void *s, int type);*//* must be freed */
 #define	_SSL_get_pkey_base64(a)		_SSL_get_obj_base64(a, 0)
 #define	_SSL_get_prkey_base64(a)	_SSL_get_obj_base64(a, 1)
 #define	_SSL_get_x509_base64(a)		_SSL_get_obj_base64(a, 2)
-                                                                /*char *_SSL_get_ctx_obj_base64(SSL_CTX *ctx, int type);*//* must be freed */
+/*char *_SSL_get_ctx_obj_base64(SSL_CTX *ctx, int type);*//* must be freed */
 #define	_SSL_get_ctx_pkey_base64(a)	_SSL_get_ctx_obj_base64(a, 0)
 #define	_SSL_get_ctx_prkey_base64(a)	_SSL_get_ctx_obj_base64(a, 1)
 #define	_SSL_get_ctx_x509_base64(a)	_SSL_get_ctx_obj_base64(a, 2)

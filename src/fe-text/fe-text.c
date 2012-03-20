@@ -58,25 +58,25 @@ read_stdin (void)
     len = read (STDIN_FILENO, tmpbuf, sizeof tmpbuf - 1);
 
     while (i < len)
-      {
-          switch (tmpbuf[i])
-            {
-            case '\r':
-                break;
+    {
+        switch (tmpbuf[i])
+        {
+        case '\r':
+            break;
 
-            case '\n':
-                inbuf[pos] = 0;
-                pos = 0;
-                send_command (inbuf);
-                break;
+        case '\n':
+            inbuf[pos] = 0;
+            pos = 0;
+            send_command (inbuf);
+            break;
 
-            default:
-                inbuf[pos] = tmpbuf[i];
-                if (pos < (sizeof inbuf - 2))
-                    pos++;
-            }
-          i++;
-      }
+        default:
+            inbuf[pos] = tmpbuf[i];
+            if (pos < (sizeof inbuf - 2))
+                pos++;
+        }
+        i++;
+    }
 }
 
 static int done_intro = 0;
@@ -141,7 +141,7 @@ timecat (char *buf)
 
 /*                       0  1  2  3  4  5  6  7   8   9   10 11  12  13  14 15 */
 static const short colconv[] =
-    { 0, 7, 4, 2, 1, 3, 5, 11, 13, 12, 6, 16, 14, 15, 10, 7 };
+{ 0, 7, 4, 2, 1, 3, 5, 11, 13, 12, 6, 16, 14, 15, 10, 7 };
 
 void
 fe_print_text (struct session *sess, char *text, time_t stamp)
@@ -153,160 +153,160 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
     unsigned char *newtext = malloc (len + 1024);
 
     if (prefs.timestamp)
-      {
-          newtext[0] = 0;
-          j += timecat (newtext);
-      }
+    {
+        newtext[0] = 0;
+        j += timecat (newtext);
+    }
     while (i < len)
-      {
-          if (dotime && text[i] != 0)
+    {
+        if (dotime && text[i] != 0)
+        {
+            dotime = FALSE;
+            newtext[j] = 0;
+            j += timecat (newtext);
+        }
+        switch (text[i])
+        {
+        case 3:
+            i++;
+            if (!isdigit (text[i]))
             {
-                dotime = FALSE;
-                newtext[j] = 0;
-                j += timecat (newtext);
+                newtext[j] = 27;
+                j++;
+                newtext[j] = '[';
+                j++;
+                newtext[j] = 'm';
+                j++;
+                i--;
+                goto jump2;
             }
-          switch (text[i])
+            k = 0;
+            comma = FALSE;
+            while (i < len)
             {
-            case 3:
+                if (text[i] >= '0' && text[i] <= '9' && k < 2)
+                {
+                    num[k] = text[i];
+                    k++;
+                }
+                else
+                {
+                    int col, mirc;
+                    num[k] = 0;
+                    newtext[j] = 27;
+                    j++;
+                    newtext[j] = '[';
+                    j++;
+                    if (k == 0)
+                    {
+                        newtext[j] = 'm';
+                        j++;
+                    }
+                    else
+                    {
+                        if (comma)
+                            col = 40;
+                        else
+                            col = 30;
+                        mirc = atoi (num);
+                        mirc = colconv[mirc];
+                        if (mirc > 9)
+                        {
+                            mirc += 50;
+                            sprintf ((char *) &newtext[j], "%dm",
+                                     mirc + col);
+                        }
+                        else
+                        {
+                            sprintf ((char *) &newtext[j], "%dm",
+                                     mirc + col);
+                        }
+                        j = strlen (newtext);
+                    }
+                    switch (text[i])
+                    {
+                    case ',':
+                        comma = TRUE;
+                        break;
+                    default:
+                        goto jump;
+                    }
+                    k = 0;
+                }
                 i++;
-                if (!isdigit (text[i]))
-                  {
-                      newtext[j] = 27;
-                      j++;
-                      newtext[j] = '[';
-                      j++;
-                      newtext[j] = 'm';
-                      j++;
-                      i--;
-                      goto jump2;
-                  }
-                k = 0;
-                comma = FALSE;
-                while (i < len)
-                  {
-                      if (text[i] >= '0' && text[i] <= '9' && k < 2)
-                        {
-                            num[k] = text[i];
-                            k++;
-                        }
-                      else
-                        {
-                            int col, mirc;
-                            num[k] = 0;
-                            newtext[j] = 27;
-                            j++;
-                            newtext[j] = '[';
-                            j++;
-                            if (k == 0)
-                              {
-                                  newtext[j] = 'm';
-                                  j++;
-                              }
-                            else
-                              {
-                                  if (comma)
-                                      col = 40;
-                                  else
-                                      col = 30;
-                                  mirc = atoi (num);
-                                  mirc = colconv[mirc];
-                                  if (mirc > 9)
-                                    {
-                                        mirc += 50;
-                                        sprintf ((char *) &newtext[j], "%dm",
-                                                 mirc + col);
-                                    }
-                                  else
-                                    {
-                                        sprintf ((char *) &newtext[j], "%dm",
-                                                 mirc + col);
-                                    }
-                                  j = strlen (newtext);
-                              }
-                            switch (text[i])
-                              {
-                              case ',':
-                                  comma = TRUE;
-                                  break;
-                              default:
-                                  goto jump;
-                              }
-                            k = 0;
-                        }
-                      i++;
-                  }
-                break;
-            case '\026':       /* REVERSE */
-                if (reverse)
-                  {
-                      reverse = FALSE;
-                      strcpy (&newtext[j], "\033[27m");
-                  }
-                else
-                  {
-                      reverse = TRUE;
-                      strcpy (&newtext[j], "\033[7m");
-                  }
-                j = strlen (newtext);
-                break;
-            case '\037':       /* underline */
-                if (under)
-                  {
-                      under = FALSE;
-                      strcpy (&newtext[j], "\033[24m");
-                  }
-                else
-                  {
-                      under = TRUE;
-                      strcpy (&newtext[j], "\033[4m");
-                  }
-                j = strlen (newtext);
-                break;
-            case '\002':       /* bold */
-                if (bold)
-                  {
-                      bold = FALSE;
-                      strcpy (&newtext[j], "\033[22m");
-                  }
-                else
-                  {
-                      bold = TRUE;
-                      strcpy (&newtext[j], "\033[1m");
-                  }
-                j = strlen (newtext);
-                break;
-            case '\007':
-                if (!prefs.filterbeep)
-                  {
-                      newtext[j] = text[i];
-                      j++;
-                  }
-                break;
-            case '\017':       /* reset all */
-                strcpy (&newtext[j], "\033[m");
-                j += 3;
+            }
+            break;
+        case '\026':       /* REVERSE */
+            if (reverse)
+            {
                 reverse = FALSE;
-                bold = FALSE;
+                strcpy (&newtext[j], "\033[27m");
+            }
+            else
+            {
+                reverse = TRUE;
+                strcpy (&newtext[j], "\033[7m");
+            }
+            j = strlen (newtext);
+            break;
+        case '\037':       /* underline */
+            if (under)
+            {
                 under = FALSE;
-                break;
-            case '\t':
-                newtext[j] = ' ';
-                j++;
-                break;
-            case '\n':
-                newtext[j] = '\r';
-                j++;
-                if (prefs.timestamp)
-                    dotime = TRUE;
-            default:
+                strcpy (&newtext[j], "\033[24m");
+            }
+            else
+            {
+                under = TRUE;
+                strcpy (&newtext[j], "\033[4m");
+            }
+            j = strlen (newtext);
+            break;
+        case '\002':       /* bold */
+            if (bold)
+            {
+                bold = FALSE;
+                strcpy (&newtext[j], "\033[22m");
+            }
+            else
+            {
+                bold = TRUE;
+                strcpy (&newtext[j], "\033[1m");
+            }
+            j = strlen (newtext);
+            break;
+        case '\007':
+            if (!prefs.filterbeep)
+            {
                 newtext[j] = text[i];
                 j++;
             }
-        jump2:
-          i++;
-        jump:
-          i += 0;
-      }
+            break;
+        case '\017':       /* reset all */
+            strcpy (&newtext[j], "\033[m");
+            j += 3;
+            reverse = FALSE;
+            bold = FALSE;
+            under = FALSE;
+            break;
+        case '\t':
+            newtext[j] = ' ';
+            j++;
+            break;
+        case '\n':
+            newtext[j] = '\r';
+            j++;
+            if (prefs.timestamp)
+                dotime = TRUE;
+        default:
+            newtext[j] = text[i];
+            j++;
+        }
+jump2:
+        i++;
+jump:
+        i += 0;
+    }
     newtext[j] = 0;
     write (STDOUT_FILENO, newtext, j);
     free (newtext);
@@ -320,16 +320,16 @@ fe_timeout_remove (int tag)
 
     list = tmr_list;
     while (list)
-      {
-          te = (timerevent *) list->data;
-          if (te->tag == tag)
-            {
-                tmr_list = g_slist_remove (tmr_list, te);
-                free (te);
-                return;
-            }
-          list = list->next;
-      }
+    {
+        te = (timerevent *) list->data;
+        if (te->tag == tag)
+        {
+            tmr_list = g_slist_remove (tmr_list, te);
+            free (te);
+            return;
+        }
+        list = list->next;
+    }
 }
 
 int
@@ -361,16 +361,16 @@ fe_input_remove (int tag)
 
     list = se_list;
     while (list)
-      {
-          se = (socketevent *) list->data;
-          if (se->tag == tag)
-            {
-                se_list = g_slist_remove (se_list, se);
-                free (se);
-                return;
-            }
-          list = list->next;
-      }
+    {
+        se = (socketevent *) list->data;
+        if (se->tag == tag)
+        {
+            se_list = g_slist_remove (se_list, se);
+            free (se);
+            return;
+        }
+        list = list->next;
+    }
 }
 
 int
@@ -396,14 +396,14 @@ int
 fe_args (int argc, char *argv[])
 {
     if (argc > 1)
-      {
-          if (!strcasecmp (argv[1], "--version")
-              || !strcasecmp (argv[1], "-v"))
-            {
-                puts (PACKAGE_VERSION);
-                return 0;
-            }
-      }
+    {
+        if (!strcasecmp (argv[1], "--version")
+                || !strcasecmp (argv[1], "-v"))
+        {
+            puts (PACKAGE_VERSION);
+            return 0;
+        }
+    }
     return -1;
 }
 
@@ -435,111 +435,111 @@ fe_main (void)
         new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 
     while (!done)
-      {
-          FD_ZERO (&rd);
-          FD_ZERO (&wd);
-          FD_ZERO (&ex);
+    {
+        FD_ZERO (&rd);
+        FD_ZERO (&wd);
+        FD_ZERO (&ex);
 
-          list = se_list;
-          while (list)
+        list = se_list;
+        while (list)
+        {
+            se = (socketevent *) list->data;
+            if (se->rread)
+                FD_SET (se->sok, &rd);
+            if (se->wwrite)
+                FD_SET (se->sok, &wd);
+            if (se->eexcept)
+                FD_SET (se->sok, &ex);
+            list = list->next;
+        }
+
+        FD_SET (STDIN_FILENO, &rd);   /* for reading keyboard */
+
+        /* find the shortest timeout event */
+        shortest = 0;
+        list = tmr_list;
+        while (list)
+        {
+            te = (timerevent *) list->data;
+            if (te->next_call < shortest || shortest == 0)
+                shortest = te->next_call;
+            list = list->next;
+        }
+        gettimeofday (&now, NULL);
+        delay = shortest - ((now.tv_sec * 1000) + (now.tv_usec / 1000));
+        timeout.tv_sec = delay / 1000;
+        timeout.tv_usec = (delay % 1000) * 1000;
+
+        select (FD_SETSIZE, &rd, &wd, &ex, &timeout);
+
+        if (FD_ISSET (STDIN_FILENO, &rd))
+            read_stdin ();
+
+        /* set all checked flags to false */
+        list = se_list;
+        while (list)
+        {
+            se = (socketevent *) list->data;
+            se->checked = 0;
+            list = list->next;
+        }
+
+        /* check all the socket callbacks */
+        list = se_list;
+        while (list)
+        {
+            se = (socketevent *) list->data;
+            se->checked = 1;
+            if (se->rread && FD_ISSET (se->sok, &rd))
+            {
+                se->callback (NULL, 1, se->userdata);
+            }
+            else if (se->wwrite && FD_ISSET (se->sok, &wd))
+            {
+                se->callback (NULL, 2, se->userdata);
+            }
+            else if (se->eexcept && FD_ISSET (se->sok, &ex))
+            {
+                se->callback (NULL, 4, se->userdata);
+            }
+            list = se_list;
+            if (list)
             {
                 se = (socketevent *) list->data;
-                if (se->rread)
-                    FD_SET (se->sok, &rd);
-                if (se->wwrite)
-                    FD_SET (se->sok, &wd);
-                if (se->eexcept)
-                    FD_SET (se->sok, &ex);
-                list = list->next;
+                while (se->checked)
+                {
+                    list = list->next;
+                    if (!list)
+                        break;
+                    se = (socketevent *) list->data;
+                }
             }
+        }
 
-          FD_SET (STDIN_FILENO, &rd);   /* for reading keyboard */
-
-          /* find the shortest timeout event */
-          shortest = 0;
-          list = tmr_list;
-          while (list)
+        /* now check our list of timeout events, some might need to be called! */
+        gettimeofday (&now, NULL);
+        list = tmr_list;
+        while (list)
+        {
+            te = (timerevent *) list->data;
+            list = list->next;
+            if (now.tv_sec * 1000 + (now.tv_usec / 1000) >= te->next_call)
             {
-                te = (timerevent *) list->data;
-                if (te->next_call < shortest || shortest == 0)
-                    shortest = te->next_call;
-                list = list->next;
+                /* if the callback returns 0, it must be removed */
+                if (te->callback (te->userdata) == 0)
+                {
+                    fe_timeout_remove (te->tag);
+                }
+                else
+                {
+                    te->next_call =
+                        now.tv_sec * 1000 + (now.tv_usec / 1000) +
+                        te->interval;
+                }
             }
-          gettimeofday (&now, NULL);
-          delay = shortest - ((now.tv_sec * 1000) + (now.tv_usec / 1000));
-          timeout.tv_sec = delay / 1000;
-          timeout.tv_usec = (delay % 1000) * 1000;
+        }
 
-          select (FD_SETSIZE, &rd, &wd, &ex, &timeout);
-
-          if (FD_ISSET (STDIN_FILENO, &rd))
-              read_stdin ();
-
-          /* set all checked flags to false */
-          list = se_list;
-          while (list)
-            {
-                se = (socketevent *) list->data;
-                se->checked = 0;
-                list = list->next;
-            }
-
-          /* check all the socket callbacks */
-          list = se_list;
-          while (list)
-            {
-                se = (socketevent *) list->data;
-                se->checked = 1;
-                if (se->rread && FD_ISSET (se->sok, &rd))
-                  {
-                      se->callback (NULL, 1, se->userdata);
-                  }
-                else if (se->wwrite && FD_ISSET (se->sok, &wd))
-                  {
-                      se->callback (NULL, 2, se->userdata);
-                  }
-                else if (se->eexcept && FD_ISSET (se->sok, &ex))
-                  {
-                      se->callback (NULL, 4, se->userdata);
-                  }
-                list = se_list;
-                if (list)
-                  {
-                      se = (socketevent *) list->data;
-                      while (se->checked)
-                        {
-                            list = list->next;
-                            if (!list)
-                                break;
-                            se = (socketevent *) list->data;
-                        }
-                  }
-            }
-
-          /* now check our list of timeout events, some might need to be called! */
-          gettimeofday (&now, NULL);
-          list = tmr_list;
-          while (list)
-            {
-                te = (timerevent *) list->data;
-                list = list->next;
-                if (now.tv_sec * 1000 + (now.tv_usec / 1000) >= te->next_call)
-                  {
-                      /* if the callback returns 0, it must be removed */
-                      if (te->callback (te->userdata) == 0)
-                        {
-                            fe_timeout_remove (te->tag);
-                        }
-                      else
-                        {
-                            te->next_call =
-                                now.tv_sec * 1000 + (now.tv_usec / 1000) +
-                                te->interval;
-                        }
-                  }
-            }
-
-      }
+    }
 }
 
 void

@@ -53,7 +53,7 @@ extern char *pntevts_text[];
 extern char *pntevts[];
 
 static GtkWidget *pevent_dialog = NULL, *pevent_dialog_twid,
-    *pevent_dialog_entry, *pevent_dialog_list, *pevent_dialog_hlist;
+                  *pevent_dialog_entry, *pevent_dialog_list, *pevent_dialog_hlist;
 
 enum
 {
@@ -82,37 +82,37 @@ PrintTextLine (xtext_buffer * xtbuf, unsigned char *text, int len, int indent,
         len = 1;
 
     if (!indent)
-      {
-          if (prefs.timestamp)
-            {
-                int stamp_size;
-                char *stamp;
+    {
+        if (prefs.timestamp)
+        {
+            int stamp_size;
+            char *stamp;
 
-                if (timet == 0)
-                    timet = time (0);
+            if (timet == 0)
+                timet = time (0);
 
-                stamp_size =
-                    get_stamp_str (prefs.stamp_format, timet, &stamp);
-                new_text = malloc (len + stamp_size + 1);
-                memcpy (new_text, stamp, stamp_size);
-                g_free (stamp);
-                memcpy (new_text + stamp_size, text, len);
-                gtk_xtext_append (xtbuf, new_text, len + stamp_size);
-                free (new_text);
-            }
-          else
-              gtk_xtext_append (xtbuf, text, len);
-          return;
-      }
+            stamp_size =
+                get_stamp_str (prefs.stamp_format, timet, &stamp);
+            new_text = malloc (len + stamp_size + 1);
+            memcpy (new_text, stamp, stamp_size);
+            g_free (stamp);
+            memcpy (new_text + stamp_size, text, len);
+            gtk_xtext_append (xtbuf, new_text, len + stamp_size);
+            free (new_text);
+        }
+        else
+            gtk_xtext_append (xtbuf, text, len);
+        return;
+    }
 
     tab = strchr (text, '\t');
     if (tab && tab < (text + len))
-      {
-          leftlen = tab - text;
-          gtk_xtext_append_indent (xtbuf,
-                                   text, leftlen, tab + 1,
-                                   len - (leftlen + 1), timet);
-      }
+    {
+        leftlen = tab - text;
+        gtk_xtext_append_indent (xtbuf,
+                                 text, leftlen, tab + 1,
+                                 len - (leftlen + 1), timet);
+    }
     else
         gtk_xtext_append_indent (xtbuf, 0, 0, text, len, timet);
 }
@@ -126,33 +126,33 @@ PrintTextRaw (void *xtbuf, unsigned char *text, int indent, time_t stamp)
 
     /* split the text into separate lines */
     while (1)
-      {
-          switch (*text)
-            {
-            case 0:
-                PrintTextLine (xtbuf, last_text, len, indent, stamp);
+    {
+        switch (*text)
+        {
+        case 0:
+            PrintTextLine (xtbuf, last_text, len, indent, stamp);
+            return;
+        case '\n':
+            PrintTextLine (xtbuf, last_text, len, indent, stamp);
+            text++;
+            if (*text == 0)
                 return;
-            case '\n':
-                PrintTextLine (xtbuf, last_text, len, indent, stamp);
-                text++;
-                if (*text == 0)
-                    return;
-                last_text = text;
-                len = 0;
-                break;
-            case ATTR_BEEP:
-                *text = ' ';
-                if (!beep_done) /* beeps may be slow, so only do 1 per line */
-                  {
-                      beep_done = TRUE;
-                      if (!prefs.filterbeep)
-                          gdk_beep ();
-                  }
-            default:
-                text++;
-                len++;
+            last_text = text;
+            len = 0;
+            break;
+        case ATTR_BEEP:
+            *text = ' ';
+            if (!beep_done) /* beeps may be slow, so only do 1 per line */
+            {
+                beep_done = TRUE;
+                if (!prefs.filterbeep)
+                    gdk_beep ();
             }
-      }
+        default:
+            text++;
+            len++;
+        }
+    }
 }
 
 static void
@@ -180,22 +180,22 @@ pevent_dialog_update (GtkWidget * wid, GtkWidget * twid)
     len = strlen (text);
 
     if (pevt_build_string (text, &out, &m) != 0)
-      {
-          fe_message (_("There was an error parsing the string"),
-                      FE_MSG_ERROR);
-          return;
-      }
+    {
+        fe_message (_("There was an error parsing the string"),
+                    FE_MSG_ERROR);
+        return;
+    }
     if (m > (te[sig].num_args & 0x7f))
-      {
-          free (out);
-          out = malloc (4096);
-          snprintf (out, 4096,
-                    _("This signal is only passed %d args, $%d is invalid"),
-                    te[sig].num_args & 0x7f, m);
-          fe_message (out, FE_MSG_WARN);
-          free (out);
-          return;
-      }
+    {
+        free (out);
+        out = malloc (4096);
+        snprintf (out, 4096,
+                  _("This signal is only passed %d args, $%d is invalid"),
+                  te[sig].num_args & 0x7f, m);
+        fe_message (out, FE_MSG_WARN);
+        free (out);
+        return;
+    }
 
     store =
         (GtkListStore *)
@@ -237,14 +237,14 @@ pevent_dialog_hfill (GtkWidget * list, int e)
         gtk_tree_view_get_model (GTK_TREE_VIEW (pevent_dialog_hlist));
     gtk_list_store_clear (store);
     while (i < (te[e].num_args & 0x7f))
-      {
-          text = _(te[e].help[i]);
-          i++;
-          if (text[0] == '\001')
-              text++;
-          gtk_list_store_insert_with_values (store, &iter, -1,
-                                             0, i, 1, text, -1);
-      }
+    {
+        text = _(te[e].help[i]);
+        i++;
+        if (text[0] == '\001')
+            text++;
+        gtk_list_store_insert_with_values (store, &iter, -1,
+                                           0, i, 1, text, -1);
+    }
 }
 
 static void
@@ -253,7 +253,7 @@ pevent_dialog_unselect (void)
     gtk_entry_set_text (GTK_ENTRY (pevent_dialog_entry), "");
     gtk_list_store_clear ((GtkListStore *)
                           gtk_tree_view_get_model (GTK_TREE_VIEW
-                                                   (pevent_dialog_hlist)));
+                                  (pevent_dialog_hlist)));
 }
 
 static void
@@ -265,16 +265,16 @@ pevent_dialog_select (GtkTreeSelection * sel, gpointer store)
 
     if (!gtkutil_treeview_get_selected (GTK_TREE_VIEW (pevent_dialog_list),
                                         &iter, COL_ROW, &sig, -1))
-      {
-          pevent_dialog_unselect ();
-      }
+    {
+        pevent_dialog_unselect ();
+    }
     else
-      {
-          gtk_tree_model_get (store, &iter, COL_EVENT_TEXT, &text, -1);
-          gtk_entry_set_text (GTK_ENTRY (pevent_dialog_entry), text);
-          g_free (text);
-          pevent_dialog_hfill (pevent_dialog_hlist, sig);
-      }
+    {
+        gtk_tree_model_get (store, &iter, COL_EVENT_TEXT, &text, -1);
+        gtk_entry_set_text (GTK_ENTRY (pevent_dialog_entry), text);
+        g_free (text);
+        pevent_dialog_hfill (pevent_dialog_hlist, sig);
+    }
 }
 
 static void
@@ -289,13 +289,13 @@ pevent_dialog_fill (GtkWidget * list)
 
     i = NUM_XP;
     do
-      {
-          i--;
-          gtk_list_store_insert_with_values (store, &iter, 0,
-                                             COL_EVENT_NAME, te[i].name,
-                                             COL_EVENT_TEXT, pntevts_text[i],
-                                             COL_ROW, i, -1);
-      }
+    {
+        i--;
+        gtk_list_store_insert_with_values (store, &iter, 0,
+                                           COL_EVENT_NAME, te[i].name,
+                                           COL_EVENT_TEXT, pntevts_text[i],
+                                           COL_ROW, i, -1);
+    }
     while (i != 0);
 }
 
@@ -310,11 +310,11 @@ static void
 pevent_save_cb (GtkWidget * wid, void *data)
 {
     if (data)
-      {
-          gtkutil_file_req (_("Print Texts File"), pevent_save_req_cb, NULL,
-                            NULL, FRF_WRITE);
-          return;
-      }
+    {
+        gtkutil_file_req (_("Print Texts File"), pevent_save_req_cb, NULL,
+                          NULL, FRF_WRITE);
+        return;
+    }
     pevent_save (NULL);
 }
 
@@ -322,13 +322,13 @@ static void
 pevent_load_req_cb (void *arg1, char *file)
 {
     if (file)
-      {
-          pevent_load (file);
-          pevent_make_pntevts ();
-          pevent_dialog_fill (pevent_dialog_list);
-          pevent_dialog_unselect ();
-          prefs.save_pevents = 1;
-      }
+    {
+        pevent_load (file);
+        pevent_make_pntevts ();
+        pevent_dialog_fill (pevent_dialog_list);
+        pevent_dialog_unselect ();
+        prefs.save_pevents = 1;
+    }
 }
 
 static void
@@ -351,19 +351,19 @@ pevent_test_cb (GtkWidget * wid, GtkWidget * twid)
     char *out, *text;
 
     for (n = 0; n < NUM_XP; n++)
-      {
-          text = _(pntevts_text[n]);
-          len = strlen (text);
+    {
+        text = _(pntevts_text[n]);
+        len = strlen (text);
 
-          out = malloc (len + 2);
-          memcpy (out, text, len + 1);
-          out[len] = '\n';
-          out[len + 1] = 0;
-          check_special_chars (out, TRUE);
+        out = malloc (len + 2);
+        memcpy (out, text, len + 1);
+        out[len] = '\n';
+        out[len + 1] = 0;
+        check_special_chars (out, TRUE);
 
-          PrintTextRaw (GTK_XTEXT (twid)->buffer, out, 0, 0);
-          free (out);
-      }
+        PrintTextRaw (GTK_XTEXT (twid)->buffer, out, 0, 0);
+        free (out);
+    }
 }
 
 void
@@ -374,10 +374,10 @@ pevent_dialog_show ()
     GtkTreeSelection *sel;
 
     if (pevent_dialog)
-      {
-          mg_bring_tofront (pevent_dialog);
-          return;
-      }
+    {
+        mg_bring_tofront (pevent_dialog);
+        return;
+    }
 
     pevent_dialog =
         mg_create_generic_tab ("edit events", _("Edit Events"),
@@ -432,9 +432,9 @@ pevent_dialog_show ()
 
     hstore = gtk_list_store_new (2, G_TYPE_INT, G_TYPE_STRING);
     pevent_dialog_hlist = gtkutil_treeview_new (bh, GTK_TREE_MODEL (hstore),
-                                                NULL,
-                                                0, _("$ Number"),
-                                                1, _("Description"), -1);
+                          NULL,
+                          0, _("$ Number"),
+                          1, _("Description"), -1);
     gtk_widget_show (pevent_dialog_hlist);
 
     pevent_dialog_fill (pevent_dialog_list);

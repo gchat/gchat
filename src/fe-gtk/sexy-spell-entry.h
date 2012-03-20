@@ -58,7 +58,7 @@ struct _SexySpellEntryClass
     GtkEntryClass parent_class;
 
     /* Signals */
-      gboolean (*word_check) (SexySpellEntry * entry, const gchar * word);
+    gboolean (*word_check) (SexySpellEntry * entry, const gchar * word);
 
     void (*gtk_reserved1) (void);
     void (*gtk_reserved2) (void);
@@ -72,17 +72,17 @@ GQuark sexy_spell_error_quark (void);
 
 GSList *sexy_spell_entry_get_languages (const SexySpellEntry * entry);
 gchar *sexy_spell_entry_get_language_name (const SexySpellEntry * entry,
-                                           const gchar * lang);
+        const gchar * lang);
 gboolean sexy_spell_entry_language_is_active (const SexySpellEntry * entry,
-                                              const gchar * lang);
+        const gchar * lang);
 gboolean sexy_spell_entry_activate_language (SexySpellEntry * entry,
-                                             const gchar * lang,
-                                             GError ** error);
+        const gchar * lang,
+        GError ** error);
 void sexy_spell_entry_deactivate_language (SexySpellEntry * entry,
-                                           const gchar * lang);
+        const gchar * lang);
 gboolean sexy_spell_entry_set_active_languages (SexySpellEntry * entry,
-                                                GSList * langs,
-                                                GError ** error);
+        GSList * langs,
+        GError ** error);
 GSList *sexy_spell_entry_get_active_languages (SexySpellEntry * entry);
 gboolean sexy_spell_entry_is_checked (SexySpellEntry * entry);
 void sexy_spell_entry_set_checked (SexySpellEntry * entry, gboolean checked);

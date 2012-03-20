@@ -84,22 +84,22 @@ static gboolean
 chanlist_match (server * serv, const char *str)
 {
     switch (serv->gui->chanlist_search_type)
-      {
-      case 1:
-          return match (GTK_ENTRY (serv->gui->chanlist_wild)->text, str);
+    {
+    case 1:
+        return match (GTK_ENTRY (serv->gui->chanlist_wild)->text, str);
 #ifndef WIN32
-      case 2:
-          if (!serv->gui->have_regex)
-              return 0;
-          /* regex returns 0 if it's a match: */
-          return !regexec (&serv->gui->chanlist_match_regex, str, 1, NULL,
-                           REG_NOTBOL);
+    case 2:
+        if (!serv->gui->have_regex)
+            return 0;
+        /* regex returns 0 if it's a match: */
+        return !regexec (&serv->gui->chanlist_match_regex, str, 1, NULL,
+                         REG_NOTBOL);
 #endif
-      default:                 /* case 0: */
-          return nocasestrstr (str,
-                               GTK_ENTRY (serv->gui->chanlist_wild)->
-                               text) ? 1 : 0;
-      }
+    default:                 /* case 0: */
+        return nocasestrstr (str,
+                             GTK_ENTRY (serv->gui->chanlist_wild)->
+                             text) ? 1 : 0;
+    }
 }
 
 /**
@@ -125,15 +125,15 @@ static void
 chanlist_update_buttons (server * serv)
 {
     if (serv->gui->chanlist_channels_shown_count)
-      {
-          gtk_widget_set_sensitive (serv->gui->chanlist_join, TRUE);
-          gtk_widget_set_sensitive (serv->gui->chanlist_savelist, TRUE);
-      }
+    {
+        gtk_widget_set_sensitive (serv->gui->chanlist_join, TRUE);
+        gtk_widget_set_sensitive (serv->gui->chanlist_savelist, TRUE);
+    }
     else
-      {
-          gtk_widget_set_sensitive (serv->gui->chanlist_join, FALSE);
-          gtk_widget_set_sensitive (serv->gui->chanlist_savelist, FALSE);
-      }
+    {
+        gtk_widget_set_sensitive (serv->gui->chanlist_join, FALSE);
+        gtk_widget_set_sensitive (serv->gui->chanlist_savelist, FALSE);
+    }
 }
 
 static void
@@ -157,19 +157,19 @@ chanlist_data_free (server * serv)
     chanlistrow *data;
 
     if (serv->gui->chanlist_data_stored_rows)
-      {
-          for (rows = serv->gui->chanlist_data_stored_rows; rows != NULL;
-               rows = rows->next)
-            {
-                data = rows->data;
-                g_free (data->topic);
-                g_free (data->collation_key);
-                free (data);
-            }
+    {
+        for (rows = serv->gui->chanlist_data_stored_rows; rows != NULL;
+                rows = rows->next)
+        {
+            data = rows->data;
+            g_free (data->topic);
+            g_free (data->collation_key);
+            free (data);
+        }
 
-          g_slist_free (serv->gui->chanlist_data_stored_rows);
-          serv->gui->chanlist_data_stored_rows = NULL;
-      }
+        g_slist_free (serv->gui->chanlist_data_stored_rows);
+        serv->gui->chanlist_data_stored_rows = NULL;
+    }
 
     g_slist_free (serv->gui->chanlist_pending_rows);
     serv->gui->chanlist_pending_rows = NULL;
@@ -185,19 +185,19 @@ chanlist_flush_pending (server * serv)
     chanlistrow *row;
 
     if (!list)
-      {
-          if (serv->gui->chanlist_caption_is_stale)
-              chanlist_update_caption (serv);
-          return;
-      }
+    {
+        if (serv->gui->chanlist_caption_is_stale)
+            chanlist_update_caption (serv);
+        return;
+    }
     model = GET_MODEL (serv);
 
     while (list)
-      {
-          row = list->data;
-          custom_list_append (CUSTOM_LIST (model), row);
-          list = list->next;
-      }
+    {
+        row = list->data;
+        custom_list_append (CUSTOM_LIST (model), row);
+        list = list->next;
+    }
 
     g_slist_free (serv->gui->chanlist_pending_rows);
     serv->gui->chanlist_pending_rows = NULL;
@@ -230,60 +230,60 @@ chanlist_place_row_in_gui (server * serv, chanlistrow * next_row,
         chanlist_update_buttons (serv);
 
     if (next_row->users < serv->gui->chanlist_minusers)
-      {
-          serv->gui->chanlist_caption_is_stale = TRUE;
-          return;
-      }
+    {
+        serv->gui->chanlist_caption_is_stale = TRUE;
+        return;
+    }
 
     if (next_row->users > serv->gui->chanlist_maxusers
-        && serv->gui->chanlist_maxusers > 0)
-      {
-          serv->gui->chanlist_caption_is_stale = TRUE;
-          return;
-      }
+            && serv->gui->chanlist_maxusers > 0)
+    {
+        serv->gui->chanlist_caption_is_stale = TRUE;
+        return;
+    }
 
     if (GTK_ENTRY (serv->gui->chanlist_wild)->text[0])
-      {
-          /* Check what the user wants to match. If both buttons or _neither_
-           * button is checked, look for match in both by default. 
-           */
-          if (serv->gui->chanlist_match_wants_channel ==
-              serv->gui->chanlist_match_wants_topic)
-            {
-                if (!chanlist_match (serv, GET_CHAN (next_row))
+    {
+        /* Check what the user wants to match. If both buttons or _neither_
+         * button is checked, look for match in both by default.
+         */
+        if (serv->gui->chanlist_match_wants_channel ==
+                serv->gui->chanlist_match_wants_topic)
+        {
+            if (!chanlist_match (serv, GET_CHAN (next_row))
                     && !chanlist_match (serv, next_row->topic))
-                  {
-                      serv->gui->chanlist_caption_is_stale = TRUE;
-                      return;
-                  }
-            }
-
-          else if (serv->gui->chanlist_match_wants_channel)
             {
-                if (!chanlist_match (serv, GET_CHAN (next_row)))
-                  {
-                      serv->gui->chanlist_caption_is_stale = TRUE;
-                      return;
-                  }
+                serv->gui->chanlist_caption_is_stale = TRUE;
+                return;
             }
+        }
 
-          else if (serv->gui->chanlist_match_wants_topic)
+        else if (serv->gui->chanlist_match_wants_channel)
+        {
+            if (!chanlist_match (serv, GET_CHAN (next_row)))
             {
-                if (!chanlist_match (serv, next_row->topic))
-                  {
-                      serv->gui->chanlist_caption_is_stale = TRUE;
-                      return;
-                  }
+                serv->gui->chanlist_caption_is_stale = TRUE;
+                return;
             }
-      }
+        }
+
+        else if (serv->gui->chanlist_match_wants_topic)
+        {
+            if (!chanlist_match (serv, next_row->topic))
+            {
+                serv->gui->chanlist_caption_is_stale = TRUE;
+                return;
+            }
+        }
+    }
 
     if (force || serv->gui->chanlist_channels_shown_count < 20)
-      {
-          model = GET_MODEL (serv);
-          /* makes it appear fast :) */
-          custom_list_append (CUSTOM_LIST (model), next_row);
-          chanlist_update_caption (serv);
-      }
+    {
+        model = GET_MODEL (serv);
+        /* makes it appear fast :) */
+        custom_list_append (CUSTOM_LIST (model), next_row);
+        chanlist_update_caption (serv);
+    }
     else
         /* add it to GUI at the next update interval */
         serv->gui->chanlist_pending_rows =
@@ -300,16 +300,16 @@ static void
 chanlist_do_refresh (server * serv)
 {
     if (serv->gui->chanlist_flash_tag)
-      {
-          g_source_remove (serv->gui->chanlist_flash_tag);
-          serv->gui->chanlist_flash_tag = 0;
-      }
+    {
+        g_source_remove (serv->gui->chanlist_flash_tag);
+        serv->gui->chanlist_flash_tag = 0;
+    }
 
     if (!serv->connected)
-      {
-          fe_message (_("Not connected."), FE_MSG_ERROR);
-          return;
-      }
+    {
+        fe_message (_("Not connected."), FE_MSG_ERROR);
+        return;
+    }
 
     custom_list_clear ((CustomList *) GET_MODEL (serv));
     gtk_widget_set_sensitive (serv->gui->chanlist_refresh, FALSE);
@@ -319,22 +319,22 @@ chanlist_do_refresh (server * serv)
 
     /* can we request a list with minusers arg? */
     if (serv->use_listargs)
-      {
-          /* yes - it will download faster */
-          serv->p_list_channels (serv, "", serv->gui->chanlist_minusers);
-          /* don't allow the spin button below this value from now on */
-          serv->gui->chanlist_minusers_downloaded =
-              serv->gui->chanlist_minusers;
-      }
+    {
+        /* yes - it will download faster */
+        serv->p_list_channels (serv, "", serv->gui->chanlist_minusers);
+        /* don't allow the spin button below this value from now on */
+        serv->gui->chanlist_minusers_downloaded =
+            serv->gui->chanlist_minusers;
+    }
     else
-      {
-          /* download all, filter minusers locally only */
-          serv->p_list_channels (serv, "", 1);
-          serv->gui->chanlist_minusers_downloaded = 1;
-      }
+    {
+        /* download all, filter minusers locally only */
+        serv->p_list_channels (serv, "", 1);
+        serv->gui->chanlist_minusers_downloaded = 1;
+    }
 
-/*	gtk_spin_button_set_range ((GtkSpinButton *)serv->gui->chanlist_min_spin,
-										serv->gui->chanlist_minusers_downloaded, 999999);*/
+    /*	gtk_spin_button_set_range ((GtkSpinButton *)serv->gui->chanlist_min_spin,
+    										serv->gui->chanlist_minusers_downloaded, 999999);*/
 }
 
 static void
@@ -353,11 +353,11 @@ chanlist_build_gui_list (server * serv)
 
     /* first check if the list is present */
     if (serv->gui->chanlist_data_stored_rows == NULL)
-      {
-          /* start a download */
-          chanlist_do_refresh (serv);
-          return;
-      }
+    {
+        /* start a download */
+        chanlist_do_refresh (serv);
+        return;
+    }
 
     custom_list_clear ((CustomList *) GET_MODEL (serv));
 
@@ -370,10 +370,10 @@ chanlist_build_gui_list (server * serv)
 
     /* Refill the list */
     for (rows = serv->gui->chanlist_data_stored_rows; rows != NULL;
-         rows = rows->next)
-      {
-          chanlist_place_row_in_gui (serv, rows->data, TRUE);
-      }
+            rows = rows->next)
+    {
+        chanlist_place_row_in_gui (serv, rows->data, TRUE);
+    }
 
     custom_list_resort ((CustomList *) GET_MODEL (serv));
 }
@@ -426,10 +426,10 @@ chanlist_find_cb (GtkWidget * wid, server * serv)
 #ifndef WIN32
     /* recompile the regular expression. */
     if (serv->gui->have_regex)
-      {
-          serv->gui->have_regex = 0;
-          regfree (&serv->gui->chanlist_match_regex);
-      }
+    {
+        serv->gui->have_regex = 0;
+        regfree (&serv->gui->chanlist_match_regex);
+    }
 
     if (regcomp (&serv->gui->chanlist_match_regex, GTK_ENTRY (wid)->text,
                  REG_ICASE | REG_EXTENDED | REG_NOSUB) == 0)
@@ -473,16 +473,16 @@ chanlist_join (GtkWidget * wid, server * serv)
     char tbuf[CHANLEN + 6];
     char *chan = chanlist_get_selected (serv, FALSE);
     if (chan)
-      {
-          if (serv->connected && (strcmp (chan, "*") != 0))
-            {
-                snprintf (tbuf, sizeof (tbuf), "join %s", chan);
-                handle_command (serv->server_session, tbuf, FALSE);
-            }
-          else
-              gdk_beep ();
-          g_free (chan);
-      }
+    {
+        if (serv->connected && (strcmp (chan, "*") != 0))
+        {
+            snprintf (tbuf, sizeof (tbuf), "join %s", chan);
+            handle_command (serv->server_session, tbuf, FALSE);
+        }
+        else
+            gdk_beep ();
+        g_free (chan);
+    }
 }
 
 static void
@@ -508,20 +508,20 @@ chanlist_filereq_done (server * serv, char *file)
     write (fh, buf, strlen (buf));
 
     if (gtk_tree_model_get_iter_first (model, &iter))
-      {
-          do
-            {
-                gtk_tree_model_get (model, &iter,
-                                    COL_CHANNEL, &chan,
-                                    COL_USERS, &users, COL_TOPIC, &topic, -1);
-                snprintf (buf, sizeof buf, "%-16s %-5d%s\n", chan, users,
-                          topic);
-                g_free (chan);
-                g_free (topic);
-                write (fh, buf, strlen (buf));
-            }
-          while (gtk_tree_model_iter_next (model, &iter));
-      }
+    {
+        do
+        {
+            gtk_tree_model_get (model, &iter,
+                                COL_CHANNEL, &chan,
+                                COL_USERS, &users, COL_TOPIC, &topic, -1);
+            snprintf (buf, sizeof buf, "%-16s %-5d%s\n", chan, users,
+                      topic);
+            g_free (chan);
+            g_free (topic);
+            write (fh, buf, strlen (buf));
+        }
+        while (gtk_tree_model_iter_next (model, &iter));
+    }
 
     close (fh);
 }
@@ -555,20 +555,20 @@ chanlist_minusers (GtkSpinButton * wid, server * serv)
     serv->gui->chanlist_minusers = gtk_spin_button_get_value_as_int (wid);
 
     if (serv->gui->chanlist_minusers <
-        serv->gui->chanlist_minusers_downloaded)
-      {
-          if (serv->gui->chanlist_flash_tag == 0)
-              serv->gui->chanlist_flash_tag =
-                  g_timeout_add (500, (GSourceFunc) chanlist_flash, serv);
-      }
+            serv->gui->chanlist_minusers_downloaded)
+    {
+        if (serv->gui->chanlist_flash_tag == 0)
+            serv->gui->chanlist_flash_tag =
+                g_timeout_add (500, (GSourceFunc) chanlist_flash, serv);
+    }
     else
-      {
-          if (serv->gui->chanlist_flash_tag)
-            {
-                g_source_remove (serv->gui->chanlist_flash_tag);
-                serv->gui->chanlist_flash_tag = 0;
-            }
-      }
+    {
+        if (serv->gui->chanlist_flash_tag)
+        {
+            g_source_remove (serv->gui->chanlist_flash_tag);
+            serv->gui->chanlist_flash_tag = 0;
+        }
+    }
 }
 
 static void
@@ -596,10 +596,10 @@ chanlist_copychannel (GtkWidget * item, server * serv)
 {
     char *chan = chanlist_get_selected (serv, FALSE);
     if (chan)
-      {
-          gtkutil_copy_to_clipboard (item, NULL, chan);
-          g_free (chan);
-      }
+    {
+        gtkutil_copy_to_clipboard (item, NULL, chan);
+        g_free (chan);
+    }
 }
 
 static void
@@ -607,10 +607,10 @@ chanlist_copytopic (GtkWidget * item, server * serv)
 {
     char *topic = chanlist_get_selected (serv, TRUE);
     if (topic)
-      {
-          gtkutil_copy_to_clipboard (item, NULL, topic);
-          g_free (topic);
-      }
+    {
+        gtkutil_copy_to_clipboard (item, NULL, topic);
+        g_free (topic);
+    }
 }
 
 static gboolean
@@ -625,7 +625,7 @@ chanlist_button_cb (GtkTreeView * tree, GdkEventButton * event, server * serv)
         return FALSE;
 
     if (!gtk_tree_view_get_path_at_pos
-        (tree, event->x, event->y, &path, 0, 0, 0))
+            (tree, event->x, event->y, &path, 0, 0, 0))
         return FALSE;
 
     /* select what they right-clicked on */
@@ -666,23 +666,23 @@ chanlist_destroy_widget (GtkWidget * wid, server * serv)
     chanlist_data_free (serv);
 
     if (serv->gui->chanlist_flash_tag)
-      {
-          g_source_remove (serv->gui->chanlist_flash_tag);
-          serv->gui->chanlist_flash_tag = 0;
-      }
+    {
+        g_source_remove (serv->gui->chanlist_flash_tag);
+        serv->gui->chanlist_flash_tag = 0;
+    }
 
     if (serv->gui->chanlist_tag)
-      {
-          g_source_remove (serv->gui->chanlist_tag);
-          serv->gui->chanlist_tag = 0;
-      }
+    {
+        g_source_remove (serv->gui->chanlist_tag);
+        serv->gui->chanlist_tag = 0;
+    }
 
 #ifndef WIN32
     if (serv->gui->have_regex)
-      {
-          regfree (&serv->gui->chanlist_match_regex);
-          serv->gui->have_regex = 0;
-      }
+    {
+        regfree (&serv->gui->chanlist_match_regex);
+        serv->gui->have_regex = 0;
+    }
 #endif
 }
 
@@ -705,19 +705,19 @@ chanlist_add_column (GtkWidget * tree, int textcol, int size, char *title,
         g_object_set (G_OBJECT (renderer), "xalign", (gfloat) 1.0, NULL);
     g_object_set (G_OBJECT (renderer), "ypad", (gint) 0, NULL);
     gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tree), -1,
-                                                 title, renderer, "text",
-                                                 textcol, NULL);
+            title, renderer, "text",
+            textcol, NULL);
     gtk_cell_renderer_text_set_fixed_height_from_font (GTK_CELL_RENDERER_TEXT
-                                                       (renderer), 1);
+            (renderer), 1);
 
     col = gtk_tree_view_get_column (GTK_TREE_VIEW (tree), textcol);
     gtk_tree_view_column_set_sort_column_id (col, textcol);
     gtk_tree_view_column_set_resizable (col, TRUE);
     if (textcol != COL_TOPIC)
-      {
-          gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_FIXED);
-          gtk_tree_view_column_set_fixed_width (col, size);
-      }
+    {
+        gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_FIXED);
+        gtk_tree_view_column_set_fixed_width (col, size);
+    }
 }
 
 static void
@@ -735,10 +735,10 @@ chanlist_opengui (server * serv, int do_refresh)
     GtkListStore *store;
 
     if (serv->gui->chanlist_window)
-      {
-          mg_bring_tofront (serv->gui->chanlist_window);
-          return;
-      }
+    {
+        mg_bring_tofront (serv->gui->chanlist_window);
+        return;
+    }
 
     snprintf (tbuf, sizeof tbuf, _("GChat: Channel List (%s)"),
               server_get_network (serv, TRUE));

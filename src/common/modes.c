@@ -78,49 +78,49 @@ send_channel_modes (session * sess, char *tbuf, char *word[], int wpos,
     max = 503 - strlen (sess->channel);
 
     while (wpos < end)
-      {
-          tbuf[0] = '\0';
-          orig_len = len = 0;
+    {
+        tbuf[0] = '\0';
+        orig_len = len = 0;
 
-          /* we'll need this many modechars too */
-          len += modes_per_line;
+        /* we'll need this many modechars too */
+        len += modes_per_line;
 
-          /* how many can we fit? */
-          for (i = 0; i < modes_per_line; i++)
-            {
-                /* no more nicks left? */
-                if (wpos + i >= end)
-                    break;
-                wlen = strlen (word[wpos + i]) + 1;
-                if (wlen + len > max)
-                    break;
-                len += wlen;    /* length of our whole string so far */
-            }
-          if (i < 1)
-              return;
-          usable_modes = i;     /* this is how many we'll send on this line */
+        /* how many can we fit? */
+        for (i = 0; i < modes_per_line; i++)
+        {
+            /* no more nicks left? */
+            if (wpos + i >= end)
+                break;
+            wlen = strlen (word[wpos + i]) + 1;
+            if (wlen + len > max)
+                break;
+            len += wlen;    /* length of our whole string so far */
+        }
+        if (i < 1)
+            return;
+        usable_modes = i;     /* this is how many we'll send on this line */
 
-          /* add the +/-modemodemodemode */
-          len = orig_len;
-          tbuf[len] = sign;
-          len++;
-          for (i = 0; i < usable_modes; i++)
-            {
-                tbuf[len] = mode;
-                len++;
-            }
-          tbuf[len] = 0;        /* null terminate for the strcat() to work */
+        /* add the +/-modemodemodemode */
+        len = orig_len;
+        tbuf[len] = sign;
+        len++;
+        for (i = 0; i < usable_modes; i++)
+        {
+            tbuf[len] = mode;
+            len++;
+        }
+        tbuf[len] = 0;        /* null terminate for the strcat() to work */
 
-          /* add all the nicknames */
-          for (i = 0; i < usable_modes; i++)
-            {
-                strcat (tbuf, " ");
-                strcat (tbuf, word[wpos + i]);
-            }
-          serv->p_mode (serv, sess->channel, tbuf);
+        /* add all the nicknames */
+        for (i = 0; i < usable_modes; i++)
+        {
+            strcat (tbuf, " ");
+            strcat (tbuf, word[wpos + i]);
+        }
+        serv->p_mode (serv, sess->channel, tbuf);
 
-          wpos += usable_modes;
-      }
+        wpos += usable_modes;
+    }
 }
 
 /* does 'chan' have a valid prefix? e.g. # or & */
@@ -142,19 +142,19 @@ is_prefix_char (server * serv, char c)
     char *np = serv->nick_prefixes;
 
     while (np[0])
-      {
-          if (np[0] == c)
-              return pos;
-          pos++;
-          np++;
-      }
+    {
+        if (np[0] == c)
+            return pos;
+        pos++;
+        np++;
+    }
 
     if (serv->bad_prefix)
-      {
-          if (strchr (serv->bad_nick_prefixes, c))
-              /* valid prefix char, but mode unknown */
-              return -2;
-      }
+    {
+        if (strchr (serv->bad_nick_prefixes, c))
+            /* valid prefix char, but mode unknown */
+            return -2;
+    }
 
     return -1;
 }
@@ -168,13 +168,13 @@ get_nick_prefix (server * serv, unsigned int access)
     char c;
 
     for (pos = 0; pos < USERACCESS_SIZE; pos++)
-      {
-          c = serv->nick_prefixes[pos];
-          if (c == 0)
-              break;
-          if (access & (1 << pos))
-              return c;
-      }
+    {
+        c = serv->nick_prefixes[pos];
+        if (c == 0)
+            break;
+        if (access & (1 << pos))
+            return c;
+    }
 
     return 0;
 }
@@ -192,17 +192,17 @@ nick_access (server * serv, char *nick, int *modechars)
     char *orig = nick;
 
     while (*nick)
-      {
-          i = is_prefix_char (serv, *nick);
-          if (i == -1)
-              break;
+    {
+        i = is_prefix_char (serv, *nick);
+        if (i == -1)
+            break;
 
-          /* -2 == valid prefix char, but mode unknown */
-          if (i != -2)
-              access |= (1 << i);
+        /* -2 == valid prefix char, but mode unknown */
+        if (i != -2)
+            access |= (1 << i);
 
-          nick++;
-      }
+        nick++;
+    }
 
     *modechars = nick - orig;
 
@@ -222,14 +222,14 @@ mode_access (server * serv, char mode, char *prefix)
     int pos = 0;
 
     while (serv->nick_modes[pos])
-      {
-          if (serv->nick_modes[pos] == mode)
-            {
-                *prefix = serv->nick_prefixes[pos];
-                return pos;
-            }
-          pos++;
-      }
+    {
+        if (serv->nick_modes[pos] == mode)
+        {
+            *prefix = serv->nick_prefixes[pos];
+            return pos;
+        }
+        pos++;
+    }
 
     *prefix = 0;
 
@@ -256,120 +256,120 @@ record_chan_mode (session * sess, char sign, char mode, char *arg)
     /* find out if the mode currently exists */
     arguments_start = g_strstr_len (current->str, -1, " ");
     if (arguments_start)
-      {
-          modes_length = arguments_start - current->str;
-      }
+    {
+        modes_length = arguments_start - current->str;
+    }
     else
-      {
-          modes_length = current->len;
-          /* set this to the end of the modes */
-          arguments_start = current->str + current->len;
-      }
+    {
+        modes_length = current->len;
+        /* set this to the end of the modes */
+        arguments_start = current->str + current->len;
+    }
 
     while (mode_pos == -1 && i < modes_length)
-      {
-          if (*current_char == mode)
-            {
-                mode_pos = i;
-            }
-          else
-            {
-                i++;
-                current_char++;
-            }
-      }
+    {
+        if (*current_char == mode)
+        {
+            mode_pos = i;
+        }
+        else
+        {
+            i++;
+            current_char++;
+        }
+    }
 
     /* if the mode currently exists and has an arg, need to know where
      * (including leading space) */
     if (mode_pos != -1 && mode_has_arg (serv, '+', mode))
-      {
-          current_char = current->str;
+    {
+        current_char = current->str;
 
-          i = 0;
-          while (i <= mode_pos)
-            {
-                if (mode_has_arg (serv, '+', *current_char))
-                    argument_num++;
-                current_char++;
+        i = 0;
+        while (i <= mode_pos)
+        {
+            if (mode_has_arg (serv, '+', *current_char))
+                argument_num++;
+            current_char++;
+            i++;
+        }
+
+        /* check through arguments for where to start */
+        current_char = arguments_start;
+        i = 0;
+        while (i < argument_num && *current_char != '\0')
+        {
+            if (*current_char == ' ')
                 i++;
-            }
+            if (i != argument_num)
+                current_char++;
+        }
+        argument_offset = current_char - current->str;
 
-          /* check through arguments for where to start */
-          current_char = arguments_start;
-          i = 0;
-          while (i < argument_num && *current_char != '\0')
-            {
-                if (*current_char == ' ')
-                    i++;
-                if (i != argument_num)
-                    current_char++;
-            }
-          argument_offset = current_char - current->str;
-
-          /* how long the existing argument is for this key
-           * important for malloc and strncpy */
-          if (i == argument_num)
+        /* how long the existing argument is for this key
+         * important for malloc and strncpy */
+        if (i == argument_num)
+        {
+            argument_length++;
+            current_char++;
+            while (*current_char != '\0' && *current_char != ' ')
             {
                 argument_length++;
                 current_char++;
-                while (*current_char != '\0' && *current_char != ' ')
-                  {
-                      argument_length++;
-                      current_char++;
-                  }
             }
-      }
+        }
+    }
 
     /* two cases, adding and removing a mode, handled differently */
     if (sign == '+')
-      {
-          if (mode_pos != -1)
+    {
+        if (mode_pos != -1)
+        {
+            /* if it already exists, only need to do something (change)
+             * if there should be a param */
+            if (mode_has_arg (serv, sign, mode))
             {
-                /* if it already exists, only need to do something (change)
-                 * if there should be a param */
-                if (mode_has_arg (serv, sign, mode))
-                  {
-                      /* leave the old space there */
-                      current =
-                          g_string_erase (current, argument_offset + 1,
-                                          argument_length - 1);
-                      current =
-                          g_string_insert (current, argument_offset + 1, arg);
-
-                      free (sess->current_modes);
-                      sess->current_modes = g_string_free (current, FALSE);
-                  }
-            }
-          /* mode wasn't there before */
-          else
-            {
-                /* insert the new mode character */
-                current = g_string_insert_c (current, modes_length, mode);
-
-                /* add the argument, with space if there is one */
-                if (mode_has_arg (serv, sign, mode))
-                  {
-                      current = g_string_append_c (current, ' ');
-                      current = g_string_append (current, arg);
-                  }
+                /* leave the old space there */
+                current =
+                    g_string_erase (current, argument_offset + 1,
+                                    argument_length - 1);
+                current =
+                    g_string_insert (current, argument_offset + 1, arg);
 
                 free (sess->current_modes);
                 sess->current_modes = g_string_free (current, FALSE);
             }
-      }
+        }
+        /* mode wasn't there before */
+        else
+        {
+            /* insert the new mode character */
+            current = g_string_insert_c (current, modes_length, mode);
+
+            /* add the argument, with space if there is one */
+            if (mode_has_arg (serv, sign, mode))
+            {
+                current = g_string_append_c (current, ' ');
+                current = g_string_append (current, arg);
+            }
+
+            free (sess->current_modes);
+            sess->current_modes = g_string_free (current, FALSE);
+        }
+    }
     else if (sign == '-' && mode_pos != -1)
-      {
-          /* remove the argument first if it has one */
-          if (mode_has_arg (serv, '+', mode))
-              current =
-                  g_string_erase (current, argument_offset, argument_length);
+    {
+        /* remove the argument first if it has one */
+        if (mode_has_arg (serv, '+', mode))
+            current =
+                g_string_erase (current, argument_offset, argument_length);
 
-          /* remove the mode character */
-          current = g_string_erase (current, mode_pos, 1);
+        /* remove the mode character */
+        current = g_string_erase (current, mode_pos, 1);
 
-          free (sess->current_modes);
-          sess->current_modes = g_string_free (current, FALSE);
-      }
+        free (sess->current_modes);
+        sess->current_modes = g_string_free (current, FALSE);
+    }
 }
 
 static char *
@@ -378,16 +378,16 @@ mode_cat (char *str, char *addition)
     int len;
 
     if (str)
-      {
-          len = strlen (str) + strlen (addition) + 2;
-          str = realloc (str, len);
-          strcat (str, " ");
-          strcat (str, addition);
-      }
+    {
+        len = strlen (str) + strlen (addition) + 2;
+        str = realloc (str, len);
+        strcat (str, " ");
+        strcat (str, addition);
+    }
     else
-      {
-          str = strdup (addition);
-      }
+    {
+        str = strdup (addition);
+    }
 
     return str;
 }
@@ -410,148 +410,148 @@ handle_single_mode (mode_run * mr, char sign, char mode, char *nick,
 
     sess = find_channel (serv, chan);
     if (!sess || !is_channel (serv, chan))
-      {
-          /* got modes for a chan we're not in! probably nickmode +isw etc */
-          sess = serv->front_session;
-          goto genmode;
-      }
+    {
+        /* got modes for a chan we're not in! probably nickmode +isw etc */
+        sess = serv->front_session;
+        goto genmode;
+    }
 
     /* is this a nick mode? */
     if (strchr (serv->nick_modes, mode))
-      {
-          /* update the user in the userlist */
-          userlist_update_mode (sess, /*nickname */ arg, mode, sign);
-      }
+    {
+        /* update the user in the userlist */
+        userlist_update_mode (sess, /*nickname */ arg, mode, sign);
+    }
     else
-      {
-          if (!is_324 && !sess->ignore_mode
-              && mode_chanmode_type (serv, mode) >= 1)
-              record_chan_mode (sess, sign, mode, arg);
-      }
+    {
+        if (!is_324 && !sess->ignore_mode
+                && mode_chanmode_type (serv, mode) >= 1)
+            record_chan_mode (sess, sign, mode, arg);
+    }
 
     switch (sign)
-      {
-      case '+':
-          switch (mode)
-            {
-            case 'k':
-                safe_strcpy (sess->channelkey, arg,
-                             sizeof (sess->channelkey));
-                fe_update_channel_key (sess);
-                fe_update_mode_buttons (sess, mode, sign);
-                if (!quiet)
-                    EMIT_SIGNAL (XP_TE_CHANSETKEY, sess, nick, arg, NULL,
-                                 NULL, 0);
-                return;
-            case 'l':
-                sess->limit = atoi (arg);
-                fe_update_channel_limit (sess);
-                fe_update_mode_buttons (sess, mode, sign);
-                if (!quiet)
-                    EMIT_SIGNAL (XP_TE_CHANSETLIMIT, sess, nick, arg, NULL,
-                                 NULL, 0);
-                return;
-            case 'o':
-                if (!quiet)
-                    mr->op = mode_cat (mr->op, arg);
-                return;
-            case 'h':
-                if (!quiet)
-                    EMIT_SIGNAL (XP_TE_CHANHOP, sess, nick, arg, NULL, NULL,
-                                 0);
-                return;
-            case 'v':
-                if (!quiet)
-                    mr->voice = mode_cat (mr->voice, arg);
-                return;
-            case 'b':
-                if (!quiet)
-                    EMIT_SIGNAL (XP_TE_CHANBAN, sess, nick, arg, NULL, NULL,
-                                 0);
-                return;
-            case 'e':
-                if (!quiet)
-                    EMIT_SIGNAL (XP_TE_CHANEXEMPT, sess, nick, arg, NULL,
-                                 NULL, 0);
-                return;
-            case 'I':
-                if (!quiet)
-                    EMIT_SIGNAL (XP_TE_CHANINVITE, sess, nick, arg, NULL,
-                                 NULL, 0);
-                return;
-            }
-          break;
-      case '-':
-          switch (mode)
-            {
-            case 'k':
-                sess->channelkey[0] = 0;
-                fe_update_channel_key (sess);
-                fe_update_mode_buttons (sess, mode, sign);
-                if (!quiet)
-                    EMIT_SIGNAL (XP_TE_CHANRMKEY, sess, nick, NULL, NULL,
-                                 NULL, 0);
-                return;
-            case 'l':
-                sess->limit = 0;
-                fe_update_channel_limit (sess);
-                fe_update_mode_buttons (sess, mode, sign);
-                if (!quiet)
-                    EMIT_SIGNAL (XP_TE_CHANRMLIMIT, sess, nick, NULL, NULL,
-                                 NULL, 0);
-                return;
-            case 'o':
-                if (!quiet)
-                    mr->deop = mode_cat (mr->deop, arg);
-                return;
-            case 'h':
-                if (!quiet)
-                    EMIT_SIGNAL (XP_TE_CHANDEHOP, sess, nick, arg, NULL, NULL,
-                                 0);
-                return;
-            case 'v':
-                if (!quiet)
-                    mr->devoice = mode_cat (mr->devoice, arg);
-                return;
-            case 'b':
-                if (!quiet)
-                    EMIT_SIGNAL (XP_TE_CHANUNBAN, sess, nick, arg, NULL, NULL,
-                                 0);
-                return;
-            case 'e':
-                if (!quiet)
-                    EMIT_SIGNAL (XP_TE_CHANRMEXEMPT, sess, nick, arg, NULL,
-                                 NULL, 0);
-                return;
-            case 'I':
-                if (!quiet)
-                    EMIT_SIGNAL (XP_TE_CHANRMINVITE, sess, nick, arg, NULL,
-                                 NULL, 0);
-                return;
-            }
-      }
+    {
+    case '+':
+        switch (mode)
+        {
+        case 'k':
+            safe_strcpy (sess->channelkey, arg,
+                         sizeof (sess->channelkey));
+            fe_update_channel_key (sess);
+            fe_update_mode_buttons (sess, mode, sign);
+            if (!quiet)
+                EMIT_SIGNAL (XP_TE_CHANSETKEY, sess, nick, arg, NULL,
+                             NULL, 0);
+            return;
+        case 'l':
+            sess->limit = atoi (arg);
+            fe_update_channel_limit (sess);
+            fe_update_mode_buttons (sess, mode, sign);
+            if (!quiet)
+                EMIT_SIGNAL (XP_TE_CHANSETLIMIT, sess, nick, arg, NULL,
+                             NULL, 0);
+            return;
+        case 'o':
+            if (!quiet)
+                mr->op = mode_cat (mr->op, arg);
+            return;
+        case 'h':
+            if (!quiet)
+                EMIT_SIGNAL (XP_TE_CHANHOP, sess, nick, arg, NULL, NULL,
+                             0);
+            return;
+        case 'v':
+            if (!quiet)
+                mr->voice = mode_cat (mr->voice, arg);
+            return;
+        case 'b':
+            if (!quiet)
+                EMIT_SIGNAL (XP_TE_CHANBAN, sess, nick, arg, NULL, NULL,
+                             0);
+            return;
+        case 'e':
+            if (!quiet)
+                EMIT_SIGNAL (XP_TE_CHANEXEMPT, sess, nick, arg, NULL,
+                             NULL, 0);
+            return;
+        case 'I':
+            if (!quiet)
+                EMIT_SIGNAL (XP_TE_CHANINVITE, sess, nick, arg, NULL,
+                             NULL, 0);
+            return;
+        }
+        break;
+    case '-':
+        switch (mode)
+        {
+        case 'k':
+            sess->channelkey[0] = 0;
+            fe_update_channel_key (sess);
+            fe_update_mode_buttons (sess, mode, sign);
+            if (!quiet)
+                EMIT_SIGNAL (XP_TE_CHANRMKEY, sess, nick, NULL, NULL,
+                             NULL, 0);
+            return;
+        case 'l':
+            sess->limit = 0;
+            fe_update_channel_limit (sess);
+            fe_update_mode_buttons (sess, mode, sign);
+            if (!quiet)
+                EMIT_SIGNAL (XP_TE_CHANRMLIMIT, sess, nick, NULL, NULL,
+                             NULL, 0);
+            return;
+        case 'o':
+            if (!quiet)
+                mr->deop = mode_cat (mr->deop, arg);
+            return;
+        case 'h':
+            if (!quiet)
+                EMIT_SIGNAL (XP_TE_CHANDEHOP, sess, nick, arg, NULL, NULL,
+                             0);
+            return;
+        case 'v':
+            if (!quiet)
+                mr->devoice = mode_cat (mr->devoice, arg);
+            return;
+        case 'b':
+            if (!quiet)
+                EMIT_SIGNAL (XP_TE_CHANUNBAN, sess, nick, arg, NULL, NULL,
+                             0);
+            return;
+        case 'e':
+            if (!quiet)
+                EMIT_SIGNAL (XP_TE_CHANRMEXEMPT, sess, nick, arg, NULL,
+                             NULL, 0);
+            return;
+        case 'I':
+            if (!quiet)
+                EMIT_SIGNAL (XP_TE_CHANRMINVITE, sess, nick, arg, NULL,
+                             NULL, 0);
+            return;
+        }
+    }
 
     fe_update_mode_buttons (sess, mode, sign);
 
-  genmode:
+genmode:
     /* Received umode +e. If we're waiting to send JOIN then send now! */
     if (mode == 'e' && sign == '+' && !serv->p_cmp (chan, serv->nick))
         inbound_identified (serv);
 
     if (!quiet)
-      {
-          if (*arg)
-            {
-                char *buf = malloc (strlen (chan) + strlen (arg) + 2);
-                sprintf (buf, "%s %s", chan, arg);
-                EMIT_SIGNAL (XP_TE_CHANMODEGEN, sess, nick, outbuf,
-                             outbuf + 2, buf, 0);
-                free (buf);
-            }
-          else
-              EMIT_SIGNAL (XP_TE_CHANMODEGEN, sess, nick, outbuf, outbuf + 2,
-                           chan, 0);
-      }
+    {
+        if (*arg)
+        {
+            char *buf = malloc (strlen (chan) + strlen (arg) + 2);
+            sprintf (buf, "%s %s", chan, arg);
+            EMIT_SIGNAL (XP_TE_CHANMODEGEN, sess, nick, outbuf,
+                         outbuf + 2, buf, 0);
+            free (buf);
+        }
+        else
+            EMIT_SIGNAL (XP_TE_CHANMODEGEN, sess, nick, outbuf, outbuf + 2,
+                         chan, 0);
+    }
 }
 
 /* does this mode have an arg? like +b +l +o */
@@ -567,18 +567,18 @@ mode_has_arg (server * serv, char sign, char mode)
 
     type = mode_chanmode_type (serv, mode);
     switch (type)
-      {
-      case 0:                  /* type A */
-      case 1:                  /* type B */
-          return 1;
-      case 2:                  /* type C */
-          if (sign == '+')
-              return 1;
-      case 3:                  /* type D */
-          return 0;
-      default:
-          return 0;
-      }
+    {
+    case 0:                  /* type A */
+    case 1:                  /* type B */
+        return 1;
+    case 2:                  /* type C */
+        if (sign == '+')
+            return 1;
+    case 3:                  /* type D */
+        return 0;
+    default:
+        return 0;
+    }
 
 }
 
@@ -592,17 +592,17 @@ mode_chanmode_type (server * serv, char mode)
     int found = 0;
 
     while (*cm && !found)
-      {
-          if (*cm == ',')
-            {
-                type++;
-            }
-          else if (*cm == mode)
-            {
-                found = 1;
-            }
-          cm++;
-      }
+    {
+        if (*cm == ',')
+        {
+            type++;
+        }
+        else if (*cm == mode)
+        {
+            found = 1;
+        }
+        cm++;
+    }
     if (found)
         return type;
     /* not found? -1 */
@@ -615,33 +615,33 @@ mode_print_grouped (session * sess, char *nick, mode_run * mr)
 {
     /* print all the grouped Op/Deops */
     if (mr->op)
-      {
-          EMIT_SIGNAL (XP_TE_CHANOP, sess, nick, mr->op, NULL, NULL, 0);
-          free (mr->op);
-          mr->op = NULL;
-      }
+    {
+        EMIT_SIGNAL (XP_TE_CHANOP, sess, nick, mr->op, NULL, NULL, 0);
+        free (mr->op);
+        mr->op = NULL;
+    }
 
     if (mr->deop)
-      {
-          EMIT_SIGNAL (XP_TE_CHANDEOP, sess, nick, mr->deop, NULL, NULL, 0);
-          free (mr->deop);
-          mr->deop = NULL;
-      }
+    {
+        EMIT_SIGNAL (XP_TE_CHANDEOP, sess, nick, mr->deop, NULL, NULL, 0);
+        free (mr->deop);
+        mr->deop = NULL;
+    }
 
     if (mr->voice)
-      {
-          EMIT_SIGNAL (XP_TE_CHANVOICE, sess, nick, mr->voice, NULL, NULL, 0);
-          free (mr->voice);
-          mr->voice = NULL;
-      }
+    {
+        EMIT_SIGNAL (XP_TE_CHANVOICE, sess, nick, mr->voice, NULL, NULL, 0);
+        free (mr->voice);
+        mr->voice = NULL;
+    }
 
     if (mr->devoice)
-      {
-          EMIT_SIGNAL (XP_TE_CHANDEVOICE, sess, nick, mr->devoice, NULL, NULL,
-                       0);
-          free (mr->devoice);
-          mr->devoice = NULL;
-      }
+    {
+        EMIT_SIGNAL (XP_TE_CHANDEVOICE, sess, nick, mr->devoice, NULL, NULL,
+                     0);
+        free (mr->devoice);
+        mr->devoice = NULL;
+    }
 }
 
 
@@ -682,10 +682,10 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 
     sess = find_channel (serv, chan);
     if (!sess)
-      {
-          sess = serv->front_session;
-          using_front_tab = TRUE;
-      }
+    {
+        sess = serv->front_session;
+        using_front_tab = TRUE;
+    }
     /* remove trailing space */
     len = strlen (word_eol[offset]) - 1;
     if (word_eol[offset][len] == ' ')
@@ -695,11 +695,11 @@ handle_mode (server * serv, char *word[], char *word_eol[],
         EMIT_SIGNAL (XP_TE_RAWMODES, sess, nick, word_eol[offset], 0, 0, 0);
 
     if (numeric_324 && !using_front_tab)
-      {
-          if (sess->current_modes)
-              free (sess->current_modes);
-          sess->current_modes = strdup (word_eol[offset + 1]);
-      }
+    {
+        if (sess->current_modes)
+            free (sess->current_modes);
+        sess->current_modes = strdup (word_eol[offset + 1]);
+    }
 
     sign = *modes;
     modes++;
@@ -709,51 +709,51 @@ handle_mode (server * serv, char *word[], char *word_eol[],
     num_args = 0;
     i = 1;
     while ((i + offset + 1) < PDIWORDS)
-      {
-          i++;
-          if (!(*word[i + offset]))
-              break;
-          num_args++;
-      }
+    {
+        i++;
+        if (!(*word[i + offset]))
+            break;
+        num_args++;
+    }
 
     /* count the number of modes (without the -/+ chars */
     num_modes = 0;
     i = 0;
     while (i < strlen (modes))
-      {
-          if (modes[i] != '+' && modes[i] != '-')
-              num_modes++;
-          i++;
-      }
+    {
+        if (modes[i] != '+' && modes[i] != '-')
+            num_modes++;
+        i++;
+    }
 
     if (num_args == num_modes)
         all_modes_have_args = TRUE;
 
     while (*modes)
-      {
-          switch (*modes)
-            {
-            case '-':
-            case '+':
-                /* print all the grouped Op/Deops */
-                mode_print_grouped (sess, nick, &mr);
-                sign = *modes;
-                break;
-            default:
-                argstr = "";
-                if ((all_modes_have_args || mode_has_arg (serv, sign, *modes))
+    {
+        switch (*modes)
+        {
+        case '-':
+        case '+':
+            /* print all the grouped Op/Deops */
+            mode_print_grouped (sess, nick, &mr);
+            sign = *modes;
+            break;
+        default:
+            argstr = "";
+            if ((all_modes_have_args || mode_has_arg (serv, sign, *modes))
                     && arg < (num_args + 1))
-                  {
-                      arg++;
-                      argstr = word[arg + offset];
-                  }
-                handle_single_mode (&mr, sign, *modes, nick, chan,
-                                    argstr, numeric_324 || prefs.raw_modes,
-                                    numeric_324);
+            {
+                arg++;
+                argstr = word[arg + offset];
             }
+            handle_single_mode (&mr, sign, *modes, nick, chan,
+                                argstr, numeric_324 || prefs.raw_modes,
+                                numeric_324);
+        }
 
-          modes++;
-      }
+        modes++;
+    }
 
     /* update the title at the end, now that the mode update is internal now */
     if (!using_front_tab)
@@ -773,109 +773,109 @@ inbound_005 (server * serv, char *word[])
 
     w = 4;                      /* start at the 4th word */
     while (w < PDIWORDS && *word[w])
-      {
-          if (strncmp (word[w], "MODES=", 6) == 0)
+    {
+        if (strncmp (word[w], "MODES=", 6) == 0)
+        {
+            serv->modes_per_line = atoi (word[w] + 6);
+        }
+        else if (strncmp (word[w], "CHANTYPES=", 10) == 0)
+        {
+            free (serv->chantypes);
+            serv->chantypes = strdup (word[w] + 10);
+        }
+        else if (strncmp (word[w], "CHANMODES=", 10) == 0)
+        {
+            free (serv->chanmodes);
+            serv->chanmodes = strdup (word[w] + 10);
+        }
+        else if (strncmp (word[w], "PREFIX=", 7) == 0)
+        {
+            pre = strchr (word[w] + 7, ')');
+            if (pre)
             {
-                serv->modes_per_line = atoi (word[w] + 6);
+                pre[0] = 0;       /* NULL out the ')' */
+                free (serv->nick_prefixes);
+                free (serv->nick_modes);
+                serv->nick_prefixes = strdup (pre + 1);
+                serv->nick_modes = strdup (word[w] + 8);
             }
-          else if (strncmp (word[w], "CHANTYPES=", 10) == 0)
+            else
             {
-                free (serv->chantypes);
-                serv->chantypes = strdup (word[w] + 10);
+                /* bad! some ircds don't give us the modes. */
+                /* in this case, we use it only to strip /NAMES */
+                serv->bad_prefix = TRUE;
+                if (serv->bad_nick_prefixes)
+                    free (serv->bad_nick_prefixes);
+                serv->bad_nick_prefixes = strdup (word[w] + 7);
             }
-          else if (strncmp (word[w], "CHANMODES=", 10) == 0)
-            {
-                free (serv->chanmodes);
-                serv->chanmodes = strdup (word[w] + 10);
-            }
-          else if (strncmp (word[w], "PREFIX=", 7) == 0)
-            {
-                pre = strchr (word[w] + 7, ')');
-                if (pre)
-                  {
-                      pre[0] = 0;       /* NULL out the ')' */
-                      free (serv->nick_prefixes);
-                      free (serv->nick_modes);
-                      serv->nick_prefixes = strdup (pre + 1);
-                      serv->nick_modes = strdup (word[w] + 8);
-                  }
-                else
-                  {
-                      /* bad! some ircds don't give us the modes. */
-                      /* in this case, we use it only to strip /NAMES */
-                      serv->bad_prefix = TRUE;
-                      if (serv->bad_nick_prefixes)
-                          free (serv->bad_nick_prefixes);
-                      serv->bad_nick_prefixes = strdup (word[w] + 7);
-                  }
-            }
-          else if (strncmp (word[w], "WATCH=", 6) == 0)
-            {
-                serv->supports_watch = TRUE;
-            }
-          else if (strncmp (word[w], "NETWORK=", 8) == 0)
-            {
-/*			if (serv->networkname)
-				free (serv->networkname);
-			serv->networkname = strdup (word[w] + 8);*/
+        }
+        else if (strncmp (word[w], "WATCH=", 6) == 0)
+        {
+            serv->supports_watch = TRUE;
+        }
+        else if (strncmp (word[w], "NETWORK=", 8) == 0)
+        {
+            /*			if (serv->networkname)
+            				free (serv->networkname);
+            			serv->networkname = strdup (word[w] + 8);*/
 
-                if (serv->server_session->type == SESS_SERVER)
-                  {
-                      safe_strcpy (serv->server_session->channel, word[w] + 8,
-                                   CHANLEN);
-                      fe_set_channel (serv->server_session);
-                  }
+            if (serv->server_session->type == SESS_SERVER)
+            {
+                safe_strcpy (serv->server_session->channel, word[w] + 8,
+                             CHANLEN);
+                fe_set_channel (serv->server_session);
+            }
 
-                /* use /NICKSERV */
-                if (strcasecmp (word[w] + 8, "RusNet") == 0)
-                    serv->nickservtype = 1;
-                else if (strcasecmp (word[w] + 8, "UniBG") == 0)
-                    serv->nickservtype = 3;
-                else if (strcasecmp (word[w] + 8, "QuakeNet") == 0)
-                    serv->nickservtype = 4;
+            /* use /NICKSERV */
+            if (strcasecmp (word[w] + 8, "RusNet") == 0)
+                serv->nickservtype = 1;
+            else if (strcasecmp (word[w] + 8, "UniBG") == 0)
+                serv->nickservtype = 3;
+            else if (strcasecmp (word[w] + 8, "QuakeNet") == 0)
+                serv->nickservtype = 4;
 
-            }
-          else if (strncmp (word[w], "CASEMAPPING=", 12) == 0)
+        }
+        else if (strncmp (word[w], "CASEMAPPING=", 12) == 0)
+        {
+            if (strcmp (word[w] + 12, "ascii") == 0)        /* bahamut */
+                serv->p_cmp = (void *) strcasecmp;
+        }
+        else if (strncmp (word[w], "CHARSET=", 8) == 0)
+        {
+            if (strcasecmp (word[w] + 8, "UTF-8") == 0)
             {
-                if (strcmp (word[w] + 12, "ascii") == 0)        /* bahamut */
-                    serv->p_cmp = (void *) strcasecmp;
+                server_set_encoding (serv, "UTF-8");
             }
-          else if (strncmp (word[w], "CHARSET=", 8) == 0)
-            {
-                if (strcasecmp (word[w] + 8, "UTF-8") == 0)
-                  {
-                      server_set_encoding (serv, "UTF-8");
-                  }
-            }
-          else if (strcmp (word[w], "NAMESX") == 0)
-            {
-                /* 12345678901234567 */
-                tcp_send_len (serv, "PROTOCTL NAMESX\r\n", 17);
-            }
-          else if (strcmp (word[w], "WHOX") == 0)
-            {
-                serv->have_whox = TRUE;
-            }
-          else if (strcmp (word[w], "CAPAB") == 0)
-            {
-                serv->have_capab = TRUE;
-                /* 12345678901234567890 */
-                tcp_send_len (serv, "CAPAB IDENTIFY-MSG\r\n", 20);
-                /* now wait for numeric 290 */
-            }
-          else if (strcmp (word[w], "EXCEPTS") == 0)
-            {
+        }
+        else if (strcmp (word[w], "NAMESX") == 0)
+        {
+            /* 12345678901234567 */
+            tcp_send_len (serv, "PROTOCTL NAMESX\r\n", 17);
+        }
+        else if (strcmp (word[w], "WHOX") == 0)
+        {
+            serv->have_whox = TRUE;
+        }
+        else if (strcmp (word[w], "CAPAB") == 0)
+        {
+            serv->have_capab = TRUE;
+            /* 12345678901234567890 */
+            tcp_send_len (serv, "CAPAB IDENTIFY-MSG\r\n", 20);
+            /* now wait for numeric 290 */
+        }
+        else if (strcmp (word[w], "EXCEPTS") == 0)
+        {
 #ifndef WIN32
-                serv->have_except = TRUE;
+            serv->have_except = TRUE;
 #endif
-            }
-          else if (strncmp (word[w], "ELIST=", 6) == 0)
-            {
-                /* supports LIST >< min/max user counts? */
-                if (strchr (word[w] + 6, 'U') || strchr (word[w] + 6, 'u'))
-                    serv->use_listargs = TRUE;
-            }
+        }
+        else if (strncmp (word[w], "ELIST=", 6) == 0)
+        {
+            /* supports LIST >< min/max user counts? */
+            if (strchr (word[w] + 6, 'U') || strchr (word[w] + 6, 'u'))
+                serv->use_listargs = TRUE;
+        }
 
-          w++;
-      }
+        w++;
+    }
 }

@@ -76,13 +76,13 @@ supports_exempt (server * serv)
         return FALSE;
 
     while (*cm)
-      {
-          if (*cm == ',')
-              break;
-          if (*cm == 'e')
-              return TRUE;
-          cm++;
-      }
+    {
+        if (*cm == ',')
+            break;
+        if (*cm == 'e')
+            return TRUE;
+        cm++;
+    }
 
     return FALSE;
 }
@@ -99,14 +99,14 @@ fe_add_ban_list (struct session *sess, char *mask, char *who, char *when,
     gtk_list_store_append (store, &iter);
 
     if (is_exempt)
-      {
-          snprintf (buf, sizeof (buf), "(EX) %s", mask);
-          gtk_list_store_set (store, &iter, 0, buf, 1, who, 2, when, -1);
-      }
+    {
+        snprintf (buf, sizeof (buf), "(EX) %s", mask);
+        gtk_list_store_set (store, &iter, 0, buf, 1, who, 2, when, -1);
+    }
     else
-      {
-          gtk_list_store_set (store, &iter, 0, mask, 1, who, 2, when, -1);
-      }
+    {
+        gtk_list_store_set (store, &iter, 0, mask, 1, who, 2, when, -1);
+    }
 }
 
 void
@@ -123,35 +123,35 @@ banlist_do_refresh (struct session *sess)
 {
     char tbuf[256];
     if (sess->server->connected)
-      {
-          GtkListStore *store;
+    {
+        GtkListStore *store;
 
-          gtk_widget_set_sensitive (sess->res->banlist_butRefresh, FALSE);
+        gtk_widget_set_sensitive (sess->res->banlist_butRefresh, FALSE);
 
-          snprintf (tbuf, sizeof tbuf, "GChat: Ban List (%s, %s)",
-                    sess->channel, sess->server->servername);
-          mg_set_title (sess->res->banlist_window, tbuf);
+        snprintf (tbuf, sizeof tbuf, "GChat: Ban List (%s, %s)",
+                  sess->channel, sess->server->servername);
+        mg_set_title (sess->res->banlist_window, tbuf);
 
-          store = get_store (sess);
-          gtk_list_store_clear (store);
+        store = get_store (sess);
+        gtk_list_store_clear (store);
 
-          handle_command (sess, "ban", FALSE);
+        handle_command (sess, "ban", FALSE);
 #ifdef WIN32
-          if (0)
+        if (0)
 #else
-          if (supports_exempt (sess->server))
+        if (supports_exempt (sess->server))
 #endif
-            {
-                snprintf (tbuf, sizeof (tbuf), "quote mode %s +e",
-                          sess->channel);
-                handle_command (sess, tbuf, FALSE);
-            }
+        {
+            snprintf (tbuf, sizeof (tbuf), "quote mode %s +e",
+                      sess->channel);
+            handle_command (sess, tbuf, FALSE);
+        }
 
-      }
+    }
     else
-      {
-          fe_message (_("Not connected."), FE_MSG_ERROR);
-      }
+    {
+        fe_message (_("Not connected."), FE_MSG_ERROR);
+    }
 }
 
 static void
@@ -181,14 +181,14 @@ banlist_unban_inner (gpointer none, struct session *sess, int do_exempts)
     sel = gtk_tree_view_get_selection (get_view (sess));
     num_sel = 0;
     if (gtk_tree_model_get_iter_first (model, &iter))
-      {
-          do
-            {
-                if (gtk_tree_selection_iter_is_selected (sel, &iter))
-                    num_sel++;
-            }
-          while (gtk_tree_model_iter_next (model, &iter));
-      }
+    {
+        do
+        {
+            if (gtk_tree_selection_iter_is_selected (sel, &iter))
+                num_sel++;
+        }
+        while (gtk_tree_model_iter_next (model, &iter));
+    }
 
     if (num_sel < 1)
         return 0;
@@ -199,30 +199,30 @@ banlist_unban_inner (gpointer none, struct session *sess, int do_exempts)
     i = 0;
     gtk_tree_model_get_iter_first (model, &iter);
     do
-      {
-          if (gtk_tree_selection_iter_is_selected (sel, &iter))
-            {
-                gtk_tree_model_get (model, &iter, MASK_COLUMN, &masks[i], -1);
-                space = strchr (masks[i], ' ');
+    {
+        if (gtk_tree_selection_iter_is_selected (sel, &iter))
+        {
+            gtk_tree_model_get (model, &iter, MASK_COLUMN, &masks[i], -1);
+            space = strchr (masks[i], ' ');
 
-                if (do_exempts)
-                  {
-                      if (space)
-                        {
-                            /* remove the "(EX) " */
-                            tmp = masks[i];
-                            masks[i] = g_strdup (space + 1);
-                            g_free (tmp);
-                            i++;
-                        }
-                  }
-                else
-                  {
-                      if (!space)
-                          i++;
-                  }
+            if (do_exempts)
+            {
+                if (space)
+                {
+                    /* remove the "(EX) " */
+                    tmp = masks[i];
+                    masks[i] = g_strdup (space + 1);
+                    g_free (tmp);
+                    i++;
+                }
             }
-      }
+            else
+            {
+                if (!space)
+                    i++;
+            }
+        }
+    }
     while (gtk_tree_model_iter_next (model, &iter));
 
     /* and send to server */
@@ -248,10 +248,10 @@ banlist_unban (GtkWidget * wid, struct session *sess)
     num += banlist_unban_inner (wid, sess, TRUE);
 
     if (num < 1)
-      {
-          fe_message (_("You must select some bans."), FE_MSG_ERROR);
-          return;
-      }
+    {
+        fe_message (_("You must select some bans."), FE_MSG_ERROR);
+        return;
+    }
 
     banlist_do_refresh (sess);
 }
@@ -264,11 +264,11 @@ banlist_clear_cb (GtkDialog * dialog, gint response, gpointer sess)
     gtk_widget_destroy (GTK_WIDGET (dialog));
 
     if (response == GTK_RESPONSE_OK)
-      {
-          sel = gtk_tree_view_get_selection (get_view (sess));
-          gtk_tree_selection_select_all (sel);
-          banlist_unban (NULL, sess);
-      }
+    {
+        sel = gtk_tree_view_get_selection (get_view (sess));
+        gtk_tree_selection_select_all (sel);
+        banlist_unban (NULL, sess);
+    }
 }
 
 static void
@@ -323,17 +323,17 @@ banlist_crop (GtkWidget * wid, struct session *sess)
     num_sel = g_slist_length (list);
     /* select all, then unselect those that we remembered */
     if (num_sel)
-      {
-          gtk_tree_selection_select_all (select);
+    {
+        gtk_tree_selection_select_all (select);
 
-          for (node = list; node; node = node->next)
-              gtk_tree_selection_unselect_iter (select, node->data);
+        for (node = list; node; node = node->next)
+            gtk_tree_selection_unselect_iter (select, node->data);
 
-          g_slist_foreach (list, (GFunc) g_free, NULL);
-          g_slist_free (list);
+        g_slist_foreach (list, (GFunc) g_free, NULL);
+        g_slist_free (list);
 
-          banlist_unban (NULL, sess);
-      }
+        banlist_unban (NULL, sess);
+    }
     else
         fe_message (_("You must select some bans."), FE_MSG_ERROR);
 }
@@ -388,26 +388,26 @@ banlist_opengui (struct session *sess)
     char tbuf[256];
 
     if (sess->res->banlist_window)
-      {
-          mg_bring_tofront (sess->res->banlist_window);
-          return;
-      }
+    {
+        mg_bring_tofront (sess->res->banlist_window);
+        return;
+    }
 
     if (sess->type != SESS_CHANNEL)
-      {
-          fe_message (_
-                      ("You can only open the Ban List window while in a channel tab."),
-                      FE_MSG_ERROR);
-          return;
-      }
+    {
+        fe_message (_
+                    ("You can only open the Ban List window while in a channel tab."),
+                    FE_MSG_ERROR);
+        return;
+    }
 
     snprintf (tbuf, sizeof tbuf, _("GChat: Ban List (%s)"),
               sess->server->servername);
 
     sess->res->banlist_window = mg_create_generic_tab ("BanList", tbuf, FALSE,
-                                                       TRUE, banlist_closegui,
-                                                       sess, 550, 200, &vbox1,
-                                                       sess->server);
+                                TRUE, banlist_closegui,
+                                sess, 550, 200, &vbox1,
+                                sess->server);
 
     /* create banlist view */
     sess->res->banlist_treeview = banlist_treeview_new (vbox1);

@@ -17,6 +17,7 @@ config.h.in
 *.exe
 *.log
 *.old
+*.orig
 *.swp
 *.la
 *.lai

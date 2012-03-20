@@ -32,8 +32,8 @@ struct _chanview
     /* callbacks */
     void (*cb_focus) (chanview *, chan *, int tag, void *userdata);
     void (*cb_xbutton) (chanview *, chan *, int tag, void *userdata);
-      gboolean (*cb_contextmenu) (chanview *, chan *, int tag, void *userdata,
-                                  GdkEventButton *);
+    gboolean (*cb_contextmenu) (chanview *, chan *, int tag, void *userdata,
+                                GdkEventButton *);
     int (*cb_compare) (void *a, void *b);
 
     /* impl */
@@ -48,7 +48,7 @@ struct _chanview
     void (*func_focus) (chan *);
     void (*func_set_color) (chan *, PangoAttrList *);
     void (*func_rename) (chan *, char *);
-      gboolean (*func_is_collapsed) (chan *);
+    gboolean (*func_is_collapsed) (chan *);
     chan *(*func_get_parent) (chan *);
     void (*func_cleanup) (chanview *);
 
@@ -91,14 +91,14 @@ truncate_tab_name (char *name, int max)
     char *buf;
 
     if (max > 2 && g_utf8_strlen (name, -1) > max)
-      {
-          /* truncate long channel names */
-          buf = malloc (strlen (name) + 4);
-          strcpy (buf, name);
-          g_utf8_offset_to_pointer (buf, max)[0] = 0;
-          strcat (buf, "..");
-          return buf;
-      }
+    {
+        /* truncate long channel names */
+        buf = malloc (strlen (name) + 4);
+        strcpy (buf, name);
+        g_utf8_offset_to_pointer (buf, max)[0] = 0;
+        strcat (buf, "..");
+        return buf;
+    }
 
     return name;
 }
@@ -112,19 +112,19 @@ model_foreach_1 (GtkTreeModel * model, void (*func) (void *, GtkTreeIter *),
     GtkTreeIter iter, inner;
 
     if (gtk_tree_model_get_iter_first (model, &iter))
-      {
-          do
+    {
+        do
+        {
+            func (userdata, &iter);
+            if (gtk_tree_model_iter_children (model, &inner, &iter))
             {
-                func (userdata, &iter);
-                if (gtk_tree_model_iter_children (model, &inner, &iter))
-                  {
-                      do
-                          func (userdata, &inner);
-                      while (gtk_tree_model_iter_next (model, &inner));
-                  }
+                do
+                    func (userdata, &inner);
+                while (gtk_tree_model_iter_next (model, &inner));
             }
-          while (gtk_tree_model_iter_next (model, &iter));
-      }
+        }
+        while (gtk_tree_model_iter_next (model, &iter));
+    }
 }
 
 static void
@@ -138,10 +138,10 @@ chanview_pop_cb (chanview * cv, GtkTreeIter * iter)
                         COL_NAME, &name, COL_CHAN, &ch, COL_ATTR, &attr, -1);
     ch->impl = cv->func_add (cv, ch, name, NULL);
     if (attr)
-      {
-          cv->func_set_color (ch, attr);
-          pango_attr_list_unref (attr);
-      }
+    {
+        cv->func_set_color (ch, attr);
+        pango_attr_list_unref (attr);
+    }
     g_free (name);
 }
 
@@ -160,41 +160,41 @@ chanview_set_impl (chanview * cv, int type)
         cv->func_cleanup (cv);
 
     switch (type)
-      {
-      case 0:
-          cv->func_init = cv_tabs_init;
-          cv->func_postinit = cv_tabs_postinit;
-          cv->func_add = cv_tabs_add;
-          cv->func_move_focus = cv_tabs_move_focus;
-          cv->func_change_orientation = cv_tabs_change_orientation;
-          cv->func_remove = cv_tabs_remove;
-          cv->func_move = cv_tabs_move;
-          cv->func_move_family = cv_tabs_move_family;
-          cv->func_focus = cv_tabs_focus;
-          cv->func_set_color = cv_tabs_set_color;
-          cv->func_rename = cv_tabs_rename;
-          cv->func_is_collapsed = cv_tabs_is_collapsed;
-          cv->func_get_parent = cv_tabs_get_parent;
-          cv->func_cleanup = cv_tabs_cleanup;
-          break;
+    {
+    case 0:
+        cv->func_init = cv_tabs_init;
+        cv->func_postinit = cv_tabs_postinit;
+        cv->func_add = cv_tabs_add;
+        cv->func_move_focus = cv_tabs_move_focus;
+        cv->func_change_orientation = cv_tabs_change_orientation;
+        cv->func_remove = cv_tabs_remove;
+        cv->func_move = cv_tabs_move;
+        cv->func_move_family = cv_tabs_move_family;
+        cv->func_focus = cv_tabs_focus;
+        cv->func_set_color = cv_tabs_set_color;
+        cv->func_rename = cv_tabs_rename;
+        cv->func_is_collapsed = cv_tabs_is_collapsed;
+        cv->func_get_parent = cv_tabs_get_parent;
+        cv->func_cleanup = cv_tabs_cleanup;
+        break;
 
-      default:
-          cv->func_init = cv_tree_init;
-          cv->func_postinit = cv_tree_postinit;
-          cv->func_add = cv_tree_add;
-          cv->func_move_focus = cv_tree_move_focus;
-          cv->func_change_orientation = cv_tree_change_orientation;
-          cv->func_remove = cv_tree_remove;
-          cv->func_move = cv_tree_move;
-          cv->func_move_family = cv_tree_move_family;
-          cv->func_focus = cv_tree_focus;
-          cv->func_set_color = cv_tree_set_color;
-          cv->func_rename = cv_tree_rename;
-          cv->func_is_collapsed = cv_tree_is_collapsed;
-          cv->func_get_parent = cv_tree_get_parent;
-          cv->func_cleanup = cv_tree_cleanup;
-          break;
-      }
+    default:
+        cv->func_init = cv_tree_init;
+        cv->func_postinit = cv_tree_postinit;
+        cv->func_add = cv_tree_add;
+        cv->func_move_focus = cv_tree_move_focus;
+        cv->func_change_orientation = cv_tree_change_orientation;
+        cv->func_remove = cv_tree_remove;
+        cv->func_move = cv_tree_move;
+        cv->func_move_family = cv_tree_move_family;
+        cv->func_focus = cv_tree_focus;
+        cv->func_set_color = cv_tree_set_color;
+        cv->func_rename = cv_tree_rename;
+        cv->func_is_collapsed = cv_tree_is_collapsed;
+        cv->func_get_parent = cv_tree_get_parent;
+        cv->func_cleanup = cv_tree_cleanup;
+        break;
+    }
 
     /* now rebuild a new tabbar or tree */
     cv->func_init (cv);
@@ -273,12 +273,12 @@ chanview_new (int type, int trunc_len, gboolean sort, gboolean use_icons,
 void
 chanview_set_callbacks (chanview * cv,
                         void (*cb_focus) (chanview *, chan *, int tag,
-                                          void *userdata),
+                                void *userdata),
                         void (*cb_xbutton) (chanview *, chan *, int tag,
-                                            void *userdata),
+                                void *userdata),
                         gboolean (*cb_contextmenu) (chanview *, chan *,
-                                                    int tag, void *userdata,
-                                                    GdkEventButton *),
+                                int tag, void *userdata,
+                                GdkEventButton *),
                         int (*cb_compare) (void *a, void *b))
 {
     cv->cb_focus = cb_focus;
@@ -297,23 +297,23 @@ chanview_insert_sorted (chanview * cv, GtkTreeIter * add_iter,
     chan *ch;
 
     if (cv->sorted
-        && gtk_tree_model_iter_children (GTK_TREE_MODEL (cv->store), &iter,
-                                         parent))
-      {
-          do
+            && gtk_tree_model_iter_children (GTK_TREE_MODEL (cv->store), &iter,
+                    parent))
+    {
+        do
+        {
+            gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter,
+                                COL_CHAN, &ch, -1);
+            if (ch->tag == 0 && cv->cb_compare (ch->userdata, ud) > 0)
             {
-                gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter,
-                                    COL_CHAN, &ch, -1);
-                if (ch->tag == 0 && cv->cb_compare (ch->userdata, ud) > 0)
-                  {
-                      gtk_tree_store_insert_before (cv->store, add_iter,
-                                                    parent, &iter);
-                      return;
-                  }
+                gtk_tree_store_insert_before (cv->store, add_iter,
+                                              parent, &iter);
+                return;
             }
-          while (gtk_tree_model_iter_next
-                 (GTK_TREE_MODEL (cv->store), &iter));
-      }
+        }
+        while (gtk_tree_model_iter_next
+                (GTK_TREE_MODEL (cv->store), &iter));
+    }
 
     gtk_tree_store_append (cv->store, add_iter, parent);
 }
@@ -328,20 +328,20 @@ chanview_find_parent (chanview * cv, void *family, GtkTreeIter * search_iter,
 
     /* find this new row's parent, if any */
     if (gtk_tree_model_get_iter_first
-        (GTK_TREE_MODEL (cv->store), search_iter))
-      {
-          do
-            {
-                gtk_tree_model_get (GTK_TREE_MODEL (cv->store), search_iter,
-                                    COL_CHAN, &search_ch, -1);
-                if (family == search_ch->family && search_ch != avoid   /*&&
+            (GTK_TREE_MODEL (cv->store), search_iter))
+    {
+        do
+        {
+            gtk_tree_model_get (GTK_TREE_MODEL (cv->store), search_iter,
+                                COL_CHAN, &search_ch, -1);
+            if (family == search_ch->family && search_ch != avoid   /*&&
                                                                            gtk_tree_store_iter_depth (cv->store, search_iter) == 0 */
-                    )
-                    return TRUE;
-            }
-          while (gtk_tree_model_iter_next
-                 (GTK_TREE_MODEL (cv->store), search_iter));
-      }
+               )
+                return TRUE;
+        }
+        while (gtk_tree_model_iter_next
+                (GTK_TREE_MODEL (cv->store), search_iter));
+    }
 
     return FALSE;
 }
@@ -356,25 +356,25 @@ chanview_add_real (chanview * cv, char *name, void *family, void *userdata,
     gboolean has_parent = FALSE;
 
     if (chanview_find_parent (cv, family, &parent_iter, avoid))
-      {
-          chanview_insert_sorted (cv, &iter, &parent_iter, userdata);
-          has_parent = TRUE;
-      }
+    {
+        chanview_insert_sorted (cv, &iter, &parent_iter, userdata);
+        has_parent = TRUE;
+    }
     else
-      {
-          gtk_tree_store_append (cv->store, &iter, NULL);
-      }
+    {
+        gtk_tree_store_append (cv->store, &iter, NULL);
+    }
 
     if (!ch)
-      {
-          ch = calloc (1, sizeof (chan));
-          ch->userdata = userdata;
-          ch->family = family;
-          ch->cv = cv;
-          ch->allow_closure = allow_closure;
-          ch->tag = tag;
-          ch->icon = icon;
-      }
+    {
+        ch = calloc (1, sizeof (chan));
+        ch->userdata = userdata;
+        ch->family = family;
+        ch->cv = cv;
+        ch->allow_closure = allow_closure;
+        ch->tag = tag;
+        ch->icon = icon;
+    }
     memcpy (&(ch->iter), &iter, sizeof (iter));
 
     gtk_tree_store_set (cv->store, &iter, COL_NAME, name, COL_CHAN, ch,
@@ -437,10 +437,10 @@ void
 chanview_set_orientation (chanview * cv, gboolean vertical)
 {
     if (vertical != cv->vertical)
-      {
-          cv->vertical = vertical;
-          cv->func_change_orientation (cv);
-      }
+    {
+        cv->vertical = vertical;
+        cv->func_change_orientation (cv);
+    }
 }
 
 int
@@ -508,33 +508,33 @@ cv_find_number_of_chan (chanview * cv, chan * find_ch)
     int i = 0;
 
     if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (cv->store), &iter))
-      {
-          do
-            {
-                gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter,
-                                    COL_CHAN, &ch, -1);
-                if (ch == find_ch)
-                    return i;
-                i++;
+    {
+        do
+        {
+            gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter,
+                                COL_CHAN, &ch, -1);
+            if (ch == find_ch)
+                return i;
+            i++;
 
-                if (gtk_tree_model_iter_children
+            if (gtk_tree_model_iter_children
                     (GTK_TREE_MODEL (cv->store), &inner, &iter))
-                  {
-                      do
-                        {
-                            gtk_tree_model_get (GTK_TREE_MODEL (cv->store),
-                                                &inner, COL_CHAN, &ch, -1);
-                            if (ch == find_ch)
-                                return i;
-                            i++;
-                        }
-                      while (gtk_tree_model_iter_next
-                             (GTK_TREE_MODEL (cv->store), &inner));
-                  }
+            {
+                do
+                {
+                    gtk_tree_model_get (GTK_TREE_MODEL (cv->store),
+                                        &inner, COL_CHAN, &ch, -1);
+                    if (ch == find_ch)
+                        return i;
+                    i++;
+                }
+                while (gtk_tree_model_iter_next
+                        (GTK_TREE_MODEL (cv->store), &inner));
             }
-          while (gtk_tree_model_iter_next
-                 (GTK_TREE_MODEL (cv->store), &iter));
-      }
+        }
+        while (gtk_tree_model_iter_next
+                (GTK_TREE_MODEL (cv->store), &iter));
+    }
 
     return 0;                   /* WARNING */
 }
@@ -549,38 +549,38 @@ cv_find_chan_by_number (chanview * cv, int num)
     int i = 0;
 
     if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (cv->store), &iter))
-      {
-          do
+    {
+        do
+        {
+            if (i == num)
             {
-                if (i == num)
-                  {
-                      gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter,
-                                          COL_CHAN, &ch, -1);
-                      return ch;
-                  }
-                i++;
-
-                if (gtk_tree_model_iter_children
-                    (GTK_TREE_MODEL (cv->store), &inner, &iter))
-                  {
-                      do
-                        {
-                            if (i == num)
-                              {
-                                  gtk_tree_model_get (GTK_TREE_MODEL
-                                                      (cv->store), &inner,
-                                                      COL_CHAN, &ch, -1);
-                                  return ch;
-                              }
-                            i++;
-                        }
-                      while (gtk_tree_model_iter_next
-                             (GTK_TREE_MODEL (cv->store), &inner));
-                  }
+                gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter,
+                                    COL_CHAN, &ch, -1);
+                return ch;
             }
-          while (gtk_tree_model_iter_next
-                 (GTK_TREE_MODEL (cv->store), &iter));
-      }
+            i++;
+
+            if (gtk_tree_model_iter_children
+                    (GTK_TREE_MODEL (cv->store), &inner, &iter))
+            {
+                do
+                {
+                    if (i == num)
+                    {
+                        gtk_tree_model_get (GTK_TREE_MODEL
+                                            (cv->store), &inner,
+                                            COL_CHAN, &ch, -1);
+                        return ch;
+                    }
+                    i++;
+                }
+                while (gtk_tree_model_iter_next
+                        (GTK_TREE_MODEL (cv->store), &inner));
+            }
+        }
+        while (gtk_tree_model_iter_next
+                (GTK_TREE_MODEL (cv->store), &iter));
+    }
 
     return NULL;
 }
@@ -594,25 +594,25 @@ chan_emancipate_children (chan * ch)
     PangoAttrList *attr;
 
     while (gtk_tree_model_iter_children
-           (GTK_TREE_MODEL (ch->cv->store), &childiter, &ch->iter))
-      {
-          /* remove and re-add all the children, but avoid using "ch" as parent */
-          gtk_tree_model_get (GTK_TREE_MODEL (ch->cv->store), &childiter,
-                              COL_NAME, &name, COL_CHAN, &childch, COL_ATTR,
-                              &attr, -1);
-          ch->cv->func_remove (childch);
-          gtk_tree_store_remove (ch->cv->store, &childiter);
-          ch->cv->size--;
-          chanview_add_real (childch->cv, name, childch->family,
-                             childch->userdata, childch->allow_closure,
-                             childch->tag, childch->icon, childch, ch);
-          if (attr)
-            {
-                childch->cv->func_set_color (childch, attr);
-                pango_attr_list_unref (attr);
-            }
-          g_free (name);
-      }
+            (GTK_TREE_MODEL (ch->cv->store), &childiter, &ch->iter))
+    {
+        /* remove and re-add all the children, but avoid using "ch" as parent */
+        gtk_tree_model_get (GTK_TREE_MODEL (ch->cv->store), &childiter,
+                            COL_NAME, &name, COL_CHAN, &childch, COL_ATTR,
+                            &attr, -1);
+        ch->cv->func_remove (childch);
+        gtk_tree_store_remove (ch->cv->store, &childiter);
+        ch->cv->size--;
+        chanview_add_real (childch->cv, name, childch->family,
+                           childch->userdata, childch->allow_closure,
+                           childch->tag, childch->icon, childch, ch);
+        if (attr)
+        {
+            childch->cv->func_set_color (childch, attr);
+            pango_attr_list_unref (attr);
+        }
+        g_free (name);
+    }
 }
 
 gboolean
@@ -627,8 +627,8 @@ chan_remove (chan * ch, gboolean force)
 
     /* is this ch allowed to be closed while still having children? */
     if (!force &&
-        gtk_tree_model_iter_has_child (GTK_TREE_MODEL (ch->cv->store),
-                                       &ch->iter) && !ch->allow_closure)
+            gtk_tree_model_iter_has_child (GTK_TREE_MODEL (ch->cv->store),
+                                           &ch->iter) && !ch->allow_closure)
         return FALSE;
 
     chan_emancipate_children (ch);
@@ -636,31 +636,31 @@ chan_remove (chan * ch, gboolean force)
 
     /* is it the focused one? */
     if (ch->cv->focused == ch)
-      {
-          ch->cv->focused = NULL;
+    {
+        ch->cv->focused = NULL;
 
-          /* try to move the focus to some other valid channel */
-          num = cv_find_number_of_chan (ch->cv, ch);
-          /* move to the one left of the closing tab */
-          new_ch = cv_find_chan_by_number (ch->cv, num - 1);
-          if (new_ch && new_ch != ch)
+        /* try to move the focus to some other valid channel */
+        num = cv_find_number_of_chan (ch->cv, ch);
+        /* move to the one left of the closing tab */
+        new_ch = cv_find_chan_by_number (ch->cv, num - 1);
+        if (new_ch && new_ch != ch)
+        {
+            chan_focus (new_ch);    /* this'll will set ch->cv->focused for us too */
+        }
+        else
+        {
+            /* if it fails, try focus from tab 0 and up */
+            for (i = 0; i < ch->cv->size; i++)
             {
-                chan_focus (new_ch);    /* this'll will set ch->cv->focused for us too */
+                new_ch = cv_find_chan_by_number (ch->cv, i);
+                if (new_ch && new_ch != ch)
+                {
+                    chan_focus (new_ch);        /* this'll will set ch->cv->focused for us too */
+                    break;
+                }
             }
-          else
-            {
-                /* if it fails, try focus from tab 0 and up */
-                for (i = 0; i < ch->cv->size; i++)
-                  {
-                      new_ch = cv_find_chan_by_number (ch->cv, i);
-                      if (new_ch && new_ch != ch)
-                        {
-                            chan_focus (new_ch);        /* this'll will set ch->cv->focused for us too */
-                            break;
-                        }
-                  }
-            }
-      }
+        }
+    }
 
     ch->cv->size--;
     gtk_tree_store_remove (ch->cv->store, &ch->iter);

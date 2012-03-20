@@ -100,152 +100,152 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (RemoteObject, remote_object, G_TYPE_OBJECT)
 /* Available services */
-     static gboolean remote_object_connect (RemoteObject * obj,
-                                            const char *filename,
-                                            const char *name,
-                                            const char *desc,
-                                            const char *version,
-                                            DBusGMethodInvocation * context);
+static gboolean remote_object_connect (RemoteObject * obj,
+                                       const char *filename,
+                                       const char *name,
+                                       const char *desc,
+                                       const char *version,
+                                       DBusGMethodInvocation * context);
 
-     static gboolean remote_object_disconnect (RemoteObject * obj,
-                                               DBusGMethodInvocation *
-                                               context);
+static gboolean remote_object_disconnect (RemoteObject * obj,
+        DBusGMethodInvocation *
+        context);
 
-     static gboolean remote_object_command (RemoteObject * obj,
-                                            const char *command,
-                                            GError ** error);
+static gboolean remote_object_command (RemoteObject * obj,
+                                       const char *command,
+                                       GError ** error);
 
-     static gboolean remote_object_print (RemoteObject * obj,
-                                          const char *text, GError ** error);
+static gboolean remote_object_print (RemoteObject * obj,
+                                     const char *text, GError ** error);
 
-     static gboolean remote_object_find_context (RemoteObject * obj,
-                                                 const char *server,
-                                                 const char *channel,
-                                                 guint * ret_id,
-                                                 GError ** error);
+static gboolean remote_object_find_context (RemoteObject * obj,
+        const char *server,
+        const char *channel,
+        guint * ret_id,
+        GError ** error);
 
-     static gboolean remote_object_get_context (RemoteObject * obj,
-                                                guint * ret_id,
-                                                GError ** error);
+static gboolean remote_object_get_context (RemoteObject * obj,
+        guint * ret_id,
+        GError ** error);
 
-     static gboolean remote_object_set_context (RemoteObject * obj,
-                                                guint id,
-                                                gboolean * ret,
-                                                GError ** error);
+static gboolean remote_object_set_context (RemoteObject * obj,
+        guint id,
+        gboolean * ret,
+        GError ** error);
 
-     static gboolean remote_object_print (RemoteObject * obj,
-                                          const char *text, GError ** error);
+static gboolean remote_object_print (RemoteObject * obj,
+                                     const char *text, GError ** error);
 
-     static gboolean remote_object_get_info (RemoteObject * obj,
-                                             const char *id,
-                                             char **ret_info,
-                                             GError ** error);
+static gboolean remote_object_get_info (RemoteObject * obj,
+                                        const char *id,
+                                        char **ret_info,
+                                        GError ** error);
 
-     static gboolean remote_object_get_prefs (RemoteObject * obj,
-                                              const char *name,
-                                              int *ret_type,
-                                              char **ret_str,
-                                              int *ret_int, GError ** error);
+static gboolean remote_object_get_prefs (RemoteObject * obj,
+        const char *name,
+        int *ret_type,
+        char **ret_str,
+        int *ret_int, GError ** error);
 
-     static gboolean remote_object_hook_command (RemoteObject * obj,
-                                                 const char *name,
-                                                 int pri,
-                                                 const char *help_text,
-                                                 int return_value,
-                                                 guint * ret_id,
-                                                 GError ** error);
+static gboolean remote_object_hook_command (RemoteObject * obj,
+        const char *name,
+        int pri,
+        const char *help_text,
+        int return_value,
+        guint * ret_id,
+        GError ** error);
 
-     static gboolean remote_object_hook_server (RemoteObject * obj,
-                                                const char *name,
-                                                int pri,
-                                                int return_value,
-                                                guint * ret_id,
-                                                GError ** error);
+static gboolean remote_object_hook_server (RemoteObject * obj,
+        const char *name,
+        int pri,
+        int return_value,
+        guint * ret_id,
+        GError ** error);
 
-     static gboolean remote_object_hook_print (RemoteObject * obj,
-                                               const char *name,
-                                               int pri,
-                                               int return_value,
-                                               guint * ret_id,
-                                               GError ** error);
+static gboolean remote_object_hook_print (RemoteObject * obj,
+        const char *name,
+        int pri,
+        int return_value,
+        guint * ret_id,
+        GError ** error);
 
-     static gboolean remote_object_unhook (RemoteObject * obj,
-                                           guint id, GError ** error);
+static gboolean remote_object_unhook (RemoteObject * obj,
+                                      guint id, GError ** error);
 
-     static gboolean remote_object_list_get (RemoteObject * obj,
-                                             const char *name,
-                                             guint * ret_id, GError ** error);
+static gboolean remote_object_list_get (RemoteObject * obj,
+                                        const char *name,
+                                        guint * ret_id, GError ** error);
 
-     static gboolean remote_object_list_next (RemoteObject * obj,
-                                              guint id,
-                                              gboolean * ret,
-                                              GError ** error);
+static gboolean remote_object_list_next (RemoteObject * obj,
+        guint id,
+        gboolean * ret,
+        GError ** error);
 
-     static gboolean remote_object_list_str (RemoteObject * obj,
-                                             guint id,
-                                             const char *name,
-                                             char **ret_str, GError ** error);
+static gboolean remote_object_list_str (RemoteObject * obj,
+                                        guint id,
+                                        const char *name,
+                                        char **ret_str, GError ** error);
 
-     static gboolean remote_object_list_int (RemoteObject * obj,
-                                             guint id,
-                                             const char *name,
-                                             int *ret_int, GError ** error);
+static gboolean remote_object_list_int (RemoteObject * obj,
+                                        guint id,
+                                        const char *name,
+                                        int *ret_int, GError ** error);
 
-     static gboolean remote_object_list_time (RemoteObject * obj,
-                                              guint id,
-                                              const char *name,
-                                              guint64 * ret_time,
-                                              GError ** error);
+static gboolean remote_object_list_time (RemoteObject * obj,
+        guint id,
+        const char *name,
+        guint64 * ret_time,
+        GError ** error);
 
-     static gboolean remote_object_list_fields (RemoteObject * obj,
-                                                const char *name,
-                                                char ***ret, GError ** error);
+static gboolean remote_object_list_fields (RemoteObject * obj,
+        const char *name,
+        char ***ret, GError ** error);
 
-     static gboolean remote_object_list_free (RemoteObject * obj,
-                                              guint id, GError ** error);
+static gboolean remote_object_list_free (RemoteObject * obj,
+        guint id, GError ** error);
 
-     static gboolean remote_object_emit_print (RemoteObject * obj,
-                                               const char *event_name,
-                                               const char *args[],
-                                               gboolean * ret,
-                                               GError ** error);
+static gboolean remote_object_emit_print (RemoteObject * obj,
+        const char *event_name,
+        const char *args[],
+        gboolean * ret,
+        GError ** error);
 
-     static gboolean remote_object_nickcmp (RemoteObject * obj,
-                                            const char *nick1,
-                                            const char *nick2,
-                                            int *ret, GError ** error);
+static gboolean remote_object_nickcmp (RemoteObject * obj,
+                                       const char *nick1,
+                                       const char *nick2,
+                                       int *ret, GError ** error);
 
-     static gboolean remote_object_strip (RemoteObject * obj,
-                                          const char *str,
-                                          int len,
-                                          int flag,
-                                          char **ret_str, GError ** error);
+static gboolean remote_object_strip (RemoteObject * obj,
+                                     const char *str,
+                                     int len,
+                                     int flag,
+                                     char **ret_str, GError ** error);
 
-     static gboolean remote_object_send_modes (RemoteObject * obj,
-                                               const char *targets[],
-                                               int modes_per_line,
-                                               char sign,
-                                               char mode, GError ** error);
+static gboolean remote_object_send_modes (RemoteObject * obj,
+        const char *targets[],
+        int modes_per_line,
+        char sign,
+        char mode, GError ** error);
 
 #include "remote-object-glue.h"
 #include "marshallers.h"
 
 /* Useful functions */
 
-     static char **build_list (char *word[]);
-     static guint context_list_find_id (xchat_context * context);
-     static xchat_context *context_list_find_context (guint id);
+static char **build_list (char *word[]);
+static guint context_list_find_id (xchat_context * context);
+static xchat_context *context_list_find_context (guint id);
 
 /* Remote Object */
 
-     static void hook_info_destroy (gpointer data)
+static void hook_info_destroy (gpointer data)
 {
     HookInfo *info = (HookInfo *) data;
 
     if (info == NULL)
-      {
-          return;
-      }
+    {
+        return;
+    }
     xchat_unhook (ph, info->hook);
     g_free (info);
 }
@@ -348,18 +348,18 @@ remote_object_connect (RemoteObject * obj,
     sender = dbus_g_method_get_sender (context);
     remote_object = g_hash_table_lookup (clients, sender);
     if (remote_object != NULL)
-      {
-          dbus_g_method_return (context, remote_object->dbus_path);
-          g_free (sender);
-          return TRUE;
-      }
+    {
+        dbus_g_method_return (context, remote_object->dbus_path);
+        g_free (sender);
+        return TRUE;
+    }
     path = g_strdup_printf (DBUS_OBJECT_PATH "/%d", count++);
     remote_object = g_object_new (REMOTE_TYPE_OBJECT, NULL);
     remote_object->dbus_path = path;
     remote_object->filename = g_path_get_basename (filename);
     remote_object->handle = xchat_plugingui_add (ph,
-                                                 remote_object->filename,
-                                                 name, desc, version, NULL);
+                            remote_object->filename,
+                            name, desc, version, NULL);
     dbus_g_connection_register_g_object (connection,
                                          path, G_OBJECT (remote_object));
 
@@ -387,9 +387,9 @@ remote_object_command (RemoteObject * obj,
                        const char *command, GError ** error)
 {
     if (xchat_set_context (ph, obj->context))
-      {
-          xchat_command (ph, command);
-      }
+    {
+        xchat_command (ph, command);
+    }
     return TRUE;
 }
 
@@ -397,9 +397,9 @@ static gboolean
 remote_object_print (RemoteObject * obj, const char *text, GError ** error)
 {
     if (xchat_set_context (ph, obj->context))
-      {
-          xchat_print (ph, text);
-      }
+    {
+        xchat_print (ph, text);
+    }
     return TRUE;
 }
 
@@ -412,13 +412,13 @@ remote_object_find_context (RemoteObject * obj,
     xchat_context *context;
 
     if (*server == '\0')
-      {
-          server = NULL;
-      }
+    {
+        server = NULL;
+    }
     if (*channel == '\0')
-      {
-          channel = NULL;
-      }
+    {
+        channel = NULL;
+    }
     context = xchat_find_context (ph, server, channel);
     *ret_id = context_list_find_id (context);
 
@@ -441,10 +441,10 @@ remote_object_set_context (RemoteObject * obj,
 
     context = context_list_find_context (id);
     if (context == NULL)
-      {
-          *ret = FALSE;
-          return TRUE;
-      }
+    {
+        *ret = FALSE;
+        return TRUE;
+    }
     obj->context = context;
     *ret = TRUE;
 
@@ -458,10 +458,10 @@ remote_object_get_info (RemoteObject * obj,
     /* win_ptr is a GtkWindow* casted to char* and will crash
      * D-Bus if we send it as a string */
     if (!xchat_set_context (ph, obj->context) || g_str_equal (id, "win_ptr"))
-      {
-          *ret_info = NULL;
-          return TRUE;
-      }
+    {
+        *ret_info = NULL;
+        return TRUE;
+    }
     *ret_info = g_strdup (xchat_get_info (ph, id));
     return TRUE;
 }
@@ -475,10 +475,10 @@ remote_object_get_prefs (RemoteObject * obj,
     const char *str;
 
     if (!xchat_set_context (ph, obj->context))
-      {
-          *ret_type = 0;
-          return TRUE;
-      }
+    {
+        *ret_type = 0;
+        return TRUE;
+    }
     *ret_type = xchat_get_prefs (ph, name, &str, ret_int);
     *ret_str = g_strdup (str);
 
@@ -620,16 +620,16 @@ remote_object_list_get (RemoteObject * obj,
     guint *id;
 
     if (!xchat_set_context (ph, obj->context))
-      {
-          *ret_id = 0;
-          return TRUE;
-      }
+    {
+        *ret_id = 0;
+        return TRUE;
+    }
     xlist = xchat_list_get (ph, name);
     if (xlist == NULL)
-      {
-          *ret_id = 0;
-          return TRUE;
-      }
+    {
+        *ret_id = 0;
+        return TRUE;
+    }
     id = g_new (guint, 1);
     *id = ++obj->last_list_id;
     *ret_id = *id;
@@ -646,10 +646,10 @@ remote_object_list_next (RemoteObject * obj,
 
     xlist = g_hash_table_lookup (obj->lists, &id);
     if (xlist == NULL)
-      {
-          *ret = FALSE;
-          return TRUE;
-      }
+    {
+        *ret = FALSE;
+        return TRUE;
+    }
     *ret = xchat_list_next (ph, xlist);
 
     return TRUE;
@@ -664,15 +664,15 @@ remote_object_list_str (RemoteObject * obj,
 
     xlist = g_hash_table_lookup (obj->lists, &id);
     if (xlist == NULL && !xchat_set_context (ph, obj->context))
-      {
-          *ret_str = NULL;
-          return TRUE;
-      }
+    {
+        *ret_str = NULL;
+        return TRUE;
+    }
     if (g_str_equal (name, "context"))
-      {
-          *ret_str = NULL;
-          return TRUE;
-      }
+    {
+        *ret_str = NULL;
+        return TRUE;
+    }
     *ret_str = g_strdup (xchat_list_str (ph, xlist, name));
 
     return TRUE;
@@ -687,20 +687,20 @@ remote_object_list_int (RemoteObject * obj,
 
     xlist = g_hash_table_lookup (obj->lists, &id);
     if (xlist == NULL && !xchat_set_context (ph, obj->context))
-      {
-          *ret_int = -1;
-          return TRUE;
-      }
+    {
+        *ret_int = -1;
+        return TRUE;
+    }
     if (g_str_equal (name, "context"))
-      {
-          xchat_context *context;
-          context = (xchat_context *) xchat_list_str (ph, xlist, name);
-          *ret_int = context_list_find_id (context);
-      }
+    {
+        xchat_context *context;
+        context = (xchat_context *) xchat_list_str (ph, xlist, name);
+        *ret_int = context_list_find_id (context);
+    }
     else
-      {
-          *ret_int = xchat_list_int (ph, xlist, name);
-      }
+    {
+        *ret_int = xchat_list_int (ph, xlist, name);
+    }
 
     return TRUE;
 }
@@ -715,10 +715,10 @@ remote_object_list_time (RemoteObject * obj,
 
     xlist = g_hash_table_lookup (obj->lists, &id);
     if (xlist == NULL)
-      {
-          *ret_time = (guint64) - 1;
-          return TRUE;
-      }
+    {
+        *ret_time = (guint64) - 1;
+        return TRUE;
+    }
     *ret_time = xchat_list_time (ph, xlist, name);
 
     return TRUE;
@@ -730,9 +730,9 @@ remote_object_list_fields (RemoteObject * obj,
 {
     *ret = g_strdupv ((char **) xchat_list_fields (ph, name));
     if (*ret == NULL)
-      {
-          *ret = g_new0 (char *, 1);
-      }
+    {
+        *ret = g_new0 (char *, 1);
+    }
     return TRUE;
 }
 
@@ -752,16 +752,16 @@ remote_object_emit_print (RemoteObject * obj,
     int i;
 
     for (i = 0; i < 4 && args[i] != NULL; i++)
-      {
-          argv[i] = args[i];
-      }
+    {
+        argv[i] = args[i];
+    }
 
     *ret = xchat_set_context (ph, obj->context);
     if (*ret)
-      {
-          *ret = xchat_emit_print (ph, event_name, argv[0], argv[1],
-                                   argv[2], argv[3]);
-      }
+    {
+        *ret = xchat_emit_print (ph, event_name, argv[0], argv[1],
+                                 argv[2], argv[3]);
+    }
 
     return TRUE;
 }
@@ -792,11 +792,11 @@ remote_object_send_modes (RemoteObject * obj,
                           char sign, char mode, GError ** error)
 {
     if (xchat_set_context (ph, obj->context))
-      {
-          xchat_send_modes (ph, targets,
-                            g_strv_length ((char **) targets),
-                            modes_per_line, sign, mode);
-      }
+    {
+        xchat_send_modes (ph, targets,
+                          g_strv_length ((char **) targets),
+                          modes_per_line, sign, mode);
+    }
     return TRUE;
 }
 
@@ -809,10 +809,10 @@ name_owner_changed (DBusGProxy * driver_proxy,
                     const char *new_owner, void *user_data)
 {
     if (*new_owner == '\0')
-      {
-          /* this name has vanished */
-          g_hash_table_remove (clients, name);
-      }
+    {
+        /* this name has vanished */
+        g_hash_table_remove (clients, name);
+    }
 }
 
 static gboolean
@@ -828,12 +828,12 @@ init_dbus (void)
 
     connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
     if (connection == NULL)
-      {
-          xchat_printf (ph, _("Couldn't connect to session bus: %s\n"),
-                        error->message);
-          g_error_free (error);
-          return FALSE;
-      }
+    {
+        xchat_printf (ph, _("Couldn't connect to session bus: %s\n"),
+                      error->message);
+        g_error_free (error);
+        return FALSE;
+    }
 
     proxy = dbus_g_proxy_new_for_name (connection,
                                        DBUS_SERVICE_DBUS,
@@ -845,13 +845,13 @@ init_dbus (void)
                             G_TYPE_INVALID,
                             G_TYPE_UINT, &request_name_result,
                             G_TYPE_INVALID))
-      {
-          xchat_printf (ph, _("Failed to acquire %s: %s\n"),
-                        DBUS_SERVICE, error->message);
-          g_error_free (error);
+    {
+        xchat_printf (ph, _("Failed to acquire %s: %s\n"),
+                      DBUS_SERVICE, error->message);
+        g_error_free (error);
 
-          return FALSE;
-      }
+        return FALSE;
+    }
 
     dbus_g_proxy_add_signal (proxy, "NameOwnerChanged",
                              G_TYPE_STRING,
@@ -877,20 +877,20 @@ build_list (char *word[])
     char **result;
 
     if (word == NULL)
-      {
-          return NULL;
-      }
+    {
+        return NULL;
+    }
 
     while (word[num] && word[num][0])
-      {
-          num++;
-      }
+    {
+        num++;
+    }
 
     result = g_new0 (char *, num + 1);
     for (i = 0; i < num; i++)
-      {
-          result[i] = g_strdup (word[i]);
-      }
+    {
+        result[i] = g_strdup (word[i]);
+    }
 
     return result;
 }
@@ -901,12 +901,12 @@ context_list_find_id (xchat_context * context)
     GList *l = NULL;
 
     for (l = contexts; l != NULL; l = l->next)
-      {
-          if (((ContextInfo *) l->data)->context == context)
-            {
-                return ((ContextInfo *) l->data)->id;
-            }
-      }
+    {
+        if (((ContextInfo *) l->data)->context == context)
+        {
+            return ((ContextInfo *) l->data)->id;
+        }
+    }
 
     return 0;
 }
@@ -917,12 +917,12 @@ context_list_find_context (guint id)
     GList *l = NULL;
 
     for (l = contexts; l != NULL; l = l->next)
-      {
-          if (((ContextInfo *) l->data)->id == id)
-            {
-                return ((ContextInfo *) l->data)->context;
-            }
-      }
+    {
+        if (((ContextInfo *) l->data)->id == id)
+        {
+            return ((ContextInfo *) l->data)->context;
+        }
+    }
 
     return NULL;
 }
@@ -947,14 +947,14 @@ close_context_cb (char *word[], void *userdata)
     xchat_context *context = xchat_get_context (ph);
 
     for (l = contexts; l != NULL; l = l->next)
-      {
-          if (((ContextInfo *) l->data)->context == context)
-            {
-                g_free (l->data);
-                contexts = g_list_delete_link (contexts, l);
-                break;
-            }
-      }
+    {
+        if (((ContextInfo *) l->data)->context == context)
+        {
+            g_free (l->data);
+            contexts = g_list_delete_link (contexts, l);
+            break;
+        }
+    }
 
     return XCHAT_EAT_NONE;
 }
@@ -974,10 +974,10 @@ unload_plugin_cb (char *word[], char *word_eol[], void *userdata)
 
     obj = g_hash_table_find (clients, clients_find_filename_foreach, word[2]);
     if (obj != NULL)
-      {
-          g_signal_emit (obj, signals[UNLOAD_SIGNAL], 0);
-          return XCHAT_EAT_ALL;
-      }
+    {
+        g_signal_emit (obj, signals[UNLOAD_SIGNAL], 0);
+        return XCHAT_EAT_ALL;
+    }
 
     return XCHAT_EAT_NONE;
 }
@@ -993,23 +993,23 @@ dbus_plugin_init (xchat_plugin * plugin_handle,
     *plugin_version = PVERSION;
 
     if (init_dbus ())
-      {
-          /*xchat_printf (ph, _("%s loaded successfully!\n"), PNAME); */
+    {
+        /*xchat_printf (ph, _("%s loaded successfully!\n"), PNAME); */
 
-          clients = g_hash_table_new_full (g_str_hash,
-                                           g_str_equal,
-                                           g_free, g_object_unref);
+        clients = g_hash_table_new_full (g_str_hash,
+                                         g_str_equal,
+                                         g_free, g_object_unref);
 
-          xchat_hook_print (ph, "Open Context",
-                            XCHAT_PRI_NORM, open_context_cb, NULL);
+        xchat_hook_print (ph, "Open Context",
+                          XCHAT_PRI_NORM, open_context_cb, NULL);
 
-          xchat_hook_print (ph, "Close Context",
-                            XCHAT_PRI_NORM, close_context_cb, NULL);
+        xchat_hook_print (ph, "Close Context",
+                          XCHAT_PRI_NORM, close_context_cb, NULL);
 
-          xchat_hook_command (ph, "unload",
-                              XCHAT_PRI_HIGHEST,
-                              unload_plugin_cb, NULL, NULL);
-      }
+        xchat_hook_command (ph, "unload",
+                            XCHAT_PRI_HIGHEST,
+                            unload_plugin_cb, NULL, NULL);
+    }
 
     return TRUE;
 }

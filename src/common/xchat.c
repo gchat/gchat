@@ -107,15 +107,15 @@ find_dialog (server * serv, char *nick)
     session *sess;
 
     while (list)
-      {
-          sess = list->data;
-          if (sess->server == serv && sess->type == SESS_DIALOG)
-            {
-                if (!serv->p_cmp (nick, sess->channel))
-                    return (sess);
-            }
-          list = list->next;
-      }
+    {
+        sess = list->data;
+        if (sess->server == serv && sess->type == SESS_DIALOG)
+        {
+            if (!serv->p_cmp (nick, sess->channel))
+                return (sess);
+        }
+        list = list->next;
+    }
     return 0;
 }
 
@@ -125,15 +125,15 @@ find_channel (server * serv, char *chan)
     session *sess;
     GSList *list = sess_list;
     while (list)
-      {
-          sess = list->data;
-          if ((!serv || serv == sess->server) && sess->type != SESS_DIALOG)
-            {
-                if (!serv->p_cmp (chan, sess->channel))
-                    return sess;
-            }
-          list = list->next;
-      }
+    {
+        sess = list->data;
+        if ((!serv || serv == sess->server) && sess->type != SESS_DIALOG)
+        {
+            if (!serv->p_cmp (chan, sess->channel))
+                return sess;
+        }
+        list = list->next;
+    }
     return 0;
 }
 
@@ -147,13 +147,13 @@ lagcheck_update (void)
         return;
 
     while (list)
-      {
-          serv = list->data;
-          if (serv->lag_sent)
-              fe_set_lag (serv, -1);
+    {
+        serv = list->data;
+        if (serv->lag_sent)
+            fe_set_lag (serv, -1);
 
-          list = list->next;
-      }
+        list = list->next;
+    }
 }
 
 void
@@ -169,29 +169,29 @@ lag_check (void)
     tim = make_ping_time ();
 
     while (list)
-      {
-          serv = list->data;
-          if (serv->connected && serv->end_of_motd)
+    {
+        serv = list->data;
+        if (serv->connected && serv->end_of_motd)
+        {
+            lag = now - serv->ping_recv;
+            if (prefs.pingtimeout && lag > prefs.pingtimeout && lag > 0)
             {
-                lag = now - serv->ping_recv;
-                if (prefs.pingtimeout && lag > prefs.pingtimeout && lag > 0)
-                  {
-                      sprintf (tbuf, "%d", lag);
-                      EMIT_SIGNAL (XP_TE_PINGTIMEOUT, serv->server_session,
-                                   tbuf, NULL, NULL, NULL, 0);
-                      if (prefs.autoreconnect)
-                          serv->auto_reconnect (serv, FALSE, -1);
-                  }
-                else
-                  {
-                      snprintf (tbuf, sizeof (tbuf), "LAG%lu", tim);
-                      serv->p_ping (serv, "", tbuf);
-                      serv->lag_sent = tim;
-                      fe_set_lag (serv, -1);
-                  }
+                sprintf (tbuf, "%d", lag);
+                EMIT_SIGNAL (XP_TE_PINGTIMEOUT, serv->server_session,
+                             tbuf, NULL, NULL, NULL, 0);
+                if (prefs.autoreconnect)
+                    serv->auto_reconnect (serv, FALSE, -1);
             }
-          list = list->next;
-      }
+            else
+            {
+                snprintf (tbuf, sizeof (tbuf), "LAG%lu", tim);
+                serv->p_ping (serv, "", tbuf);
+                serv->lag_sent = tim;
+                fe_set_lag (serv, -1);
+            }
+        }
+        list = list->next;
+    }
 }
 
 static int
@@ -204,53 +204,53 @@ away_check (void)
     if (!prefs.away_track || prefs.away_size_max < 1)
         return 1;
 
-  doover:
+doover:
     /* request an update of AWAY status of 1 channel every 30 seconds */
     full = TRUE;
     sent = 0;                   /* number of WHOs (users) requested */
     list = sess_list;
     while (list)
-      {
-          sess = list->data;
+    {
+        sess = list->data;
 
-          if (sess->server->connected &&
-              sess->type == SESS_CHANNEL &&
-              sess->channel[0] && sess->total <= prefs.away_size_max)
+        if (sess->server->connected &&
+                sess->type == SESS_CHANNEL &&
+                sess->channel[0] && sess->total <= prefs.away_size_max)
+        {
+            if (!sess->done_away_check)
             {
-                if (!sess->done_away_check)
-                  {
-                      full = FALSE;
+                full = FALSE;
 
-                      /* if we're under 31 WHOs, send another channels worth */
-                      if (sent < 31 && !sess->doing_who)
-                        {
-                            sess->done_away_check = TRUE;
-                            sess->doing_who = TRUE;
-                            /* this'll send a WHO #channel */
-                            sess->server->p_away_status (sess->server,
-                                                         sess->channel);
-                            sent += sess->total;
-                        }
-                  }
+                /* if we're under 31 WHOs, send another channels worth */
+                if (sent < 31 && !sess->doing_who)
+                {
+                    sess->done_away_check = TRUE;
+                    sess->doing_who = TRUE;
+                    /* this'll send a WHO #channel */
+                    sess->server->p_away_status (sess->server,
+                                                 sess->channel);
+                    sent += sess->total;
+                }
             }
+        }
 
-          list = list->next;
-      }
+        list = list->next;
+    }
 
     /* done them all, reset done_away_check to FALSE and start over */
     if (full)
-      {
-          list = sess_list;
-          while (list)
-            {
-                sess = list->data;
-                sess->done_away_check = FALSE;
-                list = list->next;
-            }
-          loop++;
-          if (loop < 2)
-              goto doover;
-      }
+    {
+        list = sess_list;
+        while (list)
+        {
+            sess = list->data;
+            sess->done_away_check = FALSE;
+            list = list->next;
+        }
+        loop++;
+        if (loop < 2)
+            goto doover;
+    }
 
     return 1;
 }
@@ -271,19 +271,19 @@ xchat_misc_checks (void)        /* this gets called every 1/2 second */
         dcc_check_timeouts ();  /* every 1 second */
 
     if (count >= 60)            /* every 30 seconds */
-      {
-          if (prefs.lagometer)
-              lag_check ();
-          count = 0;
-      }
+    {
+        if (prefs.lagometer)
+            lag_check ();
+        count = 0;
+    }
 
 #ifdef USE_MSPROXY
     count2++;
     if (count2 >= 720)          /* 720 every 6 minutes */
-      {
-          msproxy_keepalive ();
-          count2 = 0;
-      }
+    {
+        msproxy_keepalive ();
+        count2 = 0;
+    }
 #endif
 
     return 1;
@@ -321,16 +321,16 @@ irc_init (session * sess)
     fe_timeout_add (500, xchat_misc_checks, 0);
 
     if (arg_url != NULL)
-      {
-          snprintf (buf, sizeof (buf), "server %s", arg_url);
-          handle_command (sess, buf, FALSE);
-          g_free (arg_url);     /* from GOption */
-      }
+    {
+        snprintf (buf, sizeof (buf), "server %s", arg_url);
+        handle_command (sess, buf, FALSE);
+        g_free (arg_url);     /* from GOption */
+    }
 
     if (arg_command != NULL)
-      {
-          g_free (arg_command);
-      }
+    {
+        g_free (arg_command);
+    }
 
     /* load -e ~/.xchat2/startup.txt */
     snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), "startup.txt");
@@ -374,27 +374,27 @@ new_ircwindow (server * serv, char *name, int type, int focus)
     session *sess;
 
     switch (type)
-      {
-      case SESS_SERVER:
-          serv = server_new ();
-          if (prefs.use_server_tab)
-              sess = session_new (serv, name, SESS_SERVER, focus);
-          else
-              sess = session_new (serv, name, SESS_CHANNEL, focus);
-          serv->server_session = sess;
-          serv->front_session = sess;
-          break;
-      case SESS_DIALOG:
-          sess = session_new (serv, name, type, focus);
-          log_open_or_close (sess);
-          break;
-      default:
-/*	case SESS_CHANNEL:
-	case SESS_NOTICES:
-	case SESS_SNOTICES:*/
-          sess = session_new (serv, name, type, focus);
-          break;
-      }
+    {
+    case SESS_SERVER:
+        serv = server_new ();
+        if (prefs.use_server_tab)
+            sess = session_new (serv, name, SESS_SERVER, focus);
+        else
+            sess = session_new (serv, name, SESS_CHANNEL, focus);
+        serv->server_session = sess;
+        serv->front_session = sess;
+        break;
+    case SESS_DIALOG:
+        sess = session_new (serv, name, type, focus);
+        log_open_or_close (sess);
+        break;
+    default:
+        /*	case SESS_CHANNEL:
+        	case SESS_NOTICES:
+        	case SESS_SNOTICES:*/
+        sess = session_new (serv, name, type, focus);
+        break;
+    }
 
     irc_init (sess);
     scrollback_load (sess);
@@ -410,17 +410,17 @@ exec_notify_kill (session * sess)
 #ifndef WIN32
     struct nbexec *re;
     if (sess->running_exec != NULL)
-      {
-          re = sess->running_exec;
-          sess->running_exec = NULL;
-          kill (re->childpid, SIGKILL);
-          waitpid (re->childpid, NULL, WNOHANG);
-          fe_input_remove (re->iotag);
-          close (re->myfd);
-          if (re->linebuf)
-              free (re->linebuf);
-          free (re);
-      }
+    {
+        re = sess->running_exec;
+        sess->running_exec = NULL;
+        kill (re->childpid, SIGKILL);
+        waitpid (re->childpid, NULL, WNOHANG);
+        fe_input_remove (re->iotag);
+        close (re->myfd);
+        if (re->linebuf)
+            free (re->linebuf);
+        free (re);
+    }
 #endif
 }
 
@@ -435,40 +435,40 @@ send_quit_or_part (session * killsess)
     /* check if this is the last session using this server */
     list = sess_list;
     while (list)
-      {
-          sess = (session *) list->data;
-          if (sess->server == killserv && sess != killsess)
-            {
-                willquit = FALSE;
-                list = 0;
-            }
-          else
-              list = list->next;
-      }
+    {
+        sess = (session *) list->data;
+        if (sess->server == killserv && sess != killsess)
+        {
+            willquit = FALSE;
+            list = 0;
+        }
+        else
+            list = list->next;
+    }
 
     if (xchat_is_quitting)
         willquit = TRUE;
 
     if (killserv->connected)
-      {
-          if (willquit)
+    {
+        if (willquit)
+        {
+            if (!killserv->sent_quit)
             {
-                if (!killserv->sent_quit)
-                  {
-                      killserv->flush_queue (killserv);
-                      server_sendquit (killsess);
-                      killserv->sent_quit = TRUE;
-                  }
+                killserv->flush_queue (killserv);
+                server_sendquit (killsess);
+                killserv->sent_quit = TRUE;
             }
-          else
-            {
-                if (killsess->type == SESS_CHANNEL && killsess->channel[0] &&
+        }
+        else
+        {
+            if (killsess->type == SESS_CHANNEL && killsess->channel[0] &&
                     !killserv->sent_quit)
-                  {
-                      server_sendpart (killserv, killsess->channel, 0);
-                  }
+            {
+                server_sendpart (killserv, killsess->channel, 0);
             }
-      }
+        }
+    }
 }
 
 void
@@ -487,23 +487,23 @@ session_free (session * killsess)
         killserv->server_session = NULL;
 
     if (killserv->front_session == killsess)
-      {
-          /* front_session is closed, find a valid replacement */
-          killserv->front_session = NULL;
-          list = sess_list;
-          while (list)
+    {
+        /* front_session is closed, find a valid replacement */
+        killserv->front_session = NULL;
+        list = sess_list;
+        while (list)
+        {
+            sess = (session *) list->data;
+            if (sess != killsess && sess->server == killserv)
             {
-                sess = (session *) list->data;
-                if (sess != killsess && sess->server == killserv)
-                  {
-                      killserv->front_session = sess;
-                      if (!killserv->server_session)
-                          killserv->server_session = sess;
-                      break;
-                  }
-                list = list->next;
+                killserv->front_session = sess;
+                if (!killserv->server_session)
+                    killserv->server_session = sess;
+                break;
             }
-      }
+            list = list->next;
+        }
+    }
 
     if (!killserv->server_session)
         killserv->server_session = killserv->front_session;
@@ -530,11 +530,11 @@ session_free (session * killsess)
     fe_session_callback (killsess);
 
     if (current_sess == killsess)
-      {
-          current_sess = NULL;
-          if (sess_list)
-              current_sess = sess_list->data;
-      }
+    {
+        current_sess = NULL;
+        if (sess_list)
+            current_sess = sess_list->data;
+    }
 
     free (killsess);
 
@@ -543,12 +543,12 @@ session_free (session * killsess)
 
     list = sess_list;
     while (list)
-      {
-          sess = (session *) list->data;
-          if (sess->server == killserv)
-              return;           /* this server is still being used! */
-          list = list->next;
-      }
+    {
+        sess = (session *) list->data;
+        if (sess->server == killserv)
+            return;           /* this server is still being used! */
+        list = list->next;
+    }
 
     server_free (killserv);
 }
@@ -559,10 +559,10 @@ free_sessions (void)
     GSList *list = sess_list;
 
     while (list)
-      {
-          fe_close_window (list->data);
-          list = sess_list;
-      }
+    {
+        fe_close_window (list->data);
+        list = sess_list;
+    }
 }
 
 
@@ -616,11 +616,11 @@ sigusr1_handler (int signal, siginfo_t * si, void *un)
     session *sess;
 
     while (list)
-      {
-          sess = list->data;
-          log_open_or_close (sess);
-          list = list->next;
-      }
+    {
+        sess = list->data;
+        log_open_or_close (sess);
+        list = list->next;
+    }
 }
 
 /* Execute /SIGUSR2 when SIGUSR2 received */
@@ -653,10 +653,10 @@ xchat_init (void)
 
 #ifdef USE_IPV6
     if (WSAStartup (0x0202, &wsadata) != 0)
-      {
-          MessageBox (NULL, "Cannot find winsock 2.2+", "Error", MB_OK);
-          exit (0);
-      }
+    {
+        MessageBox (NULL, "Cannot find winsock 2.2+", "Error", MB_OK);
+        exit (0);
+    }
 #else
     WSAStartup (0x0101, &wsadata);
 #endif /* !USE_IPV6 */
@@ -794,25 +794,25 @@ xchat_init (void)
 
     /* turned OFF via -a arg */
     if (!arg_dont_autoconnect)
-      {
-          /* do any auto connects */
-          if (!servlist_have_auto ())   /* if no new windows open .. */
-            {
-                /* and no serverlist gui ... */
-                if (prefs.slist_skip || arg_url)
-                    /* we'll have to open one. */
-                    new_ircwindow (NULL, NULL, SESS_SERVER, 0);
-            }
-          else
-            {
-                fe_idle_add (xchat_auto_connect, NULL);
-            }
-      }
+    {
+        /* do any auto connects */
+        if (!servlist_have_auto ())   /* if no new windows open .. */
+        {
+            /* and no serverlist gui ... */
+            if (prefs.slist_skip || arg_url)
+                /* we'll have to open one. */
+                new_ircwindow (NULL, NULL, SESS_SERVER, 0);
+        }
+        else
+        {
+            fe_idle_add (xchat_auto_connect, NULL);
+        }
+    }
     else
-      {
-          if (prefs.slist_skip || arg_url)
-              new_ircwindow (NULL, NULL, SESS_SERVER, 0);
-      }
+    {
+        if (prefs.slist_skip || arg_url)
+            new_ircwindow (NULL, NULL, SESS_SERVER, 0);
+    }
 }
 
 void
@@ -823,11 +823,11 @@ xchat_exit (void)
     plugin_kill_all ();
     fe_cleanup ();
     if (prefs.autosave)
-      {
-          save_config ();
-          if (prefs.save_pevents)
-              pevent_save (NULL);
-      }
+    {
+        save_config ();
+        if (prefs.save_pevents)
+            pevent_save (NULL);
+    }
     if (prefs.autosave_url)
         url_autosave ();
     sound_save ();

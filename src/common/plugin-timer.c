@@ -43,17 +43,17 @@ timer_del_ref (int ref, int quiet)
 
     list = timer_list;
     while (list)
-      {
-          tim = list->data;
-          if (tim->ref == ref)
-            {
-                timer_del (tim);
-                if (!quiet)
-                    xchat_printf (ph, "Timer %d deleted.\n", ref);
-                return;
-            }
-          list = list->next;
-      }
+    {
+        tim = list->data;
+        if (tim->ref == ref)
+        {
+            timer_del (tim);
+            if (!quiet)
+                xchat_printf (ph, "Timer %d deleted.\n", ref);
+            return;
+        }
+        list = list->next;
+    }
     if (!quiet)
         xchat_print (ph, "No such ref number found.\n");
 }
@@ -62,16 +62,16 @@ static int
 timeout_cb (timer * tim)
 {
     if (xchat_set_context (ph, tim->context))
-      {
-          xchat_command (ph, tim->command);
+    {
+        xchat_command (ph, tim->command);
 
-          if (tim->forever)
-              return 1;
+        if (tim->forever)
+            return 1;
 
-          tim->repeat--;
-          if (tim->repeat > 0)
-              return 1;
-      }
+        tim->repeat--;
+        if (tim->repeat > 0)
+            return 1;
+    }
 
     timer_del (tim);
     return 0;
@@ -84,17 +84,17 @@ timer_add (int ref, float timeout, int repeat, char *command)
     GSList *list;
 
     if (ref == 0)
-      {
-          ref = 1;
-          list = timer_list;
-          while (list)
-            {
-                tim = list->data;
-                if (tim->ref >= ref)
-                    ref = tim->ref + 1;
-                list = list->next;
-            }
-      }
+    {
+        ref = 1;
+        list = timer_list;
+        while (list)
+        {
+            tim = list->data;
+            if (tim->ref >= ref)
+                ref = tim->ref + 1;
+            list = list->next;
+        }
+    }
 
     tim = malloc (sizeof (timer));
     tim->ref = ref;
@@ -119,21 +119,21 @@ timer_showlist (void)
     timer *tim;
 
     if (timer_list == NULL)
-      {
-          xchat_print (ph, "No timers installed.\n");
-          xchat_print (ph, HELP);
-          return;
-      }
+    {
+        xchat_print (ph, "No timers installed.\n");
+        xchat_print (ph, HELP);
+        return;
+    }
     /*  00000 00000000 0000000 abc */
     xchat_print (ph, "\026 Ref#  Seconds  Repeat  Command \026\n");
     list = timer_list;
     while (list)
-      {
-          tim = list->data;
-          xchat_printf (ph, "%5d %8.1f %7d  %s\n", tim->ref, tim->timeout,
-                        tim->repeat, tim->command);
-          list = list->next;
-      }
+    {
+        tim = list->data;
+        xchat_printf (ph, "%5d %8.1f %7d  %s\n", tim->ref, tim->timeout,
+                      tim->repeat, tim->command);
+        list = list->next;
+    }
 }
 
 static int
@@ -147,34 +147,34 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
     char *command;
 
     if (!word[2][0])
-      {
-          timer_showlist ();
-          return XCHAT_EAT_XCHAT;
-      }
+    {
+        timer_showlist ();
+        return XCHAT_EAT_XCHAT;
+    }
 
     if (strcasecmp (word[2], "-quiet") == 0)
-      {
-          quiet = TRUE;
-          offset++;
-      }
+    {
+        quiet = TRUE;
+        offset++;
+    }
 
     if (strcasecmp (word[2 + offset], "-delete") == 0)
-      {
-          timer_del_ref (atoi (word[3 + offset]), quiet);
-          return XCHAT_EAT_XCHAT;
-      }
+    {
+        timer_del_ref (atoi (word[3 + offset]), quiet);
+        return XCHAT_EAT_XCHAT;
+    }
 
     if (strcasecmp (word[2 + offset], "-refnum") == 0)
-      {
-          ref = atoi (word[3 + offset]);
-          offset += 2;
-      }
+    {
+        ref = atoi (word[3 + offset]);
+        offset += 2;
+    }
 
     if (strcasecmp (word[2 + offset], "-repeat") == 0)
-      {
-          repeat = atoi (word[3 + offset]);
-          offset += 2;
-      }
+    {
+        repeat = atoi (word[3 + offset]);
+        offset += 2;
+    }
 
     timeout = atof (word[2 + offset]);
     command = word_eol[3 + offset];
@@ -189,13 +189,13 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 
 int
 #ifdef STATIC
-  timer_plugin_init
+timer_plugin_init
 #else
-  xchat_plugin_init
+xchat_plugin_init
 #endif
- 
-    (xchat_plugin * plugin_handle, char **plugin_name,
-   char **plugin_desc, char **plugin_version, char *arg)
+
+(xchat_plugin * plugin_handle, char **plugin_name,
+ char **plugin_desc, char **plugin_version, char *arg)
 {
     /* we need to save this for use with any xchat_* functions */
     ph = plugin_handle;

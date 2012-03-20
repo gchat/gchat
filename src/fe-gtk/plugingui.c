@@ -74,8 +74,8 @@ plugingui_treeview_new (GtkWidget * box)
                                  DESC_COLUMN, _("Description"), -1);
     gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
     for (col_id = 0;
-         (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
-         col_id++)
+            (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
+            col_id++)
         gtk_tree_view_column_set_alignment (col, 0.5);
 
     gtk_widget_show (view);
@@ -114,34 +114,34 @@ fe_pluginlist_update (void)
 
     list = plugin_list;
     while (list)
-      {
-          pl = list->data;
-          if (pl->version[0] != 0)
-            {
-                gtk_list_store_append (store, &iter);
-                gtk_list_store_set (store, &iter, NAME_COLUMN, pl->name,
-                                    VERSION_COLUMN, pl->version,
-                                    FILE_COLUMN, file_part (pl->filename),
-                                    DESC_COLUMN, pl->desc, -1);
-            }
-          list = list->next;
-      }
+    {
+        pl = list->data;
+        if (pl->version[0] != 0)
+        {
+            gtk_list_store_append (store, &iter);
+            gtk_list_store_set (store, &iter, NAME_COLUMN, pl->name,
+                                VERSION_COLUMN, pl->version,
+                                FILE_COLUMN, file_part (pl->filename),
+                                DESC_COLUMN, pl->desc, -1);
+        }
+        list = list->next;
+    }
 }
 
 static void
 plugingui_load_cb (session * sess, char *file)
 {
     if (file)
-      {
-          char *buf = malloc (strlen (file) + 9);
+    {
+        char *buf = malloc (strlen (file) + 9);
 
-          if (strchr (file, ' '))
-              sprintf (buf, "LOAD \"%s\"", file);
-          else
-              sprintf (buf, "LOAD %s", file);
-          handle_command (sess, buf, FALSE);
-          free (buf);
-      }
+        if (strchr (file, ' '))
+            sprintf (buf, "LOAD \"%s\"", file);
+        else
+            sprintf (buf, "LOAD %s", file);
+        handle_command (sess, buf, FALSE);
+        free (buf);
+    }
 }
 
 void
@@ -180,22 +180,22 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
     if (len > 3 && strcasecmp (file + len - 3, ".so") == 0)
 #endif
 #endif
-      {
-          if (plugin_kill (modname, FALSE) == 2)
-              fe_message (_("That plugin is refusing to unload.\n"),
-                          FE_MSG_ERROR);
-      }
+    {
+        if (plugin_kill (modname, FALSE) == 2)
+            fe_message (_("That plugin is refusing to unload.\n"),
+                        FE_MSG_ERROR);
+    }
     else
-      {
-          /* let python.so or perl.so handle it */
-          buf = malloc (strlen (file) + 10);
-          if (strchr (file, ' '))
-              sprintf (buf, "UNLOAD \"%s\"", file);
-          else
-              sprintf (buf, "UNLOAD %s", file);
-          handle_command (current_sess, buf, FALSE);
-          free (buf);
-      }
+    {
+        /* let python.so or perl.so handle it */
+        buf = malloc (strlen (file) + 10);
+        if (strchr (file, ' '))
+            sprintf (buf, "UNLOAD \"%s\"", file);
+        else
+            sprintf (buf, "UNLOAD %s", file);
+        handle_command (current_sess, buf, FALSE);
+        free (buf);
+    }
 
     g_free (modname);
     g_free (file);
@@ -208,10 +208,10 @@ plugingui_open (void)
     GtkWidget *vbox, *action_area;
 
     if (plugin_window)
-      {
-          gtk_window_present (GTK_WINDOW (plugin_window));
-          return;
-      }
+    {
+        gtk_window_present (GTK_WINDOW (plugin_window));
+        return;
+    }
 
     plugin_window = gtk_dialog_new ();
     g_signal_connect (G_OBJECT (plugin_window), "destroy",

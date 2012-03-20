@@ -82,7 +82,7 @@ url_find (char *urltext)
     int pos;
 
     if (tree_find
-        (url_tree, urltext, (tree_cmp_func *) strcasecmp, NULL, &pos))
+            (url_tree, urltext, (tree_cmp_func *) strcasecmp, NULL, &pos))
         return 1;
     return 0;
 }
@@ -97,18 +97,18 @@ url_add (char *urltext, int len)
     data[len] = 0;
 
     if (data[len - 1] == '.')   /* chop trailing dot */
-      {
-          len--;
-          data[len] = 0;
-      }
+    {
+        len--;
+        data[len] = 0;
+    }
     if (data[len - 1] == ')')   /* chop trailing ) */
         data[len - 1] = 0;
 
     if (url_find (data))
-      {
-          free (data);
-          return;
-      }
+    {
+        free (data);
+        return;
+    }
 
     if (!url_tree)
         url_tree = tree_new ((tree_cmp_func *) strcasecmp, NULL);
@@ -133,40 +133,59 @@ url_check_word (char *word, int len)
     prefix[] =
     {
         {
-        D ("irc.")},
+            D ("irc.")
+        },
         {
-        D ("ftp.")},
+            D ("ftp.")
+        },
         {
-        D ("www.")},
+            D ("www.")
+        },
         {
-        D ("irc://")},
+            D ("irc://")
+        },
         {
-        D ("ftp://")},
+            D ("ftp://")
+        },
         {
-        D ("http://")},
+            D ("http://")
+        },
         {
-        D ("https://")},
+            D ("https://")
+        },
         {
-        D ("file://")},
+            D ("file://")
+        },
         {
-        D ("rtsp://")},
+            D ("rtsp://")
+        },
         {
-    D ("ut2004://")},}, suffix[] =
+            D ("ut2004://")
+        },
+    }, suffix[] =
     {
         {
-        D (".org")},
+            D (".org")
+        },
         {
-        D (".net")},
+            D (".net")
+        },
         {
-        D (".com")},
+            D (".com")
+        },
         {
-        D (".edu")},
+            D (".edu")
+        },
         {
-        D (".html")},
+            D (".html")
+        },
         {
-        D (".info")},
+            D (".info")
+        },
         {
-    D (".name")},};
+            D (".name")
+        },
+    };
 #undef D
     const char *at, *dot;
     int i, dots;
@@ -178,82 +197,82 @@ url_check_word (char *word, int len)
         return WORD_CHANNEL;
 
     for (i = 0; i < G_N_ELEMENTS (prefix); i++)
-      {
-          int l;
+    {
+        int l;
 
-          l = prefix[i].len;
-          if (len > l)
+        l = prefix[i].len;
+        if (len > l)
+        {
+            int j;
+
+            /* This is pretty much strncasecmp(). */
+            for (j = 0; j < l; j++)
             {
-                int j;
-
-                /* This is pretty much strncasecmp(). */
-                for (j = 0; j < l; j++)
-                  {
-                      unsigned char c = word[j];
-                      if (tolower (c) != prefix[i].s[j])
-                          break;
-                  }
-                if (j == l)
-                    return WORD_URL;
+                unsigned char c = word[j];
+                if (tolower (c) != prefix[i].s[j])
+                    break;
             }
-      }
+            if (j == l)
+                return WORD_URL;
+        }
+    }
 
     at = strchr (word, '@');    /* check for email addy */
     dot = strrchr (word, '.');
     if (at && dot)
-      {
-          if (at < dot)
-            {
-                if (strchr (word, '*'))
-                    return WORD_HOST;
-                else
-                    return WORD_EMAIL;
-            }
-      }
+    {
+        if (at < dot)
+        {
+            if (strchr (word, '*'))
+                return WORD_HOST;
+            else
+                return WORD_EMAIL;
+        }
+    }
 
     /* check if it's an IP number */
     dots = 0;
     for (i = 0; i < len; i++)
-      {
-          if (word[i] == '.' && i > 0)
-              dots++;           /* allow 127.0.0.1:80 */
-          else if (!isdigit ((unsigned char) word[i]) && word[i] != ':')
-            {
-                dots = 0;
-                break;
-            }
-      }
+    {
+        if (word[i] == '.' && i > 0)
+            dots++;           /* allow 127.0.0.1:80 */
+        else if (!isdigit ((unsigned char) word[i]) && word[i] != ':')
+        {
+            dots = 0;
+            break;
+        }
+    }
     if (dots == 3)
         return WORD_HOST;
 
     if (len > 5)
-      {
-          for (i = 0; i < G_N_ELEMENTS (suffix); i++)
+    {
+        for (i = 0; i < G_N_ELEMENTS (suffix); i++)
+        {
+            int l;
+
+            l = suffix[i].len;
+            if (len > l)
             {
-                int l;
+                const unsigned char *p = &word[len - l];
+                int j;
 
-                l = suffix[i].len;
-                if (len > l)
-                  {
-                      const unsigned char *p = &word[len - l];
-                      int j;
-
-                      /* This is pretty much strncasecmp(). */
-                      for (j = 0; j < l; j++)
-                        {
-                            if (tolower (p[j]) != suffix[i].s[j])
-                                break;
-                        }
-                      if (j == l)
-                          return WORD_HOST;
-                  }
+                /* This is pretty much strncasecmp(). */
+                for (j = 0; j < l; j++)
+                {
+                    if (tolower (p[j]) != suffix[i].s[j])
+                        break;
+                }
+                if (j == l)
+                    return WORD_HOST;
             }
+        }
 
-          if (word[len - 3] == '.' &&
-              isalpha ((unsigned char) word[len - 2]) &&
-              isalpha ((unsigned char) word[len - 1]))
-              return WORD_HOST;
-      }
+        if (word[len - 3] == '.' &&
+                isalpha ((unsigned char) word[len - 2]) &&
+                isalpha ((unsigned char) word[len - 1]))
+            return WORD_HOST;
+    }
 
     return 0;
 }
@@ -272,27 +291,27 @@ url_check_line (char *buf, int len)
 
     /* check each "word" (space separated) */
     while (1)
-      {
-          switch (po[0])
+    {
+        switch (po[0])
+        {
+        case 0:
+        case ' ':
+            wlen = po - start;
+            if (wlen > 2)
             {
-            case 0:
-            case ' ':
-                wlen = po - start;
-                if (wlen > 2)
-                  {
-                      if (url_check_word (start, wlen) == WORD_URL)
-                        {
-                            url_add (start, wlen);
-                        }
-                  }
-                if (po[0] == 0)
-                    return;
-                po++;
-                start = po;
-                break;
-
-            default:
-                po++;
+                if (url_check_word (start, wlen) == WORD_URL)
+                {
+                    url_add (start, wlen);
+                }
             }
-      }
+            if (po[0] == 0)
+                return;
+            po++;
+            start = po;
+            break;
+
+        default:
+            po++;
+        }
+    }
 }
