@@ -100,57 +100,55 @@ typedef struct
 
 
 static const setting textbox_settings[] = {
-    {ST_HEADER, N_("Text Box Appearance"), 0, 0, 0},
-    {   ST_EFONT, N_("Font:"), P_OFFSETNL (font_normal), 0, 0,
-        sizeof prefs.font_normal
-    }
-    ,
-    {   ST_EFILE, N_("Background image:"), P_OFFSETNL (background), 0, 0,
-        sizeof prefs.background
-    }
-    ,
-    {ST_NUMBER, N_("Scrollback lines:"), P_OFFINTNL (max_lines), 0, 0, 100000}
-    ,
-    {   ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL (colorednicks),
-        N_("Give each person on IRC a different color"), 0, 0
-    }
-    ,
-    {   ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL (indent_nicks),
-        N_("Make nick names right-justified"), 0, 0
-    }
-    ,
-    {   ST_TOGGLE, N_("Transparent background"), P_OFFINTNL (transparent), 0, 0,
-        0
-    }
-    ,
-    {   ST_TOGGLR, N_("Show marker line"), P_OFFINTNL (show_marker),
-        N_("Insert a red line after the last read text."), 0, 0
-    }
-    ,
-    {ST_HEADER, N_("Transparency Settings"), 0, 0, 0}
-    ,
-    {ST_HSCALE, N_("Red:"), P_OFFINTNL (tint_red), 0, 0, 0}
-    ,
-    {ST_HSCALE, N_("Green:"), P_OFFINTNL (tint_green), 0, 0, 0}
-    ,
-    {ST_HSCALE, N_("Blue:"), P_OFFINTNL (tint_blue), 0, 0, 0}
-    ,
-
-    {ST_HEADER, N_("Time Stamps"), 0, 0, 0}
-    ,
-    {ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL (timestamp), 0, 0, 2}
-    ,
-    {   ST_ENTRY, N_("Time stamp format:"), P_OFFSETNL (stamp_format),
-        N_("See strftime manpage for details."), 0, sizeof prefs.stamp_format
-    }
-    ,
-
-    {ST_END, 0, 0, 0, 0, 0}
+    { ST_HEADER, "Text Box Appearance", 0, 0, 0 },
+    { ST_EFONT, "Font:", P_OFFSETNL (font_normal), 0, 0, sizeof prefs.font_normal },
+    { ST_EFILE,
+        "Background image:",
+        P_OFFSETNL (background),
+        0, 0, sizeof prefs.background
+    },
+    { ST_NUMBER, "Scrollback lines:", P_OFFINTNL (max_lines), 0, 0, 100000 },
+    { ST_TOGGLE,
+        "Colored nick names",
+        P_OFFINTNL (colorednicks),
+        "Give each person on IRC a different color",
+        0, 0
+    },
+    { ST_TOGGLR,
+        "Indent nick names",
+        P_OFFINTNL (indent_nicks),
+        "Make nick names right-justified",
+        0, 0
+    },
+    { ST_TOGGLE,
+        "Transparent background",
+        P_OFFINTNL (transparent),
+        0, 0, 0
+    },
+    { ST_TOGGLR,
+        "Show marker line",
+        P_OFFINTNL (show_marker),
+        "Insert a red line after the last read text.",
+        0, 0
+    },
+    { ST_HEADER, "Transparency Settings", 0, 0, 0                      },
+    { ST_HSCALE, "Red:", P_OFFINTNL (tint_red), 0, 0, 0                },
+    { ST_HSCALE, "Green:", P_OFFINTNL (tint_green), 0, 0, 0            },
+    { ST_HSCALE, "Blue:", P_OFFINTNL (tint_blue), 0, 0, 0              },
+    { ST_HEADER, "Time Stamps", 0, 0, 0                                },
+    { ST_TOGGLE, "Enable time stamps", P_OFFINTNL (timestamp), 0, 0, 2 },
+    { ST_ENTRY,
+        "Time stamp format:",
+        P_OFFSETNL (stamp_format),
+        "See strftime manpage for details.",
+        0, sizeof prefs.stamp_format
+    },
+    { ST_END, 0, 0, 0, 0, 0 }
 };
 
 static const char *const tabcompmenu[] = {
-    N_("A-Z"),
-    N_("Last-spoke order"),
+    "A-Z",
+    "Last-spoke order",
     NULL
 };
 
@@ -170,37 +168,14 @@ static const setting inputbox_settings[] = {
     },
     {   ST_ENTRY, N_("Nick completion suffix:"), P_OFFSETNL (nick_suffix), 0, 0,
         sizeof prefs.nick_suffix
-    }
-    ,
+    },
+
     {   ST_MENU, N_("Nick completion sorted:"), P_OFFINTNL (completion_sort), 0,
         tabcompmenu, 0
-    }
-    ,
-
-#if 0                           /* obsolete */
-    {ST_HEADER, N_("Input Box Codes"), 0, 0, 0}
-    ,
-    {   ST_TOGGLE, N_("Interpret %nnn as an ASCII value"),
-        P_OFFINTNL (perc_ascii), 0, 0, 0
-    }
-    ,
-    {   ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"),
-        P_OFFINTNL (perc_color), 0, 0, 0
-    }
-    ,
-#endif
+    },
 
     {ST_END, 0, 0, 0, 0, 0}
 };
-
-/*static const char *const lagmenutext[] =
-{
-	N_("Off"),
-	N_("Graph"),
-	N_("Info text"),
-	N_("Both"),
-	NULL
-};*/
 
 static const char *const ulmenutext[] = {
     N_("A-Z, Ops first"),
@@ -265,8 +240,8 @@ static const setting userlist_settings[] = {
     {ST_HEADER, N_("Action Upon Double Click"), 0, 0, 0},
     {   ST_ENTRY, N_("Execute command:"), P_OFFSETNL (doubleclickuser), 0, 0,
         sizeof prefs.doubleclickuser
-    }
-    ,
+    },
+
 
     /*	{ST_HEADER,	N_("Extra Gadgets"),0,0,0},
     	{ST_MENU,	N_("Lag meter:"), P_OFFINTNL(lagometer), 0, lagmenutext, 0},
@@ -362,35 +337,35 @@ static const setting filexfer_settings[] = {
     },
     {   ST_EFOLDER, N_("Download files to:"), P_OFFSETNL (dccdir), 0, 0,
         sizeof prefs.dccdir
-    }
-    ,
+    },
+
     {   ST_EFOLDER, N_("Move completed files to:"),
         P_OFFSETNL (dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir
-    }
-    ,
+    },
+
     {   ST_TOGGLE, N_("Save nick name in filenames"), P_OFFINTNL (dccwithnick),
         0, 0, 0
-    }
-    ,
+    },
 
-    {ST_HEADER, N_("Network Settings"), 0, 0, 0}
-    ,
+
+    {ST_HEADER, N_("Network Settings"), 0, 0, 0},
+
     {   ST_TOGGLE, N_("Get my address from the IRC server"),
         P_OFFINTNL (ip_from_server),
         N_
         ("Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"),
         0, 0
-    }
-    ,
+    },
+
     {   ST_ENTRY, N_("DCC IP address:"), P_OFFSETNL (dcc_ip_str),
         N_("Claim you are at this address when offering files."), 0,
         sizeof prefs.dcc_ip_str
-    }
-    ,
+    },
+
     {   ST_NUMBER, N_("First DCC send port:"), P_OFFINTNL (first_dcc_send_port),
         0, 0, 65535
-    }
-    ,
+    },
+
     {   ST_NUMBER, N_("Last DCC send port:"), P_OFFINTNL (last_dcc_send_port), 0,
         (const char **) N_("!Leave ports at zero for full range."), 65535
     },
@@ -460,20 +435,20 @@ static const setting alert_settings[] = {
 
     {   ST_ENTRY, N_("Extra words to highlight:"),
         P_OFFSETNL (irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight
-    }
-    ,
+    },
+
     {   ST_ENTRY, N_("Nick names not to highlight:"),
         P_OFFSETNL (irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight
-    }
-    ,
+    },
+
     {   ST_ENTRY, N_("Nick names to always highlight:"),
         P_OFFSETNL (irc_nick_hilight), 0, 0, sizeof prefs.irc_nick_hilight
-    }
-    ,
+    },
+
     {   ST_LABEL,
         N_("Separate multiple words with commas.\nWildcards are accepted.")
-    }
-    ,
+    },
+
     {ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -481,64 +456,34 @@ static const setting general_settings[] = {
     {ST_HEADER, N_("Default Messages"), 0, 0, 0},
     {   ST_ENTRY, N_("Quit:"), P_OFFSETNL (quitreason), 0, 0,
         sizeof prefs.quitreason
-    }
-    ,
+    },
+
     {   ST_ENTRY, N_("Leave channel:"), P_OFFSETNL (partreason), 0, 0,
         sizeof prefs.partreason
-    }
-    ,
+    },
+
     {   ST_ENTRY, N_("Away:"), P_OFFSETNL (awayreason), 0, 0,
         sizeof prefs.awayreason
-    }
-    ,
+    },
 
-    {ST_HEADER, N_("Away"), 0, 0, 0}
-    ,
+
+    {ST_HEADER, N_("Away"), 0, 0, 0},
+
     {   ST_TOGGLE, N_("Announce away messages"), P_OFFINTNL (show_away_message),
         N_("Announce your away messages to all channels"), 0, 0
-    }
-    ,
+    },
+
     {   ST_TOGGLE, N_("Show away once"), P_OFFINTNL (show_away_once),
         N_("Show identical away messages only once"), 0, 0
-    }
-    ,
+    },
+
     {   ST_TOGGLE, N_("Automatically unmark away"),
         P_OFFINTNL (auto_unmark_away),
         N_("Unmark yourself as away before sending messages"), 0, 0
-    }
-    ,
-    {ST_END, 0, 0, 0, 0, 0}
-};
-
-#if 0
-static const setting advanced_settings[] = {
-    {ST_HEADER, N_("Advanced Settings"), 0, 0, 0},
-    {   ST_NUMBER, N_("Auto reconnect delay:"), P_OFFINTNL (recon_delay), 0, 0,
-        9999
-    },
-    {   ST_TOGGLE, N_("Display MODEs in raw form"), P_OFFINTNL (raw_modes), 0, 0,
-        0
-    },
-    {   ST_TOGGLE, N_("Whois on notify"), P_OFFINTNL (whois_on_notifyonline),
-        N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0
-    },
-    {   ST_TOGGLE, N_("Hide join and part messages"), P_OFFINTNL (confmode),
-        N_("Hide channel join/part messages by default"), 0, 0
-    },
-    {ST_HEADER, N_("Auto Open DCC Windows"), 0, 0, 0},
-    {   ST_TOGGLE, N_("Send window"), P_OFFINTNL (autoopendccsendwindow), 0, 0,
-        0
-    },
-    {   ST_TOGGLE, N_("Receive window"), P_OFFINTNL (autoopendccrecvwindow), 0,
-        0, 0
-    },
-    {   ST_TOGGLE, N_("Chat window"), P_OFFINTNL (autoopendccchatwindow), 0, 0,
-        0
     },
 
     {ST_END, 0, 0, 0, 0, 0}
 };
-#endif
 
 static const setting logging_settings[] = {
     {ST_HEADER, N_("Logging"), 0, 0, 0},
@@ -550,23 +495,23 @@ static const setting logging_settings[] = {
     },
     {   ST_ENTRY, N_("Log filename:"), P_OFFSETNL (logmask), 0, 0,
         sizeof prefs.logmask
-    }
-    ,
-    {ST_LABEL, N_("%s=Server %c=Channel %n=Network.")}
-    ,
+    },
 
-    {ST_HEADER, N_("Time Stamps"), 0, 0, 0}
-    ,
+    {ST_LABEL, N_("%s=Server %c=Channel %n=Network.")},
+
+
+    {ST_HEADER, N_("Time Stamps"), 0, 0, 0},
+
     {   ST_TOGGLE, N_("Insert timestamps in logs"), P_OFFINTNL (timestamp_logs),
         0, 0, 2
-    }
-    ,
+    },
+
     {   ST_ENTRY, N_("Log timestamp format:"), P_OFFSETNL (timestamp_log_format),
         0, 0, sizeof prefs.timestamp_log_format
-    }
-    ,
-    {ST_LABEL, N_("See strftime manpage for details.")}
-    ,
+    },
+
+    {ST_LABEL, N_("See strftime manpage for details.")},
+
 
     {ST_END, 0, 0, 0, 0, 0}
 };
@@ -594,45 +539,45 @@ static const setting network_settings[] = {
     {ST_HEADER, N_("Your Address"), 0, 0, 0, 0},
     {   ST_ENTRY, N_("Bind to:"), P_OFFSETNL (hostname), 0, 0,
         sizeof prefs.hostname
-    }
-    ,
-    {ST_LABEL, N_("Only useful for computers with multiple addresses.")}
-    ,
+    },
 
-    {ST_HEADER, N_("Proxy Server"), 0, 0, 0, 0}
-    ,
+    {ST_LABEL, N_("Only useful for computers with multiple addresses.")},
+
+
+    {ST_HEADER, N_("Proxy Server"), 0, 0, 0, 0},
+
     {   ST_ENTRY, N_("Hostname:"), P_OFFSETNL (proxy_host), 0, 0,
         sizeof prefs.proxy_host
-    }
-    ,
-    {ST_NUMBER, N_("Port:"), P_OFFINTNL (proxy_port), 0, 0, 65535}
-    ,
-    {ST_MENU, N_("Type:"), P_OFFINTNL (proxy_type), 0, proxytypes, 0}
-    ,
-    {ST_MENU, N_("Use proxy for:"), P_OFFINTNL (proxy_use), 0, proxyuse, 0}
-    ,
+    },
 
-    {ST_HEADER, N_("Proxy Authentication"), 0, 0, 0, 0}
-    ,
+    {ST_NUMBER, N_("Port:"), P_OFFINTNL (proxy_port), 0, 0, 65535},
+
+    {ST_MENU, N_("Type:"), P_OFFINTNL (proxy_type), 0, proxytypes, 0},
+
+    {ST_MENU, N_("Use proxy for:"), P_OFFINTNL (proxy_use), 0, proxyuse, 0},
+
+
+    {ST_HEADER, N_("Proxy Authentication"), 0, 0, 0, 0},
+
 #ifdef USE_MSPROXY
     {   ST_TOGGLE, N_("Use Authentication (MS Proxy, HTTP or Socks5 only)"),
         P_OFFINTNL (proxy_auth), 0, 0, 0
-    }
-    ,
+    },
+
 #else
     {   ST_TOGGLE, N_("Use Authentication (HTTP or Socks5 only)"),
         P_OFFINTNL (proxy_auth), 0, 0, 0
-    }
-    ,
+    },
+
 #endif
     {   ST_ENTRY, N_("Username:"), P_OFFSETNL (proxy_user), 0, 0,
         sizeof prefs.proxy_user
-    }
-    ,
+    },
+
     {   ST_ENTRY, N_("Password:"), P_OFFSETNL (proxy_pass), 0,
         GINT_TO_POINTER (1), sizeof prefs.proxy_pass
-    }
-    ,
+    },
+
 
     {ST_END, 0, 0, 0, 0, 0}
 };
@@ -770,23 +715,6 @@ setup_create_toggleL (GtkWidget * tab, int row, const setting * set)
 
     return wid;
 }
-
-#if 0
-static void
-setup_create_toggle (GtkWidget * box, int row, const setting * set)
-{
-    GtkWidget *wid;
-
-    wid = gtk_check_button_new_with_label (_(set->label));
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
-                                  setup_get_int (&setup_prefs, set));
-    g_signal_connect (G_OBJECT (wid), "toggled",
-                      G_CALLBACK (setup_toggle_cb), (gpointer) set);
-    if (set->tooltip)
-        add_tip (wid, _(set->tooltip));
-    gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
-}
-#endif
 
 static GtkWidget *
 setup_create_italic_label (char *text)
@@ -967,75 +895,6 @@ setup_create_radio (GtkWidget * table, int row, const setting * set)
 
     return i;
 }
-
-/*
-static const char *id_strings[] =
-{
-	"",
-	"*",
-	"%C4*%C18%B%B",
-	"%U"
-};
-
-static void
-setup_id_menu_cb (GtkWidget *item, char *dest)
-{
-	int n = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n"));
-
-	strcpy (dest, id_strings[n]);
-}
-
-static void
-setup_create_id_menu (GtkWidget *table, char *label, int row, char *dest)
-{
-	GtkWidget *wid, *menu, *item;
-	int i, def = 0;
-	static const char *text[] =
-	{
-		("(disabled)"),
-		("A star (*)"),
-		("A red star (*)"),
-		("Underlined")
-	};
-
-	wid = gtk_label_new (label);
-	gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
-	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
-
-	wid = gtk_option_menu_new ();
-	menu = gtk_menu_new ();
-
-	for (i = 0; i < 4; i++)
-	{
-		if (strcmp (id_strings[i], dest) == 0)
-		{
-			def = i;
-			break;
-		}
-	}
-
-	i = 0;
-	while (text[i])
-	{
-		item = gtk_menu_item_new_with_label (_(text[i]));
-		g_object_set_data (G_OBJECT (item), "n", GINT_TO_POINTER (i));
-
-		gtk_widget_show (item);
-		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-		g_signal_connect (G_OBJECT (item), "activate",
-								G_CALLBACK (setup_id_menu_cb), dest);
-		i++;
-	}
-
-	gtk_option_menu_set_menu (GTK_OPTION_MENU (wid), menu);
-	gtk_option_menu_set_history (GTK_OPTION_MENU (wid), def);
-
-	gtk_table_attach (GTK_TABLE (table), wid, 3, 4, row, row + 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
-}
-
-*/
 
 static void
 setup_create_menu (GtkWidget * table, int row, const setting * set)
@@ -1367,16 +1226,6 @@ setup_create_page (const setting * set)
         i++;
         row++;
     }
-
-#if 0
-    if (set == general_settings)
-    {
-        setup_create_id_menu (tab, _("Mark identified users with:"),
-                              row, setup_prefs.irc_id_ytext);
-        setup_create_id_menu (tab, _("Mark not-identified users with:"),
-                              row + 1, setup_prefs.irc_id_ntext);
-    }
-#endif
 
     if (set == logging_settings)
     {
@@ -2279,15 +2128,6 @@ setup_apply (struct xchatprefs *pr)
 #endif
 }
 
-#if 0
-static void
-setup_apply_cb (GtkWidget * but, GtkWidget * win)
-{
-    /* setup_prefs -> xchat */
-    setup_apply (&setup_prefs);
-}
-#endif
-
 static void
 setup_ok_cb (GtkWidget * but, GtkWidget * win)
 {
@@ -2323,14 +2163,6 @@ setup_window_open (void)
     gtk_box_pack_end (GTK_BOX (hbox), hbbox, FALSE, FALSE, 0);
 
     /* standard buttons */
-    /* GNOME doesn't like apply */
-#if 0
-    wid = gtk_button_new_from_stock (GTK_STOCK_APPLY);
-    g_signal_connect (G_OBJECT (wid), "clicked",
-                      G_CALLBACK (setup_apply_cb), win);
-    gtk_box_pack_start (GTK_BOX (hbbox), wid, FALSE, FALSE, 0);
-#endif
-
     cancel_button = wid = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
     g_signal_connect (G_OBJECT (wid), "clicked",
                       G_CALLBACK (gtkutil_destroy), win);
