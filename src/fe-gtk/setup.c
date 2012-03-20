@@ -1992,13 +1992,6 @@ setup_window_open (void)
     gtk_box_pack_end (GTK_BOX (hbox), hbbox, FALSE, FALSE, 0);
 
     /* standard buttons */
-    /* GNOME doesn't like apply */
-#if 0
-    wid = gtk_button_new_from_stock (GTK_STOCK_APPLY);
-    g_signal_connect (G_OBJECT (wid), "clicked",
-                      G_CALLBACK (setup_apply_cb), win);
-    gtk_box_pack_start (GTK_BOX (hbbox), wid, FALSE, FALSE, 0);
-#endif
 
     cancel_button = wid = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
     g_signal_connect (G_OBJECT (wid), "clicked",
