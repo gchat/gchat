@@ -644,8 +644,8 @@ load_config (void)
     prefs.tab_sort = 1;
     prefs.blink_timeout = 30;
     prefs.data_color = 2; /* 2 = blink once */
-    prefs.talk_color = 2;
-    prefs.hilite_color = 2;
+    prefs.talk_color = 1; /* 1 = stay solid */
+    prefs.hilite_color = 1;
     prefs.paned_userlist = 1;
     prefs.newtabstofront = 2;
     prefs.use_server_tab = 1;
