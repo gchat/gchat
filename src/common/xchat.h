@@ -188,8 +188,10 @@ struct xchatprefs
 
     unsigned int tab_small;
     unsigned int tab_sort;
+    unsigned int hilite_color;
+    unsigned int talk_color;
     unsigned int data_color;
-    unsigned int data_timeout;
+    unsigned int blink_timeout;
     unsigned int tweak_usercount;
     unsigned int tweak_button;
     unsigned int tweak_swap;

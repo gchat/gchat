@@ -290,12 +290,21 @@ static const setting tabs_settings[] = {
         0, 0, 0
     },
     { ST_TOGGLE, "Smaller text", P_OFFINTNL (tab_small), 0, 0, 0 },
-    { ST_MENU, "When channel data is received:", P_OFFINTNL (data_color), 0, datapos, 1 },
     { ST_MENU, "Show channel switcher at:", P_OFFINTNL (tab_pos), 0, cspos, 1 },
     { ST_NUMBER,
         "Shorten tab labels to:",
         P_OFFINTNL (truncchans),
         0, (const char **) "letters.", 99
+    },
+
+    { ST_HEADER, "Tab color behavior", 0, 0, 0                                          },
+    { ST_MENU, "When channel data is received:", P_OFFINTNL (data_color), 0, datapos, 1 },
+    { ST_MENU, "When a message is received:", P_OFFINTNL (talk_color), 0, datapos, 1    },
+    { ST_MENU, "When you are highlighted:", P_OFFINTNL (hilite_color), 0, datapos, 1    },
+    { ST_NUMBER,
+        "Blink timeout (if enabled):",
+        P_OFFINTNL (blink_timeout),
+        0, (const char **) "seconds.", 99
     },
 
     { ST_HEADER, "Tabs or Windows", 0, 0, 0                                },

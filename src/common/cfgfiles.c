@@ -465,6 +465,7 @@ const struct prefs vars[] = {
 #ifdef WIN32
     {"identd", P_OFFINT (identd), TYPE_BOOL},
 #endif
+
     {"input_balloon_chans", P_OFFINT (input_balloon_chans), TYPE_BOOL},
     {"input_balloon_hilight", P_OFFINT (input_balloon_hilight), TYPE_BOOL},
     {"input_balloon_priv", P_OFFINT (input_balloon_priv), TYPE_BOOL},
@@ -545,8 +546,10 @@ const struct prefs vars[] = {
     {"tab_position", P_OFFINT (_tabs_position), TYPE_INT},      /* obsolete */
     {"tab_server", P_OFFINT (use_server_tab), TYPE_BOOL},
     {"tab_small", P_OFFINT (tab_small), TYPE_INT},
-    {"tab_data_timeout", P_OFFINT (data_timeout), TYPE_INT},
+    {"tab_blink_timeout", P_OFFINT (blink_timeout), TYPE_INT},
     {"tab_data_color", P_OFFINT (data_color), TYPE_INT},
+    {"tab_talk_color", P_OFFINT (talk_color), TYPE_INT},
+    {"tab_highlight_color", P_OFFINT (hilite_color), TYPE_INT},
     {"tab_sort", P_OFFINT (tab_sort), TYPE_BOOL},
     {"tab_trunc", P_OFFINT (truncchans), TYPE_INT},
     {"tab_utils", P_OFFINT (windows_as_tabs), TYPE_BOOL},
@@ -639,8 +642,10 @@ load_config (void)
     prefs.tabchannels = 1;
     prefs.tab_layout = 2;       /* 0=Tabs 1=Reserved 2=Tree */
     prefs.tab_sort = 1;
-    prefs.data_timeout = 10000;
+    prefs.blink_timeout = 30;
     prefs.data_color = 2; /* 2 = blink once */
+    prefs.talk_color = 2;
+    prefs.hilite_color = 2;
     prefs.paned_userlist = 1;
     prefs.newtabstofront = 2;
     prefs.use_server_tab = 1;

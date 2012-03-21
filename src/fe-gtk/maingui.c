@@ -302,26 +302,8 @@ fe_flash_window (session * sess)
 #endif
 }
 
-static void
-new_data_set_color (struct session *sess)
-{
-    struct session *server_sess = sess->server->server_session;
-    sess->new_data = TRUE;
-    sess->msg_said = FALSE;
-    sess->nick_said = FALSE;
-    chan_set_color (sess->res->tab, newdata_list);
-
-    if (chan_is_collapsed (sess->res->tab))
-    {
-        server_sess->new_data = TRUE;
-        server_sess->msg_said = FALSE;
-        server_sess->nick_said = FALSE;
-        chan_set_color (chan_get_parent (sess->res->tab), newdata_list);
-    }
-}
-
 static guint
-new_data_restore_color (struct session *sess)
+fe_tab_restore_color (struct session *sess)
 {
     sess->new_data = FALSE;
     sess->msg_said = FALSE;
@@ -330,8 +312,7 @@ new_data_restore_color (struct session *sess)
     return FALSE;
 }
 
-/* set a tab plain, red, light-red, or blue */
-
+/* set tab color */
 void
 fe_set_tab_color (struct session *sess, int col)
 {
@@ -340,22 +321,41 @@ fe_set_tab_color (struct session *sess, int col)
     {
         switch (col)
         {
-        case 0:            /* no particular color (theme default) */
+
+        case 0: /* no particular color (theme default) */
             sess->new_data = FALSE;
             sess->msg_said = FALSE;
             sess->nick_said = FALSE;
             chan_set_color (sess->res->tab, plain_list);
             break;
-        case 1:            /* new data has been displayed (green) */
 
+        case 1: /* new data has been displayed (green) */
             if (prefs.data_color == 3) /* do nothing */
                 break;
-            new_data_set_color (sess);
-            if (prefs.data_color == 2)  /* blink once */
-                fe_timeout_add (prefs.data_timeout, new_data_restore_color, sess);
+
+            sess->new_data = TRUE;
+            sess->msg_said = FALSE;
+            sess->nick_said = FALSE;
+            chan_set_color (sess->res->tab, newdata_list);
+
+            if (chan_is_collapsed (sess->res->tab))
+            {
+                server_sess->new_data = TRUE;
+                server_sess->msg_said = FALSE;
+                server_sess->nick_said = FALSE;
+                chan_set_color (chan_get_parent (sess->res->tab), newdata_list);
+            }
+
+            /* blink once */
+            if (prefs.data_color == 2)
+                fe_timeout_add (prefs.blink_timeout * 1000, fe_tab_restore_color, sess);
 
             break;
-        case 2:            /* new message arrived in channel (light red) */
+
+        case 2: /* new message arrived in channel (blue) */
+            if (prefs.talk_color == 3) /* do nothing */
+                break;
+
             sess->new_data = FALSE;
             sess->msg_said = TRUE;
             sess->nick_said = FALSE;
@@ -369,8 +369,16 @@ fe_set_tab_color (struct session *sess, int col)
                 chan_set_color (chan_get_parent (sess->res->tab), newmsg_list);
             }
 
+            /* blink once */
+            if (prefs.talk_color == 2)
+                fe_timeout_add (prefs.blink_timeout * 1000, fe_tab_restore_color, sess);
+
             break;
-        case 3:            /* your nick has been seen (blue) */
+
+        case 3:            /* your nick has been seen (red) */
+            if (prefs.hilite_color == 3) /* do nothing */
+                break;
+
             sess->new_data = FALSE;
             sess->msg_said = FALSE;
             sess->nick_said = TRUE;
@@ -381,9 +389,12 @@ fe_set_tab_color (struct session *sess, int col)
                 server_sess->new_data = FALSE;
                 server_sess->msg_said = FALSE;
                 server_sess->nick_said = TRUE;
-                chan_set_color (chan_get_parent (sess->res->tab),
-                                nickseen_list);
+                chan_set_color (chan_get_parent (sess->res->tab), nickseen_list);
             }
+
+            /* blink once */
+            if (prefs.hilite_color == 2)
+                fe_timeout_add (prefs.blink_timeout * 1000, fe_tab_restore_color, sess);
 
             break;
         }
