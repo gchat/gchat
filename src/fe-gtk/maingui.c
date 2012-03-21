@@ -305,6 +305,9 @@ fe_flash_window (session * sess)
 static guint
 fe_tab_restore_color (struct session *sess)
 {
+    if (sess->last_color != sess->last_timeout_color) /* other activity has occured, so another timer is running */
+        return FALSE;
+
     sess->new_data = FALSE;
     sess->msg_said = FALSE;
     sess->nick_said = FALSE;
@@ -319,6 +322,7 @@ fe_set_tab_color (struct session *sess, int col)
     struct session *server_sess = sess->server->server_session;
     if (sess->gui->is_tab && (col == 0 || sess != current_tab))
     {
+        sess->last_color = col;
         switch (col)
         {
 
@@ -347,8 +351,10 @@ fe_set_tab_color (struct session *sess, int col)
             }
 
             /* blink once */
-            if (prefs.data_color == 2)
+            if (prefs.data_color == 2) {
+                sess->last_timeout_color = col;
                 fe_timeout_add (prefs.blink_timeout * 1000, fe_tab_restore_color, sess);
+            }
 
             break;
 
@@ -370,8 +376,10 @@ fe_set_tab_color (struct session *sess, int col)
             }
 
             /* blink once */
-            if (prefs.talk_color == 2)
+            if (prefs.talk_color == 2) {
+                sess->last_timeout_color = col;
                 fe_timeout_add (prefs.blink_timeout * 1000, fe_tab_restore_color, sess);
+            }
 
             break;
 
@@ -393,8 +401,10 @@ fe_set_tab_color (struct session *sess, int col)
             }
 
             /* blink once */
-            if (prefs.hilite_color == 2)
+            if (prefs.hilite_color == 2) {
+                sess->last_timeout_color = col;
                 fe_timeout_add (prefs.blink_timeout * 1000, fe_tab_restore_color, sess);
+            }
 
             break;
         }

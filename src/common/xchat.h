@@ -373,9 +373,11 @@ typedef struct session
 
     int type;                   /* SESS_* */
 
-    int new_data:1;             /* new data avail? (purple tab) */
-    int nick_said:1;            /* your nick mentioned? (blue tab) */
-    int msg_said:1;             /* new msg available? (red tab) */
+    int new_data:1;             /* new data avail? (green tab) */
+    int nick_said:1;            /* your nick mentioned? (red tab) */
+    int msg_said:1;             /* new msg available? (blue tab) */
+    int last_color;             /* last color set to set */
+    int last_timeout_color;     /* last color used in timeout */
 
     int ignore_date:1;
     int ignore_mode:1;
