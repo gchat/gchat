@@ -92,6 +92,7 @@ void fe_server_callback (struct server *serv);
 void fe_url_add (const char *text);
 void fe_pluginlist_update (void);
 void fe_buttons_update (struct session *sess);
+void fe_reset_tab (struct session *sess);
 void fe_dlgbuttons_update (struct session *sess);
 void fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps,
                           int passive);
@@ -109,6 +110,7 @@ void fe_set_away (server * serv);
 void fe_serverlist_open (session * sess);
 void fe_get_str (char *prompt, char *def, void *callback, void *ud);
 void fe_get_int (char *prompt, int def, void *callback, void *ud);
+
 #define FRF_WRITE 1             /* save file */
 #define FRF_MULTIPLE 2          /* multi-select */
 #define FRF_ADDFOLDER 4         /* add ~/.xchat2 to favourites */

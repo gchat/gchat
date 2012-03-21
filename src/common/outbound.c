@@ -664,6 +664,16 @@ cmd_clear (struct session *sess, char *tbuf, char *word[], char *word_eol[])
         return TRUE;
     }
 
+    if (strncasecmp (reason, "tabs", 3) == 0)
+    {
+        while (list)
+        {
+            fe_reset_tab (list->data);
+            list = list->next;
+        }
+        return TRUE;
+    }
+
     if (reason[0] != '-' && !isdigit (reason[0]) && reason[0] != 0)
         return FALSE;
 
@@ -3637,7 +3647,7 @@ const struct commands xc_cmds[] = {
     {"CHARSET", cmd_charset, 0, 0, 1, 0},
     {   "CLEAR", cmd_clear, 0, 0, 1,
         N_
-        ("CLEAR [ALL|HISTORY], Clears the current text window or command history")
+        ("CLEAR [ALL|TABS|HISTORY], Clears the current text window, command history, or tab colors")
     },
     {"CLOSE", cmd_close, 0, 0, 1, N_("CLOSE, Closes the current window/tab")},
 

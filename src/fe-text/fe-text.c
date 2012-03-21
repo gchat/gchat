@@ -940,6 +940,11 @@ fe_flash_window (struct session *sess)
 }
 
 void
+fe_reset_tab (struct session *sess)
+{
+}
+
+void
 fe_get_file (const char *title, char *initial,
              void (*callback) (void *userdata, char *file), void *userdata,
              int flags)

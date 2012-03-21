@@ -414,6 +414,12 @@ fe_set_tab_color (struct session *sess, int col)
     }
 }
 
+void
+fe_reset_tab (struct session *sess)
+{
+    chan_set_color (sess->res->tab, plain_list);
+}
+
 static void
 mg_set_myself_away (session_gui * gui, gboolean away)
 {
