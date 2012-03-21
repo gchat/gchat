@@ -351,7 +351,8 @@ fe_set_tab_color (struct session *sess, int col)
             }
 
             /* blink once */
-            if (prefs.data_color == 2) {
+            if (prefs.data_color == 2)
+            {
                 sess->last_timeout_color = col;
                 fe_timeout_add (prefs.blink_timeout * 1000, fe_tab_restore_color, sess);
             }
@@ -376,7 +377,8 @@ fe_set_tab_color (struct session *sess, int col)
             }
 
             /* blink once */
-            if (prefs.talk_color == 2) {
+            if (prefs.talk_color == 2)
+            {
                 sess->last_timeout_color = col;
                 fe_timeout_add (prefs.blink_timeout * 1000, fe_tab_restore_color, sess);
             }
@@ -401,7 +403,8 @@ fe_set_tab_color (struct session *sess, int col)
             }
 
             /* blink once */
-            if (prefs.hilite_color == 2) {
+            if (prefs.hilite_color == 2)
+            {
                 sess->last_timeout_color = col;
                 fe_timeout_add (prefs.blink_timeout * 1000, fe_tab_restore_color, sess);
             }
