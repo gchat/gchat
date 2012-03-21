@@ -216,13 +216,14 @@ static const char *const ulpos[] = {
 };
 
 static const setting userlist_settings[] = {
-    {ST_HEADER, "User List", 0, 0, 0 },
-    { ST_TOGGLE, "Show hostnames in user list",
+    { ST_TOGGLE,
+        "Show hostnames in user list",
         P_OFFINTNL (showhostname_in_userlist),
         0, 0, 0
     },
+    { ST_TOGGLE, "Use real prefixes instead of orbs", P_OFFINTNL (tweak_orbs), 0, 0, 0 },
     { ST_TOGGLE,
-        "Use the Text box font and colors",
+        "Use the text box font formatting",
         P_OFFINTNL (style_namelistgad),
         0, 0, 0
     },
@@ -273,7 +274,8 @@ static const char *const swtype[] = {
 };
 
 static const setting tabs_settings[] = {
-    { ST_RADIO, "Switcher type:", P_OFFINTNL (tab_layout), 0, swtype, 0 },
+    { ST_RADIO, "Switcher type:", P_OFFINTNL (tab_layout), 0, swtype, 0            },
+    { ST_TOGGLE, "Disable dotted lines in tree", P_OFFINTNL (tweak_lines), 0, 0, 0 },
     { ST_TOGGLE, "Open an extra tab for server messages",
         P_OFFINTNL (use_server_tab),
         0, 0, 0
@@ -324,10 +326,8 @@ static const setting tweak_settings[] = {
     { ST_TOGGLE, "Show user count in menu title bar", P_OFFINTNL (tweak_usercount), 0, 0, 0            },
     { ST_TOGGLE, "Hide button next to your nickname", P_OFFINTNL (tweak_button), 0, 0, 0               },
     { ST_TOGGLE, "Swap the middle and left panes", P_OFFINTNL (tweak_swap), 0, 0, 0                    },
-    { ST_TOGGLE, "Disable dotted lines in channel switcher", P_OFFINTNL (tweak_lines), 0, 0, 0         },
     { ST_TOGGLE, "Show channel modes in title bar when key set", P_OFFINTNL (tweak_showkey), 0, 0, 0   },
     { ST_TOGGLE, "Smaller channel switcher/userlist row spacing", P_OFFINTNL (tweak_smallrow), 0, 0, 0 },
-    { ST_TOGGLE, "Use real prefixes instead of orbs in userlist", P_OFFINTNL (tweak_orbs), 0, 0, 0     },
     { ST_TOGGLE, "Disable text attribute button", P_OFFINTNL (tweak_attribute), 0, 0, 0                },
 
     { ST_END, 0, 0, 0, 0, 0 }
