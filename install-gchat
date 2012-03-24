@@ -4,15 +4,72 @@ use FindBin;
 BEGIN { chdir $FindBin::Bin }
 local $| = 1;
 sub prompt (@);
-sub status ($);
-sub done   ();
+sub status ($;$$);
+sub done   (;$);
 
-say ':: This installation script will ask a few simple questions and automate the installation process.';
-status 'Running autogen.sh';
-die "autogen.sh failed.\n" if system './autogen.sh';
+say 'Welcome to the GChat installation.';
+say 'I will ask you a few questions in a moment.';
+sleep 2;
 
-say ':: Now to do some configuration.';
-say ':: I will try to make this as easy as possible';
+status 'Looking for automake';
+
+# find automake
+if (!system 'automake --version < /dev/null > /dev/null 2>&1') {
+    done 'automake';
+    status 'Checking automake version';
+    my $version = (split "\n", `automake --version`)[0];
+    $version =~ m/automake \(GNU automake\) (.+)/; $version = $1;
+    done $version;
+    if ($version =~ m/(.+)\.(.+)\.(.+)/ || $version =~ m/(.+)\.(.+)/) {
+        $major = $1;
+        $minor = $2;
+    }
+    $have_automake = 1 if $major >= 1 || $minor >= 9;
+}
+
+# found it
+if ($have_automake) {
+    $AUTOMAKE = 'automake';
+    $ACLOCAL  = 'aclocal';
+}
+
+# or try 1.9
+else {
+    say 'automake is not a valid version.';
+    status 'Looking for automake-1.9 instead';
+    if (!system 'automake-1.9 --version < /dev/null > /dev/null 2>&1') {
+        $AUTOMAKE = 'automake-1.9';
+        $ACLOCAL  = 'aclocal-1.9';
+        status 'found it.';
+    }
+    else {
+        status 'nope! :(';
+        die "automake missing or too old. this requires GNU automake 1.9+\n";
+    }
+}
+
+status "Running $ACLOCAL";
+die "aclocal failed.\n" if system "$ACLOCAL $ACLOCAL_FLAGS";
+done;
+
+status 'Running libtoolize', 1;
+die "libtoolize failed.\n" if system "libtoolize --force";
+done;
+
+status 'Running autoheader';
+die "autoheader failed.\n" if system 'autoheader';
+done;
+
+status "Running $AUTOMAKE";
+die "automake failed.\n" if system "$AUTOMAKE -a --foreign";
+done;
+
+status 'Running autoconf';
+die "autoconf failed.\n" if system 'autoconf';
+done;
+
+say 'I will try to make this as easy as possible.
+When in doubt, just hit enter for the default.';
 
 $PREFIX  = prompt 'Where would you like to install?',                    '/usr/local';
 $IPV6    = prompt 'Enable IPv6 servers?',                                'yes'       ;
@@ -30,21 +87,21 @@ for (keys %ENABLE) { $enable .= " --enable-$_" if $ENABLE{$_} }
     $use_prefix    = $PREFIX ne '/usr/local' ? "--prefix=$PREFIX " : '';
 say 'using configuration '.($config_string = "./configure $use_prefix$enable$OTHER");
 
-status 'Running configure';
+status 'Running configure', 1;
 die "./configure failed.\n" if system $config_string;
 done;
 
 status 'Creating perl plugin headers';
 die "perl header creation failed.\n" if system 'perl plugins/perl/generate_header';
 
-status 'Running make';
+status 'Running make', 1;
 die "make failed.\n" if system 'make';
 
-status 'Running make install';
+status 'Running make install', 1;
 die "make install failed.
 If it's a permission error, run 'make install' again as root\n" if system(($SUDO ? 'sudo ': '').'make install');
 
-say ':: GChat has been installed successfully!';
+say 'GChat has been installed successfully!';
 
 sub prompt (@) {
     my ($string, $default) = @_;
@@ -54,6 +111,6 @@ sub prompt (@) {
     yesify($res || $default);
 }
 
-sub status ($) { print ':: '.shift().'... '   }
-sub done   ()  { say 'done.'                  }
-sub yesify     { lc $_[0] eq 'no' ? 0 : shift }
+sub status ($;$$) { print ':: '.shift().'...'.(shift() ? "\n" : '') }
+sub done   (;$)   { say ' '.(shift() || 'done.')                    }
+sub yesify        { lc $_[0] eq 'no' ? undef : shift                }
