@@ -3,4 +3,4 @@ To run it, issue the following command
 
 	./install-gchat
 
-If you wish to install the old-fashioned-way, see INSTALL.xchat.
+If you wish to install the old-fashioned-way, see xchat/INSTALL.xchat.
