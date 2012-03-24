@@ -93,13 +93,16 @@ done;
 
 status 'Creating perl plugin headers';
 die "perl header creation failed.\n" if system 'perl plugins/perl/generate_header';
+done;
 
 status 'Running make', 1;
 die "make failed.\n" if system 'make';
+done;
 
 status 'Running make install', 1;
 die "make install failed.
 If it's a permission error, run 'make install' again as root\n" if system(($SUDO ? 'sudo ': '').'make install');
+done;
 
 say 'GChat has been installed successfully!';
 
