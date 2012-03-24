@@ -2,6 +2,9 @@
 
 use strict;
 use warnings;
+use FindBin;
+
+BEGIN { chdir $FindBin::Bin }
 
 sub header {
   my $file = shift;

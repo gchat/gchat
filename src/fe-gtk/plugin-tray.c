@@ -186,7 +186,7 @@ libnotify_notify_new (const char *title, const char *text,
 
     text = strip_color (text, -1, STRIP_ALL | STRIP_ESCMARKUP);
     title = strip_color (title, -1, STRIP_ALL);
-    noti = nn_new (title, text, XCHATSHAREDIR "/pixmaps/xchat.png", NULL);
+    noti = nn_new (title, text, XCHATSHAREDIR "/pixmaps/36.png", NULL);
     g_free ((char *) title);
     g_free ((char *) text);
 
@@ -240,8 +240,8 @@ fe_tray_set_balloon (const char *title, const char *text)
         argv[0] = path;
         argv[1] = "-i";
         argv[2] = "gtk-dialog-info";
-        if (access (XCHATSHAREDIR "/pixmaps/xchat.png", R_OK) == 0)
-            argv[2] = XCHATSHAREDIR "/pixmaps/xchat.png";
+        if (access (XCHATSHAREDIR "/pixmaps/36.png", R_OK) == 0)
+            argv[2] = XCHATSHAREDIR "/pixmaps/36.png";
         argv[3] = "-t";
         argv[4] = time;
         argv[5] = title;

@@ -1,21 +1,26 @@
 #!/usr/bin/perl
 use 5.010;
+use FindBin;
+BEGIN { chdir $FindBin::Bin }
 local $| = 1;
-sub prompt(@);
+sub prompt (@);
+sub status ($);
+sub done   ();
 
-say ':: Running autogen.sh...';
+say ':: This installation script will ask a few simple questions and automate the installation process.';
+status 'Running autogen.sh';
 die "autogen.sh failed.\n" if system './autogen.sh';
 
 say ':: Now to do some configuration.';
 say ':: I will try to make this as easy as possible';
 
-$PREFIX = prompt 'Where would you like to install?',                    '/usr/local';
-$IPV6   = prompt 'Enable IPv6 servers?',                                'yes'       ;
-$SSL    = prompt 'Enable OpenSSL support?',                             'yes'       ;
-$NLS    = prompt 'Enable NLS? (Native Language Support)',               'yes'       ;
-if ($NLS) { say 'Sorry - GChat is designed for English-speakers only.' }
-$SUDO   = prompt 'Would you like me to use `sudo` to install GChat?',   'yes'       ;
-$OTHER  = ' '.(prompt 'Other configuration options you would like to use?',  '');
+$PREFIX  = prompt 'Where would you like to install?',                    '/usr/local';
+$IPV6    = prompt 'Enable IPv6 servers?',                                'yes'       ;
+$SSL     = prompt 'Enable OpenSSL support?',                             'yes'       ;
+if ($NLS = prompt 'Enable NLS? (Native Language Support)',               'yes'       )
+         { say 'Sorry - GChat is designed for English-speakers only.'                }
+$OTHER   = ' '.(prompt 'Other configuration options you would like to use?',  '')    ;
+$SUDO    = prompt 'Would you like me to use `sudo` to install GChat?',   'yes'       ;
 
 $ENABLE{ipv6}    = $IPV6;
 $ENABLE{openssl} = $SSL;
@@ -23,19 +28,23 @@ $enable  = '';
 for (keys %ENABLE) { $enable .= " --enable-$_" if $ENABLE{$_} }
 
     $use_prefix    = $PREFIX ne '/usr/local' ? "--prefix=$PREFIX " : '';
-say $config_string = "./configure $use_prefix$enable$OTHER";
+say 'using configuration '.($config_string = "./configure $use_prefix$enable$OTHER");
 
-say ':: Running configure...';
+status 'Running configure';
 die "./configure failed.\n" if system $config_string;
+done;
 
-say ':: Running make...';
+status 'Creating perl plugin headers';
+die "perl header creation failed.\n" if system 'perl plugins/perl/generate_header';
+
+status 'Running make';
 die "make failed.\n" if system 'make';
 
-say ':: Running make install...';
+status 'Running make install';
 die "make install failed.
 If it's a permission error, run 'make install' again as root\n" if system(($SUDO ? 'sudo ': '').'make install');
 
-say 'GChat has been installed successfully!';
+say ':: GChat has been installed successfully!';
 
 sub prompt (@) {
     my ($string, $default) = @_;
@@ -45,7 +54,6 @@ sub prompt (@) {
     yesify($res || $default);
 }
 
-sub yesify {
-    return if lc $_[0] eq 'no';
-    return $_[0]
-}
+sub status ($) { print ':: '.shift().'... '   }
+sub done   ()  { say 'done.'                  }
+sub yesify     { lc $_[0] eq 'no' ? 0 : shift }
