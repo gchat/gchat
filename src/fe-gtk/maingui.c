@@ -305,13 +305,27 @@ fe_flash_window (session * sess)
 static guint
 fe_tab_restore_color (struct session *sess)
 {
+    session *rsess;
+    GSList *list;
+
     if (sess->last_color != sess->last_timeout_color) /* other activity has occured, so another timer is running */
         return FALSE;
 
     sess->new_data = FALSE;
     sess->msg_said = FALSE;
     sess->nick_said = FALSE;
-    chan_set_color (sess->res->tab, plain_list);
+
+    list = sess_list;
+    while (list)
+    {
+        rsess = list->data;
+        if (rsess == sess)
+        {
+            chan_set_color (rsess->res->tab, plain_list);
+        }
+        list = list->next;
+    }
+    
     return FALSE;
 }
 
