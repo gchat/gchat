@@ -9,6 +9,6 @@ by Peter Zelezny. It uses the GTK+ graphical toolkit and is designed for UNIX-li
 * Add more features to the new Perl interface.
 * Remove old code for supporting Windows.
 * Remove DCC support.
-* Fix libnotify + GNOME 3 problem.
-* Add mIRC colors to topic input bar.
-* Make notices from users go to more visible locations.
+* Fix libnotify + GNOME 3 problem. ✔
+* Add mIRC colors to topic input bar. ✔
+* Make notices from users go to more visible locations. ✔
