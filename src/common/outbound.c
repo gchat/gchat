@@ -2350,7 +2350,7 @@ cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
             type |= IG_UNIG;
         else if (!strcasecmp (word[i], "ALL"))
             type |=
-                IG_PRIV | IG_NOTI | IG_CHAN | IG_CTCP | IG_INVI | IG_DCC;
+                IG_PRIV | IG_NOTI | IG_CHAN | IG_CTCP | IG_INVI | IG_DCC | IG_LIST;
         else if (!strcasecmp (word[i], "PRIV"))
             type |= IG_PRIV;
         else if (!strcasecmp (word[i], "NOTI"))
@@ -2367,6 +2367,8 @@ cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
             type |= IG_NOSAVE;
         else if (!strcasecmp (word[i], "DCC"))
             type |= IG_DCC;
+        else if (!strcasecmp (word[i], "LIST"))
+            type |= IG_LIST;
         else
         {
             sprintf (tbuf, _("Unknown arg '%s' ignored."), word[i]);

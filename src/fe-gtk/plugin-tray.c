@@ -125,13 +125,8 @@ static void *nn_mod = NULL;
 /* prototypes */
 static gboolean (*nn_init) (char *);
 static void (*nn_uninit) (void);
-static void *(*nn_new_with_status_icon) (const gchar * summary,
-        const gchar * message,
-        const gchar * icon,
-        GtkStatusIcon * status_icon);
-static void *(*nn_new) (const gchar * summary, const gchar * message,
-                        const gchar * icon, GtkWidget * attach);
-static gboolean (*nn_show) (void *noti, GError ** error);
+static void *(*nn_new) (const gchar *summary, const gchar *message, const gchar *icon, gpointer dummy);
+static gboolean (*nn_show) (void *noti, GError **error);
 static void (*nn_set_timeout) (void *noti, gint timeout);
 
 static void
@@ -165,10 +160,6 @@ libnotify_notify_new (const char *title, const char *text,
             goto bad;
         if (!g_module_symbol
                 (nn_mod, "notify_uninit", (gpointer) & nn_uninit))
-            goto bad;
-        if (!g_module_symbol
-                (nn_mod, "notify_notification_new_with_status_icon",
-                 (gpointer) & nn_new_with_status_icon))
             goto bad;
         if (!g_module_symbol
                 (nn_mod, "notify_notification_new", (gpointer) & nn_new))
