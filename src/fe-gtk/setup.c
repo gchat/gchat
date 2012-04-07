@@ -1778,6 +1778,7 @@ static const char *const cata[] = {
     "User list",
     "Channel switcher",
     "Colors",
+    "GUI tweaks",
     NULL,
     "Chatting",
     "Alerts",
